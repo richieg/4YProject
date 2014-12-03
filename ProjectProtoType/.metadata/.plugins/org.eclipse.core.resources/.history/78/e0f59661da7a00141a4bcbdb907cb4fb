@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>TEd@s</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="CSS\css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS\main.css" rel="stylesheet">
+
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script src="js/session.js"></script>
+</head>
+<body>
+    <header>
+        <img class="logo" src="Images\logo_orange.png" alt="Call Collect">
+    </header>
+	<br>
+	<br>
+	<h1 class="h">
+     
+    </h1>
+    <div id="menu" class="menu">
+        <a href="users.html">
+            <img src="users.png" />
+            Users
+        </a>
+        <a href="gridIndex.html">
+            <img src="courses.png" />
+            Courses
+        </a>
+        <a href="fieldReps.html">
+            <img src="timetable.png" />
+            Timetables
+        </a>
+		  <a href="fieldReps.html">
+            <img src="reports.png" />
+            Reports
+        </a>
+       
+      
+    </div>
+</body>
+</html>
