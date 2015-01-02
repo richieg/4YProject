@@ -1,0 +1,8 @@
+/**
+ * 
+ */
+
+    $('#submit-form').click(function(){
+        alert('button clicked');
+    	});
+  });

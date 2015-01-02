@@ -1,0 +1,10 @@
+/**
+ * 
+ */
+myfunct =function(){
+    	
+        alert('button clicked');
+        var fname=$("#firstName").val();
+        alert(fname);
+    	};
+  
