@@ -1,8 +1,0 @@
-/**
- * 
- */
-var myfunct =function(){
-    	
-        alert('button clicked');
-    	};
-  
