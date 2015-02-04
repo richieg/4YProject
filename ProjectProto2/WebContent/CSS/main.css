@@ -143,3 +143,14 @@ top: 50%;
 margin-left:-210px;
 margin-top:-255px;
 }
+
+
+#allusers{
+	display:none;
+}
+#SubmitButton1"{
+	display:none;
+}
+div.dataTables_wrapper {
+        margin-bottom: 3em;
+    }

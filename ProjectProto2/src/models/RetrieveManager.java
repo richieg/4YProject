@@ -27,9 +27,9 @@ public class RetrieveManager {
 			return userData1;
 			}
 	
-	public ArrayList GetUserData(Connection connection, HttpServletRequest request,
+	public ArrayList<UserObjects> GetUserData(Connection connection, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ArrayList userData = null;
+		ArrayList<UserObjects> userData = null;
 		RetrieveData rdata=new RetrieveData();
 			
 			try {

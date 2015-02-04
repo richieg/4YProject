@@ -1,7 +1,7 @@
 package dto;
 
 public class UserObjects {
-	
+	private int userid;
 	private String fname;
 	private String lname;
 	private String address1;
@@ -22,6 +22,12 @@ public class UserObjects {
 	}
 	public void setAddress1(String address1) {
 		this.address1 = address1;
+	}
+	public int getUserid() {
+		return userid;
+	}
+	public void setUserid(int userid) {
+		this.userid = userid;
 	}
 
 }

@@ -24,7 +24,7 @@
     <description></description>
     <display-name>InsertData</display-name>
     <servlet-name>InsertData</servlet-name>
-    <servlet-class>controls.InsertData</servlet-class>
+    <servlet-class>controls.UserInsert</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>InsertData</servlet-name>
@@ -34,7 +34,7 @@
     <description></description>
     <display-name>GetUserData</display-name>
     <servlet-name>GetUserData</servlet-name>
-    <servlet-class>controls.GetUserData</servlet-class>
+    <servlet-class>controls.UserRetrieve</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GetUserData</servlet-name>
@@ -49,5 +49,25 @@
   <servlet-mapping>
     <servlet-name>LoginUser</servlet-name>
     <url-pattern>/LoginUser</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <description></description>
+    <display-name>CategoryCourses</display-name>
+    <servlet-name>CategoryCourses</servlet-name>
+    <servlet-class>controls.CategoryCourses</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CategoryCourses</servlet-name>
+    <url-pattern>/CategoryCourses</url-pattern>
+  </servlet-mapping>
+     <servlet>
+    <description></description>
+    <display-name>CategoryCoursesRetrieve</display-name>
+    <servlet-name>CategoryCoursesRetrieve</servlet-name>
+    <servlet-class>controls.CategoryCoursesRetrieve</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CategoryCoursesRetrieve</servlet-name>
+    <url-pattern>/CategoryCoursesRetrieve</url-pattern>
   </servlet-mapping>
 </web-app>
