@@ -17,7 +17,9 @@ import com.google.gson.Gson;
 
 import models.CategoryCourseManager;
 import models.InsertManager;
+import dao.CategoryCourseInsertData;
 import dao.DBManager;
+import dao.InsertCourseData;
 import dto.MessageObjects;
 import fsao.CreateUserAc;
 
@@ -35,12 +37,32 @@ public class CategoryCoursesInsert extends HttpServlet {
 	PrintWriter out = response.getWriter();
 	try
 	 {
+		String instructid=request.getParameter(("instructid"));
 		ArrayList<MessageObjects> categoryMessage = new ArrayList<MessageObjects>();
 		DBManager db= new DBManager();
 		Connection connection = db.Get_Connection();
 		CategoryCourseManager ccm= new CategoryCourseManager();
+
+		
+		
+		
+		if(instructid.equals("1"))
+		{
+		
+	
+	
 		categoryMessage=ccm.InsertCategory(connection, request, response);
 		
+		}
+		else if(instructid.equals("2"))
+		{
+			categoryMessage=ccm.InsertCourse(connection, request, response);
+		}
+		else
+		{
+			System.out.println("got to controller for update");
+			categoryMessage=ccm.RestoreArchiveCatCourse(connection, request, response);
+		}
 		Gson gson = new Gson();
 		String Message = gson.toJson(categoryMessage);
 		

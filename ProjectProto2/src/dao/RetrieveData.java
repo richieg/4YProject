@@ -30,7 +30,7 @@ public class RetrieveData {
 		String username = null;
 		String userpass = null;
 		
-		System.out.print("got to here");
+
 	try
 	{
 	username = request.getParameter("user");
@@ -96,7 +96,7 @@ UserObject.setAddress1(rs.getString("address"));
 //System.out.print(UserObject);
 userData.add(UserObject);
 
-    System.out.println(userData);
+
 
 
 

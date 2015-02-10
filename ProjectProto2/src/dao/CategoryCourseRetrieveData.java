@@ -17,7 +17,7 @@ public class CategoryCourseRetrieveData {
 	public ArrayList<CategoryCourseObjects> GetCatData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
 	{
 		PreparedStatement ps = null;
-		System.out.print("got to dao");
+	
 		ArrayList<CategoryCourseObjects> catData = new ArrayList<>();
 	try
 	{
@@ -41,7 +41,7 @@ public class CategoryCourseRetrieveData {
 	//System.out.print(UserObject);
 	catData.add(catCourseObject);
 
-	    System.out.println("control::"+catData);
+	   
 
 
 
@@ -57,29 +57,31 @@ public class CategoryCourseRetrieveData {
 	}
 	
 	
-	public ArrayList<CourseObjects> GetCourseData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+	/*public ArrayList<CourseObjects> GetCourseData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
 	{
 		PreparedStatement ps = null;
-		System.out.print("got to dao");
+	
 		ArrayList<CourseObjects> courseData = new ArrayList<>();
 	try
 	{
 	int archived=Integer.parseInt(request.getParameter("archived"));
-	
-	System.out.print(archived);
-	 ps = connection.prepareStatement("SELECT course_id,coursename,acredbody,level FROM TB_course where archived in(?,?);");
+	System.out.println("got to dao fro course retrieve");
+
+	 ps = connection.prepareStatement("SELECT course_id,coursename,acredbody,level FROM TB_courses where archived in(?);");
 	 ps.setInt(1,archived);
 	
 	ResultSet rs = ps.executeQuery();
 	while(rs.next())
 	{
-
-	
+		System.out.println("reurned valuees");
+	System.out.println(rs.getInt("course_id"));
+	System.out.println(rs.getString("coursename"));
+	System.out.println(rs.getInt("level"));
 		
 	CourseObjects courseObject = new CourseObjects();
 	courseObject .setCourseid(rs.getInt("course_id"));
 	courseObject .setCoursename(rs.getString("coursename"));
-	courseObject .setAcredbody(rs.getString("acredbodycategorynotes"));
+	courseObject .setAcredbody(rs.getString("acredbody"));
 	courseObject .setLevel(rs.getInt("level"));
 	//System.out.print(UserObject);
 	courseData.add(courseObject);
@@ -97,6 +99,61 @@ public class CategoryCourseRetrieveData {
 	{
 	throw e;
 	}
+	}*/
+
+	
+	public ArrayList<CourseObjects> GetCourseData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+	{
+		PreparedStatement ps = null;
+	int instruct=Integer.valueOf(request.getParameter("instruct"));
+		ArrayList<CourseObjects> courseData = new ArrayList<>();
+	try
+	{
+	int archived=Integer.parseInt(request.getParameter("archived"));
+	System.out.println("got to dao fro course retrieve");
+	System.out.println(instruct);
+	 ps = connection.prepareStatement("	SELECT course_id,coursename,categoryname,bodname,btn1,btn2,level FROM TB_courses inner join tb_category on tb_category.cat_id=tb_courses.category inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=? inner join tb_accredbody on tb_accredbody.id=tb_courses.acredbody where tb_courses.archived in(?);");
+	 ps.setInt(1,instruct);
+	 ps.setInt(2,archived);
+	 
+	
+	ResultSet rs = ps.executeQuery();
+	while(rs.next())
+	{
+		System.out.println("reurned valuees");
+	System.out.println(rs.getInt("course_id"));
+	System.out.println(rs.getString("coursename"));
+	System.out.println(rs.getInt("level"));
+		
+	CourseObjects courseObject = new CourseObjects();
+	courseObject .setCourseid(rs.getInt("course_id"));
+	courseObject .setCoursename(rs.getString("coursename"));
+	courseObject .setAcredbody(rs.getString("bodname"));
+	courseObject .setLevel(rs.getInt("level"));
+	courseObject .setCategoryname(rs.getString("categoryname"));
+	courseObject .setBtn1(rs.getString("btn1"));
+	courseObject .setBtn2(rs.getString("btn2"));
+	//System.out.print(UserObject);
+	courseData.add(courseObject);
+
+	  
+
+
+
+		
+
 	}
+	return courseData;
+	}
+	catch(Exception e)
+	{
+	throw e;
+	}
+	}
+
+	
+	
+	
+	
 
 }

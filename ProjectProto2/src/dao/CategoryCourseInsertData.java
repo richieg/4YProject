@@ -29,7 +29,7 @@ public class CategoryCourseInsertData {
 		   description = request.getParameter("description");
 		   
 		   catcheck=CheckforCategory(name,connection);
-		   System.out.println("catcheck="+catcheck);
+	
 		 
 		   rt=InsertToCategory(name,description,archived,connection);
 		   MessageObjects messageObjects = new MessageObjects();

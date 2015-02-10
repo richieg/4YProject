@@ -4,6 +4,7 @@
 <html>
 <%@ include file="head.jsp" %>
 <%@ include file="commonmodals.jsp" %>
+
 <script type='text/javascript' src="Category.js"></script>
 
 
@@ -68,6 +69,8 @@ Return to previous
             
         </tbody>
          </table>
+         
+ <table class="display" id="datatable-sample" width="100%" cellspacing="0"></table>
 <!-- Modal -->
 <div class="modal fade" id="catModal" tabindex="-1" role="dialog" 
    aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
@@ -93,7 +96,7 @@ Return to previous
  
 
 <!-- Text input-->
-<div class="form-group">
+<div class="form-group" >
   <label class="control-label col-sm-4" for="categoryName">Name</label>
   <div class="col-sm-4">
     <input id='categoryName' name="categoryName" placeholder="Category Name" class="form-control" type="text">
@@ -147,14 +150,14 @@ Return to previous
          <div class="modal-body">
 
   <h2>New Course Form</h2>
-  <form class="form-horizontal" role="form" id="induserform">
+  <form class="form-horizontal" role="form" id="courseform">
  
  
  
  
  
- <div id="ncatnamed" class="form-group" style="display:none">
-  <label class="control-label col-sm-4" for="courseName">Enter New Course Name</label>
+ <div id="ncatnamed" class="form-group">
+  <label class="control-label col-sm-4" for="courseName">Category Name</label>
   <div class="col-sm-4">
     <input id='ncatname' name="ncatname" placeholder="Category Name" class="form-control" type="text">
     
@@ -166,9 +169,7 @@ Return to previous
    <div class="col-sm-4">
       <select class="form-control" id="coursenamesel">
       <option id="1">- Select One -</option>
-      <option value="2" id="2">Word Processing</option>
-        <option value="3" id="3">Excell</option>
-      </select>
+	</select>
         </div>
         </div>
  
@@ -183,24 +184,33 @@ Return to previous
 </div>
 
 
-<div id="accredbodseld"  class="form-group">
-   <label class="control-label col-sm-4" for="sel2">Select Existing Accreditation Body:</label>
-   <div class="col-sm-4">
-      <select class="form-control" id="accreditbodsel">
-      <option id="4">- Select One -</option>
-      <option id="5">Not Applicable</option>
-      </select>
-        </div>
-        </div>
+
 
 <!-- Text input-->
 <div id="acrb" class="form-group">
   <label class="control-label col-sm-4" for="accreditbod">Enter New Accreditation Body</label>
 <div class="col-sm-4">
-    <input id='accreditbod' name="accreditbod" placeholder="Accreditation Body" class="form-control" type="text">
+    <input id='accreditbod' name="accreditbod" placeholder="Accreditation Body" value="na" class="form-control" type="text">
     
   </div>
 </div>
+
+
+<div id="level"  class="form-group">
+   <label class="control-label col-sm-4" for="sel2">Select Course Level:</label>
+   <div class="col-sm-4">
+      <select class="form-control" id="level">
+      <option id="-1">- Select One -</option>
+      <option id="0">Not Applicable</option>
+            <option id="1">1</option>
+                  <option id="2">2</option>
+                        <option id="3">3</option>
+                              <option id="4">4</option>
+                                  <option id="5">5</option>
+                                      <option id="6">6</option>
+      </select>
+        </div>
+        </div>
 
 <div class="form-group">
    <label class="control-label col-sm-4" for="sel3">Select Tutor:</label>

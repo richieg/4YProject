@@ -3,31 +3,96 @@
  */
 
 $(document).ready( function () {
+    var table=$('#categorytable').DataTable();
     getCatData(0);
+    getUserForCourses();
+    getCourseNamesForCourses();
+    
+    
+    
+    function drawDataTable(columns, data) {
+        var oTable = $('#datatable-sample').DataTable({
+          
+                "aoColumnDefs": columns,
+                "aaData": data
+        });
+        
+    }
+    /*var columns = [{
+        "sTitle": "No.",
+            "mData": null,
+            "aTargets": [0]
+    }, {
+        "sTitle": "Name",
+            "mData": "name",
+            "aTargets": [1]
+    }, {
+        "sTitle": "Description",
+            "mData": "description",
+            "aTargets": [2]
+    }];
+    
+    var data = [{
+        "name": "Jhon",
+            "description": "First name"
+    }, {
+        "name": "Lennon",
+            "description": "last name"
+    }];*/
+
+    //drawDataTable(columns, data);
     
     $('#SubmitButtoncat').click(function()
     		{
-    	//alert("button hit");
-    	$('#ModalConfirm').modal('show'),
-    	$('#ConfirmButton').click(function(){insertCatCourse(1);});
+    	bootbox.confirm("Are you sure you want to add this category", function(result) {if (result==true){insertCatCourse(1);};
+    	});
     		});
     
     
     $('#CourseSubmitButton').click(function()
     {
-     	$('#ModalConfirm').modal('show'),
-    	$('#ConfirmButton').click(function(){insertCatCourse(2);
+    	bootbox.confirm("Are you sure you want to add this course?", function(result) {if (result==true){insertCatCourse(2);};
     	});
+    	
+    	
     	
     });
     
+    
+	$('.display tbody').on( 'click', '.rud', function () {
+		var row=null;
+		var rowid=null;
+		var tableid=null;
+		tableid=$(this).closest('table').attr('id');
+		
+	
+	    row=table
+        .row( $(this).parents('tr') );
+    
+		rowid=this.id;
+		
+	
+			var nrowid=null;
+			nrowid=rowid;
+			alert("second row="+nrowid);
+	      
+	        bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(rowid,row,tableid);};
+	        	  
+	        	}); 
+	        
+	        nrowid=null;
+	  
+	});
+			
+    
+  
     
     
     
     function getCatData(a){
 		var dataString=null;
 		
-		var table=$('#categorytable').DataTable();
+		var userdata=null;
 		var rows = table
 	    .rows()
 	    .remove()
@@ -72,10 +137,10 @@ $(document).ready( function () {
 		if(a==0)
 			{
 				button1="<button id=3"+data.categoryid+" class=\"rud\" role=\"update\">Update</button>";
-				button2="<button id=4"+data.categoryid+" class=\"rud\" role=\"delete\">Delete</button>";
+				button2="<button id=4"+data.categoryid+" class=\"rud\" role=\"delete\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
 				button3="<button id="+data.categoryid+" class=\"add\" role=\"add\">Add Course</button>";
 				
-		
+				
 				
 
 			}
@@ -85,9 +150,9 @@ $(document).ready( function () {
 				button3="<button id=5"+data.categoryid+" class=\"add\" role=\"add\">Add Course</button>";
 			    
 		}
+		
 		userdata=[data.categoryid,data.catname,data.catdescript, data.genericcount,button1,button2,button3];
-	
-		table.row.add( userdata).draw();
+		table.row.add(userdata).draw();
 	
 
 		});
@@ -101,6 +166,183 @@ $(document).ready( function () {
 		});
 	
 	};
+	
+	
+	$('#categorytable tbody').on( 'click', '.add', function () {
+		
+		var rowid=this.id;
+	
+		$('#ncatname').val(rowid);
+		
+
+		$("#courseModal").modal('show');
+		 //$('#coursename').show();
+	  	//$('#level').show();
+	  	//$('#acrb').show();
+		//getUserForCourses(2);
+		
+		
+		
+	});
+
+	function getUserForCourses()
+	{
+		dataString="archived=0,0&role=1,1";
+					$.ajax
+					({
+					type: "POST",
+					url: "GetUserData",
+					dataType:"json",
+					data: dataString,
+					cache: false,
+					success: function(data)
+					{
+					if(data.User.length)
+					{
+					
+						   
+						
+					$.each(data.User, function(i,data)
+					{
+						
+					
+						
+			
+				
+						var o = new Option("option text", "value");
+						o.id=data.userid;
+						/// jquerify the DOM object 'o' so we can use the html method
+						$(o).html(data.fname +" " + data.lname);
+						$("#tutorsel").append(o);
+						
+					
+					 //$("#usertable").append(userData).removeClass("hidden");
+					});
+					
+				
+					}
+					else
+					{
+						$("#tutorsel").append("- Select one -");
+					}
+					}
+					});
+				
+				};
+				
+				
+				
+				
+				function getCourseNamesForCourses()
+				{
+					dataString="instruct=2&archived=0";
+			
+								$.ajax
+								({
+								type: "POST",
+								url: "CategoryCourseRetrieve",
+								dataType:"json",
+								data: dataString,
+								cache: false,
+								success: function(data)
+								{
+								if(data.Category.length)
+								{
+									//data.Category.append("btn1:btn1");
+									var columns = [{
+								        "sTitle": "No.",
+								            "mData": "courseid",
+								            "aTargets": [0]
+								    }, {
+								        "sTitle": "Name",
+								            "mData": "coursename",
+								            "aTargets": [1]
+								    }, {
+								        "sTitle": "Accreditation Body",
+								            "mData": "acredbody",
+								            "aTargets": [2]
+								    },
+								    {
+								        "sTitle": "Level",
+								            "mData": "level",
+								            "aTargets": [3]
+								    },
+								    {
+								        "sTitle": "",
+								            "mData": "btn1",
+								            "aTargets": [4]
+								    },
+								    {
+								        "sTitle": "",
+								            "mData": "btn2",
+								            "aTargets": [5]
+								    }
+								    ];
+									
+									  drawDataTable(columns, data.Category);
+									
+									
+								$.each(data.Category, function(i,data)
+								{
+							
+									
+								
+									setCourseSels(data.courseid,data.coursename,data.level);
+						
+							 
+								 //$("#usertable").append(userData).removeClass("hidden");
+								});
+								
+							
+								}
+								else
+								{
+									$("#coursenamesel").append("- No Options -");
+								}
+								}
+								});
+							
+							};
+							
+				
+							   function setCourseSels(courseid,coursename,level)
+							    {
+									var o1 = new Option("option text", "value");
+									o1.id=courseid;
+									/// jquerify the DOM object 'o' so we can use the html method
+									$(o1).html(coursename+" " +level);
+									$("#coursenamesel").append(o1);
+									
+							    }
+				
+				
+				
+				
+				$('#coursenamesel').change(function() {
+					
+				var optionID=$('#coursenamesel option:selected').attr('id');
+		
+				if(optionID!="1")
+					{
+				 
+					    $('#coursename').hide();
+				    	$('#level').hide();
+				    	$('#acrb').hide();
+				}
+				
+				 
+				});
+				
+				
+				$('#courseName').change(function() {
+					
+			
+				    //$('#coursenameseld').hide();
+				
+				});
+	
+	
+	
     
     function insertCatCourse(a){
 		var Data=null;
@@ -113,25 +355,33 @@ $(document).ready( function () {
 		}
 		else
 			{
-			var catid=$('#ncatname').val();
+			var catid = $("#ncatname").val();
+			alert("catid="+catid);
 			var courseid=$('#coursenamesel option:selected').attr('id');
-			var coursename=$('#courseName').val();
-			var accredbodid=$('#accreditbodsel option:selected').attr('id');
+			var coursename = $("#courseName").val();
+			alert("coursename="+coursename);
+			var level=$('#level option:selected').attr('id');
 			var accredbodname=$('#accreditbod').val();
 			var tutorid=$('#tutorsel option:selected').attr('id');
 			var semesterid=$('#semestersel option:selected').attr('id');
 			var capacity=$('#capcity').val();
 			var equipreq=$('#equipsel option:selected').attr('id');
 			
+			if(courseid!=1)
+				{
+				coursename="na";
+				accredbodname="na";
+				}
 			
-			Data=("catid="+catid+"&courseid="+courseid+"&coursename="+coursename+"&accredbodid="+accredbodid+"&accredbodname="
-					+accredbodname+"&tutorid="+tutorid+"&semesterid="+semesterid+"&capacity="+capacity+"equipreq="+equipreq);
+			
+			Data=("instructid=2&catid="+catid+"&courseid="+courseid+"&coursename="+coursename+"&level="+level+"&accredbodname="
+					+accredbodname+"&tutorid="+tutorid+"&semesterid="+semesterid+"&capacity="+capacity+"&equipreq="+equipreq);
 			
 			
 			alert(Data);
 			}
 		
-		alert(catData);
+		
 		$.ajax({
 			type: "POST",
 			url: "CategoryCourses",
@@ -160,7 +410,8 @@ $(document).ready( function () {
 				});
 			
 					$('#ModalMessage').modal('show');
-					$('#incatform').find("input[type=text], textarea").val("");
+					$('#catModal').find('form')[0].reset();
+					 $('#courseModal').find('form')[0].reset();
 				
 				
 				}
@@ -177,114 +428,67 @@ $(document).ready( function () {
     
 };
 
-
-$('#categorytable tbody').on( 'click', '.add', function () {
-	
-	var rowid=this.id;
-	
-	$('#ncatname').val(rowid);
-	alert(rowid);
-	getUserForCourses(2);
-	
-	
-	
-});
-
-function getUserForCourses(a)
+function upDel(rowid,row,tableid)
 {
-	if(a==2)
-	{
-					
-					dataString="archived=0,0&role=1,1";
-				
-				
-				}
-				
-				
-				
-				$.ajax
-				({
-				type: "POST",
-				url: "GetUserData",
-				dataType:"json",
-				data: dataString,
-				cache: false,
-				success: function(data)
-				{
-				if(data.User.length)
-				{
-					
-					   
-					
-				$.each(data.User, function(i,data)
-				{
-					
-					alert(data.userid);
-					
+	var rrowid=null;
+	var dataString=null;
+	rrowid=rowid;
+	ttableid=tableid;
+	alert(rrowid);
+	
+	var instruct = rrowid.substring(0, 1);
+	var rowid1=rrowid.substring(1, rrowid.lenght);
+	alert(rowid1);
+	dataString="catcourseid="+rowid1+"&checknum="+ttableid+"&instructid="+instruct;
+	alert(dataString);
 		
-				if(a==2)
-					{
-					var o = new Option("option text", "value");
-					o.id=data.userid;
-					/// jquerify the DOM object 'o' so we can use the html method
-					$(o).html(data.fname +" " + data.lname);
-					$("#tutorsel").append(o);
-					}
+		$.ajax({
+			type: "POST",
+			url: "CategoryCourses",
+			data: dataString,
+			dataType:"json",
+			cache: false,
+			success: function(data)
+			{
+				 $('#sfmessage').empty();
+				if(data.CatMessage.length)
+				{
+				$.each(data.CatMessage, function(i,data)
+				{
 				
-				 //$("#usertable").append(userData).removeClass("hidden");
-				});
-				$("#courseModal").modal('show');
+				var messageid=data.messagecode;
+				alert(messageid);
+				var message=data.insertmessagestring;
+				if(messageid==2)
+					{
+					  row
+				        .remove()
+				        .draw();
+					
+					}
 			
+				 $('#sfmessage').prepend(message);
+				
+				
+
+				});
+				$('#ModalMessage').modal('show');
+				 
 				}
 				else
 				{
 				$("#content").html("No Results");
 				}
 				}
-				});
-			
-			};
-			
-			
-			$('#coursenamesel').change(function() {
-				
-			var optionID=$('#coursenamesel option:selected').attr('id');
-	
-			if(optionID!="1")
-				{
-			 
-			    $('#coursename').hide();
-			}
 			});
-			
-			
-			$('#courseName').change(function() {
-				
+};
 		
-			    $('#coursenameseld').hide();
-			
-			});
-			
-			$('#accreditbod').change(function() {
-				
-				
-			    $('#accredbodseld').hide();
-			
-			});
+
+
+
+
 			
 			
-			
-			$('#accreditbodsel').change(function() {
-				
-			var optionID=$('#accreditbodsel option:selected').attr('id');
-			    //var optionID = $('option:selected').attr('id');
-				//var optionID=this.id;
-			if(optionID!="1")
-				{
-			    alert(optionID);
-			    $('#acrb').hide();
-			}
-			});
 
 
 //courseModal

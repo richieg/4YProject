@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.InsertUserData;
-import dao.UpdateDelete;
+import dao.UpdateDeleteUserData;
 import dto.MessageObjects;
 
 public class InsertManager {
@@ -37,7 +37,7 @@ public class InsertManager {
 		
 			if(message != null && message !="" && message.length()>0)
 			{
-				UpdateDelete upDel= new UpdateDelete();
+				UpdateDeleteUserData upDel= new UpdateDeleteUserData();
 				insertMessage=upDel.RestoreArchiveUser(connection, request, response);
 			}
 			

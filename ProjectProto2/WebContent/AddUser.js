@@ -4,11 +4,11 @@
 
 $(document).ready(function(){
 	
-	
+var table=$('#usertable').DataTable();
 //call get user when page loads
 document.getElementById("myBod").addEventListener("load", getUserData(0));
 
-
+	
  
 
 
@@ -17,6 +17,9 @@ document.getElementById("myBod").addEventListener("load", getUserData(0));
 $(function() {
 	$( "#datepicker" ).datepicker({changeYear: true,yearRange: "-100:+0",dateFormat: 'yy-mm-dd'});
 	});
+
+
+
 
 
 	
@@ -112,28 +115,41 @@ $.validate({
 				
 				});
 				});*/
-		var table=$('#usertable').DataTable();	
-		$('#usertable tbody').on( 'click', '.rud', function () {
-		    var row=table
+		
+		$('.display tbody').on( 'click', '.rud', function () {
+			var row=null;
+			var rowid=null;
+		    row=table
 	        .row( $(this).parents('tr') );
-			var rowid=this.id;
-			$('#ModalConfirm').modal('show'),
-			$('#ConfirmButton').click(function(){
-				
-		        row
-		        .remove()
-		        .draw();
-		        upDel(rowid);
-		} );
+	        alert("row first="+row);
+			rowid=this.id;
+			alert("rowid first="+rowid);
+		
+				var nrowid=null;
+				nrowid=rowid;
+				alert("second row="+nrowid);
+		      
+		        bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(rowid,row);};
+		        	  
+		        	}); 
+		        
+		        nrowid=null;
+		  
 		});
 				
 				
 				
-		function upDel(row)
+		function upDel(rowid,row)
 		{
-			var instruct = row.substring(0, 1);
-			var rowid=row.substring(1, row.lenght);
-			dataString="userid="+rowid+"&checknum="+instruct;
+			var rrowid=null;
+			var dataString=null;
+			rrowid=rowid;
+			alert(rrowid);
+			
+			var instruct = rrowid.substring(0, 1);
+			var rowid1=rrowid.substring(1, rrowid.lenght);
+			dataString="userid="+rowid1+"&checknum="+instruct;
+			alert(dataString);
 				
 				$.ajax({
 					type: "POST",
@@ -149,8 +165,16 @@ $.validate({
 						$.each(data.Message, function(i,data)
 						{
 						
-					
+						var messageid=data.messagecode;
+						alert(messageid);
 						var message=data.insertmessagestring;
+						if(messageid==2)
+							{
+							  row
+						        .remove()
+						        .draw();
+							
+							}
 					
 						 $('#sfmessage').prepend(message);
 						
@@ -170,12 +194,7 @@ $.validate({
 				
 				
 				
-							/*var $row = $(this).closest("tr")       // Finds the closest row <tr> 
-						    .find("#lname").text();  
-							alert($row);// Finds all children <td> elements
-			
-					//$.each($tds, function() {               // Visits every single <td> element
-				    //alert($(this).text());        // Prints out the text within the <td>*/
+					
 				};
 
 
@@ -197,7 +216,7 @@ $.validate({
 		function getUserData(a){
 			var dataString=null;
 			
-			var table=$('#usertable').DataTable();
+			//var table=$('#usertable').DataTable();
 			var rows = table
 		    .rows()
 		    .remove()
@@ -248,9 +267,9 @@ $.validate({
 			if(a==0)
 				{
 					button1="<button id=3"+data.userid+" class=\"rud\" role=\"update\">Update</button>";
-					button2="<button id=4"+data.userid+" class=\"rud\" role=\"delete\">Delete</button>";
+					button2="<button id=4"+data.userid+" class=\"rud\" role=\"delete\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
 					//userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=3"+data.userid+" class=\"rud\" role=\"update\">update</button><button id=4"+data.userid+" class=\"rud\" role=\"delete\" >Delete</button></td></tr>";
-	
+	//<span class=\"glyphicon glyphicon-trash\"></span>
 				}
 			else{
 					button1="<button id=2"+data.userid+" class=\"rud\" role=\"restore\">Restore</button>";
@@ -362,8 +381,9 @@ $.validate({
 					}
 				else{
 					$('#ModalMessage').modal('show');
-					$('#induserform').find("input[type=text], textarea").val("");
-					 $('#checknum').val("1");
+					$('#myModal').find('form')[0].reset();
+					//$('#induserform').find("input[type=text], textarea").val("");
+					 //$('#checknum').val("1");
 					 getUser(0);
 				
 				}

@@ -5,6 +5,7 @@
       
          <script src="CSS/js/bootstrap.min.js"></script>
     <script src="jq/jquery-ui.min.js"></script>
+     <script src="CSS/bootbox.js"></script>
     <script src="jq/form-validator/jquery.form-validator.min.js"></script>
           <script type="text/javascript" charset="utf8" src="CSS/DataTables-1.10.4/media/js/jquery.dataTables.js"></script>
       <link rel="stylesheet" type="text/css" href="CSS/DataTables-1.10.4/media/css/jquery.dataTables.css">

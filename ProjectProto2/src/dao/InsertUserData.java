@@ -83,12 +83,8 @@ public class InsertUserData {
 		   	if(checknum==1)
 		   	{
 		   	checknum=CheckForDups(fname,lname,address1,dob,connection);
-		   	
-			System.out.println("returned user count:::");
-			System.out.println(checknum);
-			
-			System.out.println("user role:::");
-			System.out.println(role);
+		
+		
 			
 			
 		   	}

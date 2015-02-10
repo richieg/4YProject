@@ -29,6 +29,29 @@ private int courseid;
 private String coursename;
 private String acredbody;
 private int level;
+private String categoryname;
+public String getCategoryname() {
+	return categoryname;
+}
+public void setCategoryname(String categoryname) {
+	this.categoryname = categoryname;
+}
+public String getBtn1() {
+	return btn1;
+}
+public void setBtn1(String btn1) {
+	this.btn1 = btn1;
+}
+public String getBtn2() {
+	return btn2;
+}
+public void setBtn2(String btn2) {
+	this.btn2 = btn2;
+}
+
+private String btn1;
+private String btn2;
+
 
 
 }
