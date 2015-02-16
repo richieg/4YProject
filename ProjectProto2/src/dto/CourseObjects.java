@@ -51,6 +51,13 @@ public void setBtn2(String btn2) {
 
 private String btn1;
 private String btn2;
+private String btn3;
+public String getBtn3() {
+	return btn3;
+}
+public void setBtn3(String btn3) {
+	this.btn3 = btn3;
+}
 
 
 

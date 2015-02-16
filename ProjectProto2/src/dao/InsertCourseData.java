@@ -65,7 +65,7 @@ import dto.MessageObjects;
 					   else
 					   {
 						   messageObjects.setMessagecode(7);
-							messageObjects.setInsertmessagestring("<h4>Ann error has occured</h4>");
+							messageObjects.setInsertmessagestring("<h4>An error has occured</h4>");
 							courseMessage.add(messageObjects);
 					   }
 		          }
@@ -82,6 +82,7 @@ import dto.MessageObjects;
 		public int InsertToCourses(int catid,int courseid,String coursename,String accredbodname,int tutorid,int semesterid,int capacity,int equipreq,int level,Connection connection)
 		
 		{
+		
 			
 			CallableStatement cu;
 			int successcnt=0;

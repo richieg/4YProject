@@ -55,19 +55,19 @@
 			   		/*else if(instruct==1)
 			   		{
 			   			ps = connection.prepareStatement("Update tb_category set archived=0 where catid=?");
-			   		}
-			   		else if(instruct==1)
+			   		}*/
+			   		else if(instruct==5)
 			   		{
-			   			ps = connection.prepareStatement("Update tb_courses set archived=0 where catcourseid=?");
-			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=0 where catcourseid=?");
+			   			ps = connection.prepareStatement("Update tb_courses set archived=1 where course_id=?");
+			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=1 where course_id=?");
 			   		}
 			   		else
 			   		{
-			   			ps = connection.prepareStatement("Update tb_courses set archived=1 where catcourseid=?");
-			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=1 where catcourseid=?");
-			   		}*/
+			   			ps = connection.prepareStatement("Update tb_courses set archived=0 where course_id=?");
+			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=0 where course_id=?");
+			   		}
 					ps.setInt(1, coursecatid);
-					//ps1.setInt(1, coursecatid);
+					ps1.setInt(1, coursecatid);
 					
 					up = ps.executeUpdate();
 					  System.out.println(up);
@@ -77,6 +77,10 @@
 						if(instruct==4)
 						{
 							message= "<div style='color:blue'>Category "+coursecatid+" deleted successfully</div>";
+						}
+						else
+						{
+							message= "<div style='color:blue'>Course "+coursecatid+" deleted successfully</div>";
 						}
 						/*else if (checknum==1 && instruct==1)
 						{

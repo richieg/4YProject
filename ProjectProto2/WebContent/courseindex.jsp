@@ -6,6 +6,7 @@
 <%@ include file="commonmodals.jsp" %>
 
 <script type='text/javascript' src="Category.js"></script>
+<script type='text/javascript' src="JSControllers/CatCourseController.js"></script>
 
 
 
@@ -19,20 +20,28 @@
 <!-- Button trigger modal -->
 <br>
 <br>
+<a id="nav" href="index.html" title="Index"><img src="Images\back.png" alt="back"><br>Back to main menu</a>
 
-<button class="btn btn-primary" id="users">
-Return to previous
-</button>
+<h1 id="pagetitle">Categories</h1>
 
 
-<button class="btn btn-primary" data-toggle="modal" 
+<br>
+<br>
+
+
+
+<button id="addcat1" class="btn btn-primary" data-toggle="modal" 
    data-target="#catModal" id="addcattegory">
    Add Category
 </button>
-
-<button class="btn btn-primary" data-toggle="modal" 
-   data-target="#accredbodModal" id="accredbod">
-   Add Accreditation Body
+<button class="btn btn-primary"  id="addc" style="display:none">
+   Add Course
+</button>
+<button class="btn btn-primary"  id="viewc" >
+   View Courses
+</button>
+<button class="btn btn-primary"  id="viewcat" style="display:none">
+   View Categories
 </button>
 <br>
 <br>
@@ -40,35 +49,7 @@ Return to previous
 
 
 
-<table id="categorytable" class="display" width="100%" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Category ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>No. of Courses</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                
-            </tr>
-        </thead>
- 
-        <tfoot>
-            <tr>
-                <th>Category ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>No. of Courses</th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </tfoot>
-             <tbody>
-            
-        </tbody>
-         </table>
+
          
  <table class="display" id="datatable-sample" width="100%" cellspacing="0"></table>
 <!-- Modal -->
@@ -150,16 +131,39 @@ Return to previous
          <div class="modal-body">
 
   <h2>New Course Form</h2>
-  <form class="form-horizontal" role="form" id="courseform">
+  
+  <form class="form-horizontal" role="form" id="courseform" >
+ 
+  <div id="ncatidd" class="form-group" style="display:none">
+  <label class="control-label col-sm-4" for="courseName"></label>
+  <div class="col-sm-4">
+    <input id='' name="ncatid" placeholder="Category ID" class="form-control" type="text">
+    
+  
+    
+  </div>
+</div>
  
  
  
- 
- 
- <div id="ncatnamed" class="form-group">
+ <div id="ncatnamed" class="form-group" style="display:none">
   <label class="control-label col-sm-4" for="courseName">Category Name</label>
   <div class="col-sm-4">
-    <input id='ncatname' name="ncatname" placeholder="Category Name" class="form-control" type="text">
+
+       <select class="form-control" id="catnamesel" name="options">
+      <option id="1">- Select One -</option>
+	</select>
+    
+  </div>
+</div>
+
+
+ <div id="ncatnamedd" class="form-group">
+  <label class="control-label col-sm-4" for="catName">Category Name</label>
+  <div class="col-sm-4">
+ <input id='catName' name="catName" placeholder="Category Name" class="form-control" type="text">
+     
+
     
   </div>
 </div>
