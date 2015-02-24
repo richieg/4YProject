@@ -2,6 +2,7 @@ package controls;
 
 
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 
 import models.CategoryCourseManager;
 import models.InsertManager;
+import models.StudentDataManager;
 import dao.CategoryCourseInsertData;
 import dao.DBManager;
 import dao.InsertCourseData;
@@ -26,9 +28,9 @@ import fsao.CreateUserAc;
 /**
 * Servlet implementation class InsertData
 */
-@WebServlet("/CategoryCourses")
+@WebServlet("/StudentData")
 
-public class CategoryCoursesInsert extends HttpServlet {
+public class StudentDataInsert  extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -37,44 +39,26 @@ public class CategoryCoursesInsert extends HttpServlet {
 	PrintWriter out = response.getWriter();
 	try
 	 {
-		String instructid=request.getParameter(("instructid"));
-		ArrayList<MessageObjects> categoryMessage = new ArrayList<MessageObjects>();
+		int instructid=Integer.valueOf(request.getParameter("instructid"));
+
+		ArrayList<MessageObjects> studentMessage = new ArrayList<MessageObjects>();
 		DBManager db= new DBManager();
 		Connection connection = db.Get_Connection();
-		CategoryCourseManager ccm= new CategoryCourseManager();
-
+		StudentDataManager sdm = new StudentDataManager();
 		
-		
-		
-		if(instructid.equals("1"))
+		if(instructid==8)
 		{
-		
-	
-	
-		categoryMessage=ccm.InsertCategory(connection, request, response);
-		
+			studentMessage=sdm.UpdateStudentRecs(connection, request, response);
 		}
-		else if(instructid.equals("2"))
-		{
-			categoryMessage=ccm.InsertCourse(connection, request, response);
+		else{
+		studentMessage=sdm.InsertStudenttoCourse(connection, request, response);
 		}
-		else if(instructid.equals("4") || instructid.equals("5"))
-		{
-		
-			categoryMessage=ccm.RestoreArchiveCatCourse(connection, request, response);
-		}
-		else if(instructid.equals("6") || instructid.equals("7"))
-				{
-			categoryMessage=ccm.UpdateCatCourse(connection, request, response);
-				}
-	
-		
 		
 		Gson gson = new Gson();
-		String Message = gson.toJson(categoryMessage);
+		String Message = gson.toJson(studentMessage);
 		
 		
-			out.println("{\"CatMessage\":"+Message+"}");
+			out.println("{\"StudentMessage\":"+Message+"}");
 			
 	 }
 	catch (Exception ex)

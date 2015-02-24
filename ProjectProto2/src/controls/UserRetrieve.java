@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import dao.DBManager;
 import models.RetrieveManager;
+import dto.RecordObjects;
 import dto.UserObjects;
 
 
@@ -32,13 +33,26 @@ import dto.UserObjects;
 	PrintWriter out = response.getWriter();
 	try
 	{
+	int instructid=Integer.valueOf(request.getParameter("instruct"));
 	DBManager db= new DBManager();
 	RetrieveManager retManager= new RetrieveManager();
 	ArrayList<UserObjects> userData = null;
 	Connection connection = db.Get_Connection();
-	userData = retManager.GetUserData(connection, request, response) ;
 	Gson gson = new Gson();
-	String userdata = gson.toJson(userData);
+	String userdata=null;
+	if(instructid==6)
+	{
+		ArrayList<RecordObjects> recData = null;
+		recData=retManager.GetRecs(connection, request, response);
+		userdata = gson.toJson(recData);
+		
+	}
+	else
+	{
+	userData = retManager.GetUserData(connection, request, response) ;
+	
+	userdata = gson.toJson(userData);
+	}
 	out.println("{\"User\":"+userdata+"}");
 	//System.out.print(userdata);
 	}

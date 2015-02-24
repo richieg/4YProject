@@ -38,7 +38,7 @@ h1.h{
 .menu {
     margin: 0 auto;
     padding-top: 20px;
-	padding-left:20%;
+	padding-left:10%;
 }
 
 .menu a {
@@ -50,7 +50,7 @@ h1.h{
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
-    width: 180px;
+    width: 300px;
     text-decoration: none;
     cursor: pointer;
 }

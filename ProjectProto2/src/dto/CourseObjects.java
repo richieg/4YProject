@@ -30,12 +30,34 @@ private String coursename;
 private String acredbody;
 private int level;
 private String categoryname;
+private int capacity;
+private int semesterid;
+public int getSemesterid() {
+	return semesterid;
+}
+public void setSemesterid(int semesterid) {
+	this.semesterid = semesterid;
+}
 public String getCategoryname() {
 	return categoryname;
 }
 public void setCategoryname(String categoryname) {
 	this.categoryname = categoryname;
 }
+	public int getCapacity() {
+		return capacity;
+	}
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	public int getRefno() {
+		return refno;
+	}
+	public void setRefno(int refno) {
+		this.refno = refno;
+	}
+	private int refno;
+
 public String getBtn1() {
 	return btn1;
 }
@@ -52,12 +74,21 @@ public void setBtn2(String btn2) {
 private String btn1;
 private String btn2;
 private String btn3;
+private String btn4;
+public String getBtn4() {
+	return btn4;
+}
+public void setBtn4(String btn4) {
+	this.btn4 = btn4;
+}
 public String getBtn3() {
 	return btn3;
 }
 public void setBtn3(String btn3) {
 	this.btn3 = btn3;
 }
+
+
 
 
 

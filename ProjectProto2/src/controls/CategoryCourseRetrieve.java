@@ -66,7 +66,7 @@ import dto.CourseObjects;
 	
 	out.println("{\"Category\":"+catdata+"}");
 	//ut.println(catdata);
-	System.out.println(catdata);
+
 	catData=null;
 	}
 	catch (Exception ex)

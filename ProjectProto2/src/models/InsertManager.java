@@ -53,13 +53,10 @@ public class InsertManager {
 			String message = null;
 			ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
 			try {
-			message =(request.getParameter("fname"))+" "+(request.getParameter("lname"));
-			System.out.print(message);
-			if(message != null && message !="" && message.length()>0)
-			{
-			InsertUserData datain= new InsertUserData();
-			insertMessage=datain.InsertUser(connection, request, response);
-			}
+			
+			UpdateDeleteUserData udd= new UpdateDeleteUserData();
+			insertMessage=udd.UpdateUser(connection, request, response);
+			
 			
 			} catch (Exception e) {
 			throw e;

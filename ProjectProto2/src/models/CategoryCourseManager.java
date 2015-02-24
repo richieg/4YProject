@@ -2,10 +2,15 @@ package models;
 
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
+
 
 
 
@@ -20,6 +25,10 @@ import dao.UpdateDeleteUserData;
 import dto.MessageObjects;
 
 public class CategoryCourseManager {
+	
+	
+
+
 	
 	public ArrayList<MessageObjects>InsertCategory(Connection connection, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -79,8 +88,9 @@ public class CategoryCourseManager {
 			ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
 			try {
 			
-				UpdateDeleteCatCourseData udcc= new UpdateDeleteCatCourseData();
+				
 				System.out.println("got to manager for update");
+				UpdateDeleteCatCourseData udcc= new UpdateDeleteCatCourseData();
 				insertMessage=udcc.RestoreArchiveCourseCat(connection, request, response);
 
 			
@@ -89,5 +99,38 @@ public class CategoryCourseManager {
 			}
 			return insertMessage;
 			}
+	
+	public ArrayList<MessageObjects>UpdateCatCourse(Connection connection, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		String instructid=request.getParameter(("instructid"));
+			ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
+			try {
+			
+				
+			
+				
+				System.out.println("got to manager for update 2");
+				UpdateDeleteCatCourseData udcc= new UpdateDeleteCatCourseData();
+				
+				if(instructid.equals("6"))
+				{
+				insertMessage=udcc.UpdateCategory(connection, request, response);
+				}
+				else
+				{
+				insertMessage=udcc.UpdateCourse(connection, request, response);
+				}
+					
+			
+			} catch (Exception e) {
+			throw e;
+			}
+			return insertMessage;
+			}
+	
+	
+	
+
 	
 }

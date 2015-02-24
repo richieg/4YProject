@@ -76,51 +76,51 @@ public class UpdateDeleteUserData {
 	
 	public ArrayList<MessageObjects> UpdateUser(Connection connection, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-			
-			String fname=null;
-			String lname=null;
+			int userid=0;
 			String address1=null;
 			String address2=null;
 			String address3=null;
-			String address4=null;
 			String postcode=null;
-			int phone=0;
+			String phone=null;
 			String email=null;
-			String dob =null;
-			String efname = null;
-			String elname=null;
-			String roles=null;
-			int checknum=0;
-			int role=0;
 			String message=null;
+	
 			
 			try {
 			/*System.out.print("got to data insert");
 		    fname = request.getParameter("fname");
-		    lname = request.getParameter("lname");
+		    lname = request.getParameter("lname");*/
 		    address1 = request.getParameter("address1");
 		    address2 = request.getParameter("address2");
 		    address3 = request.getParameter("address3");
-		    address4 = request.getParameter("address4");
+		    
 		    postcode = request.getParameter("postcode");
-		    phone = Integer.parseInt(request.getParameter("phone"));
+		    phone =request.getParameter("phone");
 		    email = request.getParameter("email");
-		    dob = request.getParameter("dob");
+		    /*dob = request.getParameter("dob");
 		    roles=request.getParameter("role");*/
-		    checknum= Integer.parseInt(request.getParameter("checknum"));
-		    int userid=Integer.parseInt(request.getParameter("userid"));
+		    //checknum= Integer.parseInt(request.getParameter("checknum"));*/
+		    userid=Integer.parseInt(request.getParameter("userid"));
 		    
 		    
 		 
 		   		
-		   		boolean up=false;
-		   		PreparedStatement ps = connection.prepareStatement("Update tb_user set archived=1 where userid=?");
-				ps.setInt(1, userid);
+		   		int up=0;
+		   		PreparedStatement ps = connection.prepareStatement("Update tb_user set address=?,address2=?,address3=?,postcode=?,personalphone=?,personalemail=? where userid=?");
+				ps.setString(1, address1);
+				ps.setString(2, address2);
+				ps.setString(3, address3);
+				ps.setString(4, postcode);
+				ps.setString(5, phone);
+				ps.setString(6, email);
 				
-				up = ps.execute();
-				if(up==true)
+		   		
+		   		ps.setInt(7, userid);
+				
+				up = ps.executeUpdate();
+				if(up>0)
 				{
-				message= "<div style='color:blue'>User "+userid+" deleted successfully</div>";
+				message= "<div style='color:blue'>User "+userid+" updated successfully</div>";
 				}
 				else message ="<div style='color:red'>An error has occured please contact IT!</div>";
 				

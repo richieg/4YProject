@@ -5,10 +5,14 @@
 $(document).ready(function(){
 	
 var table=$('#usertable').DataTable();
+//var rectable=$('#userrectable').DataTable();
 //call get user when page loads
 document.getElementById("myBod").addEventListener("load", getUserData(0));
 
-	
+
+
+
+
  
 
 
@@ -116,40 +120,199 @@ $.validate({
 				});
 				});*/
 		
-		$('.display tbody').on( 'click', '.rud', function () {
+		$('.display tbody').on( 'click', '#deleteuser', function () {
+			var instruct=null;
+			instruct=4;
+			var userid=null;
+			userid = $(this).closest('tr').find('td:first').text();
+			
 			var row=null;
-			var rowid=null;
+			
 		    row=table
 	        .row( $(this).parents('tr') );
-	        alert("row first="+row);
-			rowid=this.id;
-			alert("rowid first="+rowid);
+	      
 		
-				var nrowid=null;
-				nrowid=rowid;
-				alert("second row="+nrowid);
+		
+		    completeUpdateDel(userid,row,instruct);
 		      
-		        bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(rowid,row);};
+		        
+		        	  
+		        
+		        
+		   
+		  
+		});
+		
+		
+		/*$('.display tbody').on( 'click', '#deleteuser', function () {
+			
+			instruct=4;
+			var userid = $(this).closest('tr').find('td:first').text();
+			
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+	      
+		
+		
+			
+		      
+		        bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(userid,row,instruct);};
 		        	  
 		        	}); 
 		        
-		        nrowid=null;
+		   
 		  
-		});
-				
-				
-				
-		function upDel(rowid,row)
-		{
-			var rrowid=null;
-			var dataString=null;
-			rrowid=rowid;
-			alert(rrowid);
+		});*/
+		
+		
+		
+		$('.display tbody').on( 'click', '#restoreuser', function () {
+			var instruct=null;
+			instruct=2;
+			var userid=null;
+			userid = $(this).closest('tr').find('td:first').text();
+			alert(userid);
 			
-			var instruct = rrowid.substring(0, 1);
-			var rowid1=rrowid.substring(1, rrowid.lenght);
-			dataString="userid="+rowid1+"&checknum="+instruct;
-			alert(dataString);
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+	      
+		    completeUpdateDel(userid,row,instruct);
+		});
+		
+		
+		
+		
+		$('.display tbody').on( 'click', '#edituser', function () {
+			
+			var instruct=5;
+			
+			var userid = $(this).closest('tr').find('td:first').text();
+			$('#address1').val($(this).closest('tr').find("td").eq(4).text());
+			$('#address2').val($(this).closest('tr').find("td").eq(5).text());
+			$('#address3').val($(this).closest('tr').find("td").eq(6).text());
+			$('#postcode').val($(this).closest('tr').find("td").eq(7).text());
+			$('#email').val($(this).closest('tr').find("td").eq(9).text());
+			$('#phone').val($(this).closest('tr').find("td").eq(8).text());
+			$('#firstnamediv').hide();
+			$('#lastnamediv').hide();
+			$('#dobdiv').hide();
+			$('#rolediv').hide();
+			$('#SubmitButton').hide();
+			$('#UpdateUserButton').show();
+			$('#ShowRecButton').show();
+			$('#myModal').modal('show');
+			var myBackup = $('#myModal').clone();
+			//$('#').val();
+			
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+		    
+		    $('#ShowRecButton').click(function(){getUserRecs(userid,function(result){if(result==true){$('#recordtablediv').show();}});
+		    	
+		    
+		    	
+		    	
+		    	
+		    	
+		    });
+		    
+		  
+		   
+		    
+		    
+		    $('#UpdateUserButton').click(function(){
+		    	
+		    	var data="address1="+$('#address1').val()+"&address2="+$('#address2').val()+"&address3="+$('#address3').val()+
+		    	"&postcode="+$('#postcode').val()+"&phone="+$('#phone').val()+"&email="+$('#email').val()+"&checknum="+instruct+"&userid="+userid;
+		    	//resetModal(myBackup);
+		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){updateUser(data,function(result){if(result==true){getUserData(0),resetModal(myBackup),$('#recordtablediv').hide();}});};
+		    });
+			});
+		    
+		    
+		    $('#closemyModal').click(function(){
+		    	
+		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){resetModal(myBackup),$('#recordtablediv').hide();}else{$('#myModal').modal('show');}});}
+
+		    	
+		    	);
+		
+		});
+		
+		function resetModal(myBackup)
+		{
+			
+			$('#myModal').modal('hide').remove();
+			 var myClone = myBackup.clone();
+		        $('body').append(myClone);
+		       
+		};
+		
+		
+		function completeUpdateDel(userid,row,instruct)
+		{
+			bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(userid,row,instruct);};
+		});
+		};
+		
+		function updateUser(data,callback){
+			
+			$.ajax({
+				type: "POST",
+				url: "InsertData",
+				data: data,
+				dataType:"json",
+				cache: false,
+				success: function(data)
+				{
+					 $('#sfmessage').empty();
+					if(data.Message.length)
+					{
+					$.each(data.Message, function(i,data)
+					{
+					
+					
+					var messagecode=data.messagecode;
+					var message=data.insertmessagestring;
+				
+					 $('#sfmessage').prepend(message);
+					
+					if(messagecode==1)
+						{
+						callback(true);
+						}
+	
+					});
+					$('#ModalMessage').modal('show');
+					}
+				}
+					 
+					
+				});
+					
+			
+		
+		
+		
+			};	
+				
+				
+		function upDel(userid,row,instruct)
+		{
+			
+			var dataString=null;
+		
+			
+			
+			
+			dataString="userid="+userid+"&checknum="+instruct;
+			
 				
 				$.ajax({
 					type: "POST",
@@ -166,7 +329,7 @@ $.validate({
 						{
 						
 						var messageid=data.messagecode;
-						alert(messageid);
+						
 						var message=data.insertmessagestring;
 						if(messageid==2)
 							{
@@ -208,8 +371,54 @@ $.validate({
 
 
 
-
+/***********************************Data Retrival Fucntions*********************************/
 	
+				
+		function getUserRecs(userid,callback){
+			/*var rows = rectable
+		    .rows()
+		    .remove()
+		    .draw();*/
+			
+			data="userid="+userid+"&instruct=6";
+			
+			$.ajax
+			({
+			type: "POST",
+			url: "GetUserData",
+			dataType:"json",
+			data: data,
+			cache: false,
+			success: function(data)
+			{
+			if(data.User.length)
+			{
+				
+				   
+				
+			$.each(data.User, function(i,data)
+			{
+				
+				//userdata=[data.coursename,data.start,data.end,data.grade];
+				 $("#userrectable").append("<tr><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td>" + data.grade + "</td></tr>");
+				//rectable.row.add(userdata).draw();
+			});
+			}
+			
+				callback(true);
+			
+			
+			
+			}
+			
+			
+			
+			});
+			
+			
+			
+			
+		};
 
 
    //called for various functions what it returns depends upon what a is
@@ -221,24 +430,24 @@ $.validate({
 		    .rows()
 		    .remove()
 		    .draw();
-			var button1=null;
-			var button2=null;
+			
 			
 			if(a==0)
 				{
-				dataString="archived=0,0&role=1,0";
+			
+				dataString="archived=0,0&role=1,0&instruct=1";
 			
 				}
 			else if(a==1)
 			{
 				
-				dataString="archived=1,1&role=1,0";
+				dataString="archived=1,1&role=1,0&instruct=1";
 			
 			}
 			else if(a==2)
 {
 				
-				dataString="archived=0,0&role=1,1";
+				dataString="archived=0,0&role=1,1&instruct=1";
 			
 			}
 			
@@ -266,27 +475,30 @@ $.validate({
 	
 			if(a==0)
 				{
-					button1="<button id=3"+data.userid+" class=\"rud\" role=\"update\">Update</button>";
-					button2="<button id=4"+data.userid+" class=\"rud\" role=\"delete\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+				
+				//<button id="4" class="btn btn-danger"" role="delete" title="Delete Category"><span class="glyphicon glyphicon-refresh"></span></button>
+				
+				//<button id="6"  role="update" title="Update Category"></button>
+					button1="<button id='edituser' class='btn btn-primary' title='Edit User Info'><span class='glyphicon glyphicon-pencil'</span></button>";
+					button2="<button id='deleteuser' class='btn btn-danger'><span class=\"glyphicon glyphicon-trash\"></span></button>";
+					button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
 					//userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=3"+data.userid+" class=\"rud\" role=\"update\">update</button><button id=4"+data.userid+" class=\"rud\" role=\"delete\" >Delete</button></td></tr>";
 	//<span class=\"glyphicon glyphicon-trash\"></span>
 				}
 			else{
-					button1="<button id=2"+data.userid+" class=\"rud\" role=\"restore\">Restore</button>";
-					button2="<button id=5"+data.userid+" class=\"rud\" role=\"delete\"></button>";
+					button1="<button id='restoreuser' class='btn btn-success' title='restore User'><span class='glyphicon glyphicon-refresh'></button>";
+					button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
+					button2="";//<button id=5"+data.userid+" class=\"rud\" role=\"delete\"></button>";
 				    //userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=2"+data.userid+" class=\"rud\" role=\"restore\">Restore</button>";
 			}
-			userdata=[data.userid,data.fname,data.lname, data.address1,button1,button2];
-			table.row.add( userdata).draw();
+			userdata=[data.userid,data.role,data.fname,data.lname, data.address1,data.address2,data.address3,data.postcode,data.phone,data.email,button1,button2,button3];
+			table.row.add(userdata).draw();
 		
 			 //$("#usertable").append(userData).removeClass("hidden");
 			});
 		
 			}
-			else
-			{
-			$("#content").html("No Results");
-			}
+			
 			}
 			});
 		

@@ -49,9 +49,30 @@
 
 
 
+<!-- Tables -->
+  <input type="file" id="fileUpload">
+ <div id="catdiv">   
+ <table class="display" id="category" width="100%" cellspacing="0"></table></div> 
+ <div id="coursediv"><table class="display" id="courses" width="100%" cellspacing="0"></table></div>
+ <div id="studentdiv" style="display:none">
+
+<input id='scourseID' name="catID" placeholder="catID" class="form-control" type="hidden">
+<table class="display" id="students" width="100%" cellspacing="0"></table>
+ 
+
+    
+ 
+
+
+
 
          
- <table class="display" id="datatable-sample" width="100%" cellspacing="0"></table>
+             <button id="SubmitButtonstudents" class="btn btn-primary" data-dismiss="modal">Submit</button>
+     
+         </div>
+ 
+ 
+ 
 <!-- Modal -->
 <div class="modal fade" id="catModal" tabindex="-1" role="dialog" 
    aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
@@ -63,16 +84,24 @@
                   &times;
             </button>
            
-            <h4 class="modal-title" id="myModalLabel">
+            <h4 class="modal-title" id="catModalLabel">
                New Category
             </h4>
          </div>
          <div class="modal-body">
 
-  <h2>New Category Form</h2>
+  <h2 id="catFormLabel">New Category Form</h2>
   <form class="form-horizontal" role="form" id="incatform">
  
   
+  
+  <div class="form-group" >
+  <label class="control-label col-sm-4" for="catID"></label>
+  <div class="col-sm-4">
+    <input id='catID' name="catID" placeholder="catID" class="form-control" type="hidden">
+    
+  </div>
+</div>
     
  
 
@@ -106,6 +135,7 @@
                data-dismiss="modal">Close
             </button>
              <button id="SubmitButtoncat" class="btn btn-primary" data-dismiss="modal">Submit</button>
+              <button id="UpdateButtoncat" class="btn btn-primary" data-dismiss="modal" style="display:none">Update</button>
      
          </div>
    </div>
@@ -137,7 +167,7 @@
   <div id="ncatidd" class="form-group" style="display:none">
   <label class="control-label col-sm-4" for="courseName"></label>
   <div class="col-sm-4">
-    <input id='' name="ncatid" placeholder="Category ID" class="form-control" type="text">
+    <input id='cccatid' name="ncatid" placeholder="Category ID" class="form-control" type="text">
     
   
     
@@ -146,7 +176,7 @@
  
  
  
- <div id="ncatnamed" class="form-group" style="display:none">
+ <div id="ccatnamesel" class="form-group" style="display:none">
   <label class="control-label col-sm-4" for="courseName">Category Name</label>
   <div class="col-sm-4">
 
@@ -158,7 +188,7 @@
 </div>
 
 
- <div id="ncatnamedd" class="form-group">
+ <div id="ccatname" class="form-group">
   <label class="control-label col-sm-4" for="catName">Category Name</label>
   <div class="col-sm-4">
  <input id='catName' name="catName" placeholder="Category Name" class="form-control" type="text">
@@ -199,6 +229,20 @@
   </div>
 </div>
 
+        
+        <div id="sem" class="form-group">
+   <label class="control-label col-sm-4" for="sel4">Select Semester:</label>
+   <div class="col-sm-4">
+      <select class="form-control" id="semestersel">
+      <option id="0">- Select One -</option>
+       <option id="1">1</option>
+        <option id="2">2</option>
+         <option id="3">3</option>
+          <option id="4">4</option>
+      </select>
+        </div>
+        </div>
+
 
 <div id="level"  class="form-group">
    <label class="control-label col-sm-4" for="sel2">Select Course Level:</label>
@@ -216,7 +260,7 @@
         </div>
         </div>
 
-<div class="form-group">
+<div id="tutor" class="form-group">
    <label class="control-label col-sm-4" for="sel3">Select Tutor:</label>
    <div class="col-sm-4">
       <select class="form-control" id="tutorsel">
@@ -226,24 +270,13 @@
         </div>
         
         
-        
-        <div class="form-group">
-   <label class="control-label col-sm-4" for="sel4">Select Semester:</label>
-   <div class="col-sm-4">
-      <select class="form-control" id="semestersel">
-       <option id="1">1</option>
-        <option id="2">2</option>
-         <option id="3">3</option>
-          <option id="4">4</option>
-      </select>
-        </div>
-        </div>
+
         
         
-        <div id="capacity" class="form-group">
+        <div id="capacityd" class="form-group">
   <label class="control-label col-sm-4" for="capacity">Capacity</label>
   <div class="col-sm-4">
-    <input id='capcity' name="capcity" placeholder="capcity" class="form-control" type="text">
+    <input id='capacity' name="capcity" placeholder="capcity" class="form-control" type="text">
     
   </div>
 </div>
@@ -257,7 +290,7 @@
   
 
         
-        <div class="form-group">
+        <div id="req" class="form-group">
    <label class="control-label col-sm-4" for="dob">Requires PC/ Laptops</label>
   <div class="col-sm-4">
 
@@ -283,6 +316,7 @@
                data-dismiss="modal">Close
             </button>
              <button id="CourseSubmitButton" class="btn btn-primary" data-dismiss="modal">Submit</button>
+             <button id="CourseUpdateButton" class="btn btn-primary" data-dismiss="modal" style="display:none">Update</button>
             
            
          </div>
@@ -295,61 +329,12 @@
 
 
 
-<!--Accredit Body Modal -->
-<div class="modal fade" id="accredbodModal" tabindex="-1" role="dialog" 
-   aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" 
-               data-dismiss="modal" aria-hidden="true">
-                  &times;
-            </button>
-           
-            <h4 class="modal-title" id="myModalLabel">
-               Accreditation Body
-            </h4>
-         </div>
-         <div class="modal-body">
 
-  <h2>New  Accreditation Body</h2>
-  <form class="form-horizontal" role="form" id="accredbod">
+
+
+
+   
  
-  
-    
- 
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="control-label col-sm-4" for="categoryName">Name</label>
-  <div class="col-sm-4">
-    <input id='accredbod' name="accredbod" placeholder="Body Name" class="form-control" type="text">
-    
-  </div>
-</div>
-
-<!-- Text input-->
-
-
-
-
-</form>
-</div>
-
-
-
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">Close
-            </button>
-             <button id="SubmitButtoncat" class="btn btn-primary" data-dismiss="modal">Submit</button>
-     
-         </div>
-   </div>
-      
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
-        
         
         
 

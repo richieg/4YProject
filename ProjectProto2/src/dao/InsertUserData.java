@@ -274,7 +274,8 @@ public class InsertUserData {
 				e.printStackTrace();
 			}
 		
-		return rse;}
+		return rse;
+		}
 	
 }
 

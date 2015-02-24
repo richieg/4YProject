@@ -1,11 +1,13 @@
 package models;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.RetrieveData;
+import dto.RecordObjects;
 import dto.UserObjects;
 
 public class RetrieveManager {
@@ -42,5 +44,26 @@ public class RetrieveManager {
 			}
 			return userData;
 			}
+	public ArrayList<RecordObjects> GetRecs(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+	{
+		
+		RetrieveData rdata=new RetrieveData();
+		ArrayList<RecordObjects> userRecord = new ArrayList<RecordObjects>();
+	try
+	{
+
+
+		
+
+		 userRecord=rdata.GetRecs(connection, request, response);
+		 
+
+	}
+	catch(Exception e)
+	{
+	throw e;
+	}
+	return userRecord;
+	}
 
 }

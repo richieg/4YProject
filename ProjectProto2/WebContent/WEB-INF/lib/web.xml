@@ -70,4 +70,14 @@
     <servlet-name>CategoryCoursesRetrieve</servlet-name>
     <url-pattern>/CategoryCoursesRetrieve</url-pattern>
   </servlet-mapping>
-</web-app>
+       <servlet>
+    <description></description>
+    <display-name>StudentData</display-name>
+    <servlet-name>StudentData</servlet-name>
+    <servlet-class>StudentData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StudentData</servlet-name>
+    <url-pattern>/StudentData</url-pattern>
+  </servlet-mapping>
+  </web-app>

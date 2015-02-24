@@ -41,7 +41,7 @@ import dto.MessageObjects;
 			   semesterid=Integer.valueOf(request.getParameter("semesterid"));
 			   capacity=Integer.valueOf(request.getParameter("capacity"));
 			   equipreq=Integer.valueOf(request.getParameter("equipreq"));
-			   System.out.println("DAO");
+			 
 			   if (courseid==1)
 			   {
 				   //coursecheck=CheckforCourses(coursename,connection);   

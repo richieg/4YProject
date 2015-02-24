@@ -5,28 +5,30 @@
 	package dao;
 
 	import java.sql.CallableStatement;
-	import java.sql.Connection;
-	import java.sql.PreparedStatement;
-	import java.sql.ResultSet;
-	import java.sql.Types;
-	import java.text.DateFormat;
-	import java.text.SimpleDateFormat;
-	import java.util.ArrayList;
-	import java.util.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 	import java.util.Random;
 
 	import javax.servlet.http.HttpServletRequest;
-	import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
-	import dto.MessageObjects;
+import dto.MessageObjects;
 
 	public class UpdateDeleteCatCourseData {
 		
 		ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
 		PreparedStatement ps;
 		PreparedStatement ps1;
+		String message=null;
 		public ArrayList<MessageObjects> RestoreArchiveCourseCat(Connection connection, HttpServletRequest request,
 				HttpServletResponse response) throws Exception {
 				
@@ -35,7 +37,7 @@
 				int coursecatid=0;
 				int instruct=0;
 		
-				String message=null;
+		
 				
 				try {
 			
@@ -44,13 +46,15 @@
 			    coursecatid=Integer.parseInt(request.getParameter("catcourseid"));
 			    
 			    System.out.println(instruct);
+			    System.out.println(coursecatid);
 			 
 			   		
 			   		int up=0;
 			   		int up1=0;
 			   		if(instruct==4)
 			   		{
-			   			ps = connection.prepareStatement("Update tb_category set archived=1 where cat_id=?");
+			   			//ps = connection.prepareStatement("Update tb_category set archived=1 where cat_id=?");
+			   			ps1 = connection.prepareStatement("Update tb_category set archived=1 where cat_id=?");
 			   		}
 			   		/*else if(instruct==1)
 			   		{
@@ -58,15 +62,15 @@
 			   		}*/
 			   		else if(instruct==5)
 			   		{
-			   			ps = connection.prepareStatement("Update tb_courses set archived=1 where course_id=?");
-			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=1 where course_id=?");
+			   			//ps = connection.prepareStatement("Update tb_courses set archived=1 where course_id=?");
+			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=1 where tutorcourseid=?");
 			   		}
 			   		else
 			   		{
-			   			ps = connection.prepareStatement("Update tb_courses set archived=0 where course_id=?");
-			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=0 where course_id=?");
+			   			//ps = connection.prepareStatement("Update tb_courses set archived=0 where course_id=?");
+			   			ps1= connection.prepareStatement("Update tb_tutor_courses set archived=0 where tutorcourseid=?");
 			   		}
-					ps.setInt(1, coursecatid);
+					//ps.setInt(1, coursecatid);
 					ps1.setInt(1, coursecatid);
 					
 					up = ps.executeUpdate();
@@ -109,6 +113,110 @@
 					}
 				return insertMessage;
 					}
+		
+		
+		public ArrayList<MessageObjects>UpdateCategory(Connection connection, HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+			
+			
+			String name=null;
+			String description=null;
+			int catid=0;
+			
+			
+			System.out.println("got to dao for update");
+			
+			name = request.getParameter("name");
+			description = request.getParameter("description");
+			catid = Integer.valueOf(request.getParameter("catid"));
+			
+				System.out.println(name);
+			System.out.println(catid);
+			System.out.println(description);
+		    PreparedStatement ps;
+		    int rse = 0;
+			try {
+				ps = connection.prepareStatement("Update TB_Category set categoryname=?,categorynotes=? where cat_id=?");
+				
+				ps.setString(1, name);
+				ps.setString(2, description);
+				ps.setInt(3, catid);
+				
+				
+			
+				
+				 rse= ps.executeUpdate();
+				 
+					if(rse>0)
+					{
+							message= "<div style='color:blue'>Category "+catid+" has been updated successfully</div>";
+					}
+					else message ="<div style='color:red'>An error has occured please contact IT!</div>";
+					MessageObjects messageObjects = new MessageObjects();
+					messageObjects.setMessagecode(2);
+					messageObjects.setInsertmessagestring(message);
+					insertMessage.add(messageObjects);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		return insertMessage;
+		}
+		
+		public ArrayList<MessageObjects>UpdateCourse(Connection connection, HttpServletRequest request,
+				HttpServletResponse response) throws Exception {
+			
+			
+			String name=null;
+			int capacity=0;
+			int courseid=0;
+			
+			
+			System.out.println("got to dao for update");
+			
+			name = request.getParameter("coursename");
+			capacity = Integer.valueOf(request.getParameter("capacity"));
+			courseid = Integer.valueOf(request.getParameter("courseid"));
+			
+				System.out.println("name:::@@@"+name);
+			System.out.println("capacity:::@@@"+capacity);
+			System.out.println("courseid:::@@@"+courseid);
+		    PreparedStatement ps;
+		    PreparedStatement ps1;
+		    int rse = 0;
+			try {
+				ps = connection.prepareStatement("Update TB_Courses set coursename=? where course_id=?");
+				ps1  = connection.prepareStatement("Update TB_Tutor_Courses set capacity=? where courseid=?");
+				ps.setString(1, name);
+				ps1.setInt(1,capacity);
+				ps.setInt(2, courseid);
+				ps1.setInt(2, courseid);
+				
+				
+			
+				
+				 rse= ps.executeUpdate();
+				 rse=rse+ ps1.executeUpdate();
+				 
+				 
+					if(rse>0)
+					{
+							message= "<div style='color:blue'>Course "+courseid+" has been updated successfully</div>";
+					}
+					else message ="<div style='color:red'>An error has occured please contact IT!</div>";
+					MessageObjects messageObjects = new MessageObjects();
+					messageObjects.setMessagecode(2);
+					messageObjects.setInsertmessagestring(message);
+					insertMessage.add(messageObjects);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		return insertMessage;
+		}
+		
 		
 
 }

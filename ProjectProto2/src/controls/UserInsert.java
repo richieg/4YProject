@@ -41,6 +41,10 @@ public class UserInsert
 		{
 			insertMessage= insertManager.RestoreArchiveUser(connection, request, response);
 		}
+		else if(checknum==5)
+		{
+			insertMessage=insertManager.UpdateUser(connection, request, response);
+		}
 		
 		else
 		{

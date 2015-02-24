@@ -44,7 +44,7 @@ public class CategoryCourseInsertData {
 		   else
 		   {
 			   messageObjects.setMessagecode(7);
-				messageObjects.setInsertmessagestring("<h4>Ann error has occured</h4>");
+				messageObjects.setInsertmessagestring("<h4>An error has occured</h4>");
 				categoryMessage.add(messageObjects);
 		   }
 		
@@ -86,7 +86,7 @@ public int CheckforCategory(String name,Connection connection){
 	    boolean cut =cu.execute();
 	   
 	    	dupcnt= cu.getInt(3);
-	    	System.out.println("returned catcount::"+dupcnt);
+	   
 	    	
 	    
 	} catch (SQLException e) {
@@ -97,4 +97,9 @@ public int CheckforCategory(String name,Connection connection){
 
 
 }
+
+
+
+
+
 }

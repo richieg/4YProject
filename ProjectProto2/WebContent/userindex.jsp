@@ -5,6 +5,7 @@
 
     
      <%@ include file="head.jsp" %>
+     <%@ include file="commonmodals.jsp" %>
          <script type='text/javascript' src="AddUser.js"></script>
          
 
@@ -19,7 +20,7 @@
 <!-- Button trigger modal -->
 <br>
 <br>
-<div class="btn-group" role="group" aria-label="...">
+
 <button class="btn btn-primary" data-toggle="modal" 
    data-target="#myModal" id="adduser1">
    Add User
@@ -27,10 +28,13 @@
 <button class="btn btn-primary" id="updateButton">
   Restore User
 </button>
+<button class="btn btn-primary" id="uploadButton">
+ Upload Users
+</button>
 <button class="btn btn-primary" id="allusers">
 Return to previous
 </button>
-</div>
+
 
 	
 
@@ -40,16 +44,24 @@ Return to previous
   <thead>
     <tr>
     	<th>ID </th>
+    	<th>Role</th>
         <th>First Name </th>
         <th>Last Name </th>
-        <th>Address</th>
-        <th></th>
-        <th></th>
+        <th>Address 1</th>
+        <th>Address 2</th>
+        <th>Address 3</th>
+        <th bSortable="false">Post Code</th>
+       	<th class="nonsorting">Phone</th>
+        <th class="nonsorting">Email</th>
+      	<th class="nonsorting"></th>
+        <th class="nonsorting"></th>
+        <th class="nonsorting"></th>
        
       
     </tr>
     </thead>
       <tfoot>
+ 
     
     </tfoot>
     <tbody></tbody>
@@ -95,7 +107,7 @@ Return to previous
  
 
 <!-- Text input-->
-<div class="form-group">
+<div id="firstnamediv" class="form-group">
   <label class="control-label col-sm-4" for="firstName">First Name</label>
   <div class="col-sm-4">
     <input id='firstName' name="firstName" placeholder="First Name" class="form-control"  data-validation="required" type="text">
@@ -104,7 +116,7 @@ Return to previous
 </div>
 
 <!-- Text input-->
-<div class="form-group">
+<div id="lastnamediv" class="form-group">
   <label class="control-label col-sm-4" for="lastName">Last Name</label>
 <div class="col-sm-4">
     <input id='lastName' name="lastName" placeholder="Last Name" class="form-control" data-validation="alphanumeric" type="text">
@@ -138,13 +150,7 @@ Return to previous
   </div>
 </div>
 
-<div class="form-group">
-  <label class="control-label col-sm-4" for="address4">Address 4</label>
-    <div class="col-sm-4">
-    <input id="address4" name="address4" placeholder="Address 4" class="form-control" type="text">
-    
-  </div>
-</div>
+
 
 <div class="form-group">
   <label class="control-label col-sm-4" for="postcode">Postcode</label>
@@ -170,7 +176,7 @@ Return to previous
   </div>
 </div>
 
-<div class="form-group">
+<div id="dobdiv" class="form-group">
    <label class="control-label col-sm-4" for="dob">Date of Birth</label>
   <div class="col-sm-4">
     <input id="datepicker" name="dob" placeholder="Date of Birth"  type="text" required="true">
@@ -178,7 +184,7 @@ Return to previous
   </div>
 </div>
   
-<div class="form-group">
+<div id="rolediv" class="form-group">
    <label class="control-label col-sm-4" for="sel1">Member Role:</label>
    <div class="col-sm-4">
       <select class="form-control" id="role">
@@ -197,19 +203,42 @@ Return to previous
 </div>
 </div>
 
+
+
 <!-- Button -->
 
 
 </form>
+<button id="ShowRecButton" class="btn btn-primary" style="display:none">Display Records</button>
+<div id="recordtablediv" style="display:none">
+ <table id="userrectable" class="table" width="100%" cellspacing="0">
+  <thead>
+    <tr>
+    	<th>Course Name</th>
+    	<th>Start Date</th>
+    	<th>Completion Date</th>
+        <th>Final Grade</th>
+  
+       
+      
+    </tr>
+    </thead>
+      <tfoot>
+ 
+    
+    </tfoot>
+    <tbody></tbody>
+</table>
+
+</div>
 </div>
 
 
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">Close
-            </button>
+            <button id="closemyModal" class="btn btn-danger" data-dismiss="modal">Cancel</button>
              <button id="SubmitButton" class="btn btn-primary" data-dismiss="modal">Submit</button>
+             <button id="UpdateUserButton" class="btn btn-primary" data-dismiss="modal" style="display:none">Update</button>
 
             
            
@@ -218,112 +247,7 @@ Return to previous
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
 
-<!-- Modal -->
-<div class="modal fade" id="ModalActionAlert" tabindex="-1" role="dialog" 
-   aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" 
-               data-dismiss="modal" aria-hidden="true">
-                  &times;
-            </button>
-           
-            <h4 class="modal-title" id="myModalLabel">
-               Action Confirm
-            </h4>
-         </div>
-         <div class="modal-body">
-		 <div id="message"></div>
 
-
-</div>
-
-
-
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">Close
-            </button>
-             <button id="SubmitButton1" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-dismiss="modal">Submit</button>
-            
-           
-         </div>
-         </div>
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
-
-
-<div class="modal fade" id="ModalMessage" tabindex="-1" role="dialog" 
-   aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" 
-               data-dismiss="modal" aria-hidden="true">
-                  &times;
-            </button>
-           
-            <h4 class="modal-title" id="myModalLabel">
-               Message
-            </h4>
-         </div>
-         <div class="modal-body">
-		 <div id="sfmessage"></div>
-
-
-</div>
-
-
-
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">Close
-            </button>
-             
-            
-           
-         </div>
-         </div>
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
-
-
-
-
-<div class="modal fade" id="ModalConfirm" tabindex="-1" role="dialog" 
-   aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" 
-               data-dismiss="modal" aria-hidden="true">
-                  &times;
-            </button>
-           
-            <h4 class="modal-title" id="myModalLabel">
-              Confirm
-            </h4>
-         </div>
-         <div class="modal-body">
-		 <div><h4>Are you sure you wish to complete this action?</h4></div>
-
-
-</div>
-
-
-
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">Cancel
-            </button>
-              <button id="ConfirmButton" class="btn btn-primary" data-dismiss="modal">Confirm</button>
-            
-           
-         </div>
-         </div>
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
 
 
 </body>
