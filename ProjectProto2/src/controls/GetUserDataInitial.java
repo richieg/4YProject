@@ -34,7 +34,7 @@ try
 DBManager db= new DBManager();
 RetrieveManager retManager= new RetrieveManager();
 ArrayList userData = null;
-Connection connection = db.Get_ConnectionInitial();
+Connection connection = db.Get_Connection();
 userData = retManager.GetUserDataInitial(connection, request, response) ;
 Gson gson = new Gson();
 String userdata = gson.toJson(userData);

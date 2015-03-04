@@ -80,4 +80,24 @@
     <servlet-name>StudentData</servlet-name>
     <url-pattern>/StudentData</url-pattern>
   </servlet-mapping>
-  </web-app>
+  <servlet>
+    <description></description>
+    <display-name>FileUploadServlet</display-name>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <servlet-class>FileUploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <url-pattern>/FileUploadServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TimeTableRetrieve</display-name>
+    <servlet-name>TimeTableRetrievet</servlet-name>
+    <servlet-class>TimeTableRetrieve</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TimeTableRetrieve</servlet-name>
+    <url-pattern>/TimeTableRetrieve</url-pattern>
+  </servlet-mapping>
+</web-app>

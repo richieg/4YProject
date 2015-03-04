@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import dto.MessageObjects;
 
 
+
 import java.security.spec.InvalidKeySpecException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -12,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
 import java.util.ArrayList;
 
 
@@ -38,7 +38,7 @@ public class InsertUserData {
 			String address1=null;
 			String address2=null;
 			String address3=null;
-			String address4=null;
+			
 			String postcode=null;
 			int phone=0;
 			String email=null;
@@ -58,12 +58,13 @@ public class InsertUserData {
 		    address1 = request.getParameter("address1");
 		    address2 = request.getParameter("address2");
 		    address3 = request.getParameter("address3");
-		    address4 = request.getParameter("address4");
+	
 		    postcode = request.getParameter("postcode");
 		    phone = Integer.parseInt(request.getParameter("phone"));
 		    email = request.getParameter("email");
 		    dob = request.getParameter("dob");
 		    roles=request.getParameter("role");
+		    System.out.println(dob);
 		    checknum= Integer.parseInt(request.getParameter("checknum"));  
 		    
 		    System.out.println(roles);
@@ -91,7 +92,7 @@ public class InsertUserData {
 		
 			if(checknum==0)
 			{
-				outcome=InsertSingleUser(fname, lname,  address1,  address2,  address3,address4,postcode,phone,email,dob,role,connection);
+				outcome=InsertSingleUser(fname, lname,  address1,  address2, address3,postcode,phone,email,dob,role,connection);
 			
 			MessageObjects messageObjects = new MessageObjects();
 			messageObjects.setMessagecode(2);
@@ -151,7 +152,7 @@ public class InsertUserData {
 	
 		
 	}
-	public String InsertSingleUser(String fname, String lname, String address1, String address2, String address3, String address4, String postcode,int phone,String email,String dob, int role, Connection connection) 
+	public String InsertSingleUser(String fname, String lname, String address1, String address2, String address3, String postcode,int phone,String email,String dob, int role, Connection connection) 
 	{
 		
 		String sr=null;
@@ -164,28 +165,28 @@ public class InsertUserData {
 		System.out.println("extid::"+externalid);
 		CallableStatement ps;
 		try {
-			ps = connection.prepareCall("{Call InsertUser(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			ps = connection.prepareCall("{Call InsertUser(?,?,?,?,?,?,?,?,?,?,?,?)}");
 			ps.setString(1, fname);
 			ps.setString(2, lname);
 			ps.setString(3, address1);
 			ps.setString(4, address2);
 			ps.setString(5, address3);
-			ps.setString(6, address4);
-			ps.setString(7, postcode);
-			ps.setInt(8, phone);
-			ps.setString(9, email);
-			ps.setString(10, dob);
-			ps.setString(11,externalid);
-			ps.setInt(12,role);
+		
+			ps.setString(6, postcode);
+			ps.setInt(7, phone);
+			ps.setString(8, email);
+			ps.setString(9, dob);
+			ps.setString(10,externalid);
+			ps.setInt(11,role);
 			
-			ps.registerOutParameter(13, Types.VARCHAR);
+			ps.registerOutParameter(12, Types.VARCHAR);
 		
 			
 			
 			//System.out.println("got to here");
 		
 			Boolean rs = ps.execute();
-			 sr=ps.getString(13);
+			 sr=ps.getString(12);
 			 
 			 userid=Integer.valueOf(sr.substring(2,sr.length()));
 			 System.out.println("returned id:::" + userid);
@@ -204,9 +205,9 @@ public class InsertUserData {
 			String hashusername = null;
 			String hashuserpass = null;
 			try {
-				hashusername = SecurityManager.createHash(sr);
-				hashuserpass = SecurityManager.createHash(dob);
-				logDB=InsertToLoginDB(userid,hashusername,hashuserpass,role,connection);
+				//hashusername = SecurityManager.createHash(sr);
+				hashuserpass = SecurityManager.createHash(lname);
+				logDB=InsertToLoginDB(userid,sr,hashuserpass,role,connection);
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

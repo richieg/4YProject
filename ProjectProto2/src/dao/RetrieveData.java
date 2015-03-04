@@ -35,14 +35,21 @@ public class RetrieveData {
 
 	try
 	{
+		
+		System.out.println("got to dao");
 	username = request.getParameter("user");
+	int lem=username.length();
+	System.out.println(username + " "+ lem);
+	
+	
 	
     userpass= request.getParameter("pwd");
+    System.out.println(userpass);
    
-	PreparedStatement ps = connection.prepareStatement("SELECT userid,userrole FROM TB_UserLogin where username=? and userpass=? ");
-	ps.setString(1, username);
-    ps.setString(2, userpass);	
-	ResultSet rs = ps.executeQuery();
+	PreparedStatement ps1 = connection.prepareStatement("SELECT userid,userrole,userpass FROM TB_UserLogin where username=?;");
+	ps1.setString(1, username);
+    //ps.setString(2, userpass);	
+	ResultSet rs = ps1.executeQuery();
 	while(rs.next())
 	{
 		/*int fname=rs.getInt("userid");
@@ -50,11 +57,27 @@ public class RetrieveData {
 		int fpass=rs.getInt("userrole");
 		System.out.print("/n" +fpass +"/n");
 		*/
+		//String userid =String.valueOf(rs.getInt("userid"));
+		//System.out.println(userid);
+	String huserpass=rs.getString("userpass");
+	//System.out.println(huserpass);
+
+	if(SecurityManager.validatePassword(userpass,huserpass))
+	{
+	System.out.println("Password ok");
 	UserObjectsInitial UserObjectInitial = new UserObjectsInitial();
 	UserObjectInitial.setUserid(rs.getInt("userid"));
 	UserObjectInitial.setUserrole(rs.getInt("userrole"));
-
 	userData.add(UserObjectInitial);
+	}
+	else
+	{
+	UserObjectsInitial UserObjectInitial = new UserObjectsInitial();
+	UserObjectInitial.setUserid(0);
+	UserObjectInitial.setUserrole(10);
+	userData.add(UserObjectInitial);
+	}
+	
 	}
 	return userData;
 	}
@@ -146,7 +169,7 @@ if(instruct==4)
 {
 	String grade=rs.getString("grade");
 	
-	UserObject.setMisc("<b>Grade<b>: <input value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
+	UserObject.setMisc("<b>Grade<b>: <input  class='col-sm-4'  value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
 
 }
 else
@@ -173,31 +196,46 @@ throw e;
 }
 }
 
-public ArrayList<RecordObjects> GetRecs(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+public ArrayList<RecordObjects>GetRecs(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
 {
 	PreparedStatement ps = null;
 	int userid=Integer.valueOf(request.getParameter("userid"));
+	int instruct=Integer.valueOf(request.getParameter("instruct"));
 	ArrayList<RecordObjects> userRecord = new ArrayList<RecordObjects>();
 try
 {
 
 
 
-
-	 ps = connection.prepareStatement(" select startdate,enddate,coursename,grade from tb_student_courses inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID = tb_student_courses.TutorCourseID inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_student_courses.Student_ID=?");
+	 if(instruct==6)
+	 {
+	 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename,grade from tb_student_courses inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID = tb_student_courses.TutorCourseID inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_student_courses.Student_ID=?");
+	 }
+	 else{
+		 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename from tb_tutor_courses inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_tutor_courses.TutorID=?");
+		 
+	 }
 	 ps.setInt(1,userid);
 	 ResultSet rs = ps.executeQuery();
 	 
 	 while(rs.next())
 	 {
 	 	
-	 	
-	 RecordObjects RecObjects = new RecordObjects();
 	
+	 RecordObjects RecObjects = new RecordObjects();
+	 RecObjects.setCourseid(rs.getInt("courseid"));
 	 RecObjects.setCoursename(rs.getString("coursename"));
 	 RecObjects.setStart(rs.getString("startdate"));
 	 RecObjects.setEnd(rs.getString("enddate"));
-	 RecObjects.setGrade(rs.getString("grade"));
+	 if(instruct==6)
+	 {
+	 String grade=rs.getString("grade");
+	 RecObjects.setGrade("<input class='col-sm-4' value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
+	 }
+	 else
+	 {
+		 RecObjects.setGrade("N/A"); 
+	 }
 	 //System.out.print(UserObject);
 	 userRecord.add(RecObjects);
 

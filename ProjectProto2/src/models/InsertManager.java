@@ -50,7 +50,7 @@ public class InsertManager {
 	
 	public ArrayList<MessageObjects>UpdateUser(Connection connection, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-			String message = null;
+		
 			ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
 			try {
 			

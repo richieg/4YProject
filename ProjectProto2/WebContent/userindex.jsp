@@ -8,6 +8,7 @@
      <%@ include file="commonmodals.jsp" %>
          <script type='text/javascript' src="AddUser.js"></script>
          
+         
 
 
 <body id="myBod">
@@ -28,7 +29,8 @@
 <button class="btn btn-primary" id="updateButton">
   Restore User
 </button>
-<button class="btn btn-primary" id="uploadButton">
+<button class="btn btn-primary" id="uploadButton" data-toggle="modal" 
+   data-target="#bulkupload" id="adduser1">
  Upload Users
 </button>
 <button class="btn btn-primary" id="allusers">
@@ -50,7 +52,7 @@ Return to previous
         <th>Address 1</th>
         <th>Address 2</th>
         <th>Address 3</th>
-        <th bSortable="false">Post Code</th>
+        <th sortable="false">Post Code</th>
        	<th class="nonsorting">Phone</th>
         <th class="nonsorting">Email</th>
       	<th class="nonsorting"></th>
@@ -209,29 +211,7 @@ Return to previous
 
 
 </form>
-<button id="ShowRecButton" class="btn btn-primary" style="display:none">Display Records</button>
-<div id="recordtablediv" style="display:none">
- <table id="userrectable" class="table" width="100%" cellspacing="0">
-  <thead>
-    <tr>
-    	<th>Course Name</th>
-    	<th>Start Date</th>
-    	<th>Completion Date</th>
-        <th>Final Grade</th>
-  
-       
-      
-    </tr>
-    </thead>
-      <tfoot>
- 
-    
-    </tfoot>
-    <tbody></tbody>
-</table>
 
-</div>
-</div>
 
 
 
@@ -243,6 +223,31 @@ Return to previous
             
            
          </div>
+         <button id="ShowRecButton" class="btn btn-primary" style="display:none">Display Records</button>
+<div id="recordtablediv" style="display:none">
+ <table id="userrectable" class="table" width="100%" cellspacing="0">
+  <thead>
+    <tr>
+    	<th>Course ID</th>
+    	<th>Course Name</th>
+    	<th>Start Date</th>
+    	<th>End Date</th>
+        <th id="grade">Grade</th>
+  
+       
+      
+    </tr>
+    </thead>
+      <tfoot>
+ 
+    
+    </tfoot>
+    <tbody></tbody>
+</table>
+<div id="recmessage"></div>
+</div>
+</div>
+         
          </div>
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->

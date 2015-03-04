@@ -77,11 +77,11 @@ public class CategoryCourseRetrieveData {
 
 	if(archived>1)
 	{
-		 ps = connection.prepareStatement("SELECT course_id,coursename,categoryname,bodname,level,capacity,semesterid,tb_tutor_courses.tutorcourseid,count(student_id) as NumStudents,btn1,btn2,btn3,btn4 FROM TB_courses  inner join tb_category on tb_category.cat_id=tb_courses.category inner join tb_tutor_courses on tb_tutor_courses.courseid=tb_courses.course_id inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=? inner join tb_accredbody on tb_accredbody.id=tb_courses.acredbody left outer join tb_student_courses on tb_student_courses.tutorcourseid= tb_tutor_courses.tutorcourseid where tb_category.cat_id=? and tb_courses.archived=0;");
+		 ps = connection.prepareStatement("SELECT course_id,coursename,categoryname,bodname,level,capacity,semesterid,tb_tutor_courses.tutorcourseid,count(student_id) as NumStudents,btn1,btn2,btn3,btn4 FROM TB_courses inner join tb_category on tb_category.cat_id=tb_courses.category inner join tb_tutor_courses on tb_tutor_courses.courseid=tb_courses.course_id inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=? inner join tb_accredbody on tb_accredbody.id=tb_courses.acredbody left outer join tb_student_courses on tb_student_courses.tutorcourseid=tb_tutor_courses.tutorcourseid where tb_category.cat_id=? and tb_courses.archived=0 group by TutorCourseID;");
 	}
 	else
 	{
-	 ps = connection.prepareStatement("SELECT course_id,coursename,categoryname,bodname,level,capacity,semesterid,tb_tutor_courses.tutorcourseid,count(student_id) as NumStudents,btn1,btn2,btn3,btn4 FROM TB_courses  inner join tb_category on tb_category.cat_id=tb_courses.category inner join tb_tutor_courses on tb_tutor_courses.courseid=tb_courses.course_id inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=? inner join tb_accredbody on tb_accredbody.id=tb_courses.acredbody left outer join tb_student_courses on tb_student_courses.tutorcourseid= tb_tutor_courses.tutorcourseid  where tb_courses.archived in(?);");
+	 ps = connection.prepareStatement("SELECT course_id,coursename,categoryname,bodname,level,capacity,semesterid,tb_tutor_courses.tutorcourseid,count(student_id) as NumStudents,btn1,btn2,btn3,btn4 FROM TB_courses  inner join tb_category on tb_category.cat_id=tb_courses.category inner join tb_tutor_courses on tb_tutor_courses.courseid=tb_courses.course_id inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=? inner join tb_accredbody on tb_accredbody.id=tb_courses.acredbody left outer join tb_student_courses on tb_student_courses.tutorcourseid= tb_tutor_courses.tutorcourseid  where tb_courses.archived in(?) group by TutorCourseID;");
 	}
 	 ps.setInt(1,instruct);
 	 ps.setInt(2,archived);

@@ -144,6 +144,27 @@ margin-left:-210px;
 margin-top:-255px;
 }
 
+#timetable td:nth-child(1){
+   display:none;
+}
+
+#timetable th:nth-child(1){
+   display:none;
+}
+
+
+#timetable th{
+   background-color:#FFFEFF;
+  
+}
+
+#timetable tr:nth-child(1),tr:nth-child(2),tr:nth-child(3),tr:nth-child(4),tr:nth-child(5){
+   background-color:#E7FEFF;
+}
+#timetable tr:nth-child(6),tr:nth-child(7),tr:nth-child(8),tr:nth-child(9),tr:nth-child(10){
+   background-color:#AEC6CF;
+}
+
 
 #allusers{
 	display:none;

@@ -78,7 +78,7 @@ public class InsertStudentData {
 				if(sr!=datainSize)
 				{
 					messageObjects.setMessagecode(2);
-					messageObjects.setInsertmessagestring("An error has occured please review data and try again");
+					messageObjects.setInsertmessagestring("<div style='color:red'>An error has occured please contact IT!</div>");
 					insertMessage.add(messageObjects);
 					
 				}
@@ -86,7 +86,7 @@ public class InsertStudentData {
 				else{
 			
 				messageObjects.setMessagecode(1);
-				messageObjects.setInsertmessagestring("Students added to courses succesffully");
+				messageObjects.setInsertmessagestring("<div style='color:blue'>Studnt added to course successfully</div>");
 				insertMessage.add(messageObjects);
 				}
 		
@@ -156,7 +156,7 @@ public class InsertStudentData {
 				if(sr<1)
 				{
 					messageObjects.setMessagecode(2);
-					messageObjects.setInsertmessagestring("An error has occured please review data and try again");
+					messageObjects.setInsertmessagestring("<div style='color:red'>An error has occured please contact IT!</div>");
 					insertMessage.add(messageObjects);
 					
 				}
@@ -164,7 +164,7 @@ public class InsertStudentData {
 				else{
 			
 				messageObjects.setMessagecode(1);
-				messageObjects.setInsertmessagestring("Student grade update succesffully");
+				messageObjects.setInsertmessagestring("<div style='color:blue'>Grade updated successfully</div>");
 				insertMessage.add(messageObjects);
 				}
 		

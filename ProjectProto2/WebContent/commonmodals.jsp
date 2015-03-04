@@ -70,6 +70,49 @@
 </div><!-- /.modal -->
 
 
+
+<div class="modal fade" id="bulkupload" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+           
+            <h4 class="modal-title" id="myModalLabel">
+              Bulk Upload
+            </h4>
+         </div>
+         <div class="modal-body">
+		 <div><h4>Please select  a file .csv to upload</h4></div>
+<input type="file" id="i_file" value=""> 
+
+        <form method="POST" action="FileUploadServlet" enctype="multipart/form-data" >
+            File:
+            <input type="file" name="file" id="file" /> <br/>
+        	<input type="submit" value="Upload File" />
+            
+        </form>
+ 
+</div>
+
+
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">Cancel
+            </button>
+              <button id="uploadButton" class="btn btn-primary"     data-dismiss="modal">Upload</button>
+            
+           
+         </div>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+
+
 </body>
 
 </html>

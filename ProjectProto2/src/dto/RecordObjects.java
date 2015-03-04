@@ -25,6 +25,13 @@ public class RecordObjects {
 	public void setEnd(String end) {
 		this.end = end;
 	}
+	private int courseid;
+	public int getCourseid() {
+		return courseid;
+	}
+	public void setCourseid(int courseid) {
+		this.courseid = courseid;
+	}
 	private String coursename;
 	private String grade;
 	private String start;

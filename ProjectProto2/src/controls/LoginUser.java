@@ -54,7 +54,7 @@ import dto.UserObjectsInitial;
 	        DBManager db= new DBManager();
 	        RetrieveManager retManager= new RetrieveManager();
 	        ArrayList userData = null;
-	        Connection connection = db.Get_ConnectionInitial();
+	        Connection connection = db.Get_Connection();
 	        userData = retManager.GetUserDataInitial(connection, request, response) ;
 	        //System.out.print("got to controller user data:");
 	        //UserObjectsInitial UserObjectInitial = new UserObjectsInitial();
@@ -72,7 +72,7 @@ import dto.UserObjectsInitial;
 	        
 	        
 	      
-	       if((userid==1 && userrole==0)){
+	       if((userid>1 && userrole==1)){
 	            HttpSession session = request.getSession();
 	            session.setAttribute("userid", userid);
 	            session.setAttribute("userrole",userrole);
@@ -91,14 +91,18 @@ import dto.UserObjectsInitial;
 	            //Get the encoded URL string
 	            //String encodedURL = response.encodeRedirectURL("index.jsp");
 	            //response.sendRedirect("index.jsp");
-	            String encodedURL = response.encodeRedirectURL("index.html");
-	            response.sendRedirect(encodedURL);
+	            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.html");
+	            
+	            //out.println("<font color=red>Either user name or password is wrong.</font>");
+	            rd.include(request, response);
+	            //String encodedURL = response.encodeRedirectURL("index.html");
+	            //response.sendRedirect(encodedURL);
 	            
 	            //System.out.print("got to here in user login 2");
 	        }else{
-	            RequestDispatcher rd = getServletContext().getRequestDispatcher("index.jsp");
+	            RequestDispatcher rd = getServletContext().getRequestDispatcher("/userlogin.jsp");
 	            
-	            out.println("<font color=red>Either user name or password is wrong.</font>");
+	            //out.println("<font color=red>Either user name or password is wrong.</font>");
 	            rd.include(request, response);
 	        }
 	 

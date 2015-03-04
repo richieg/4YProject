@@ -53,7 +53,7 @@ import dto.MessageObjects;
                {
 			   rt=InsertToCourses(catid,courseid,coursename,accredbodname,tutorid,semesterid,capacity,equipreq,level,connection);
                
-					System.out.println(rt);
+					System.out.println("rt===="+rt);
 					   if(rt>0)
 					   {
 						   messageObjects.setMessagecode(6);
@@ -85,6 +85,7 @@ import dto.MessageObjects;
 		
 			
 			CallableStatement cu;
+			PreparedStatement ps;
 			int successcnt=0;
 			try {
 				cu = connection.prepareCall("{Call addNewCourse(?,?,?,?,?,?,?,?,?,?)}");
@@ -102,7 +103,9 @@ import dto.MessageObjects;
 			    cu.registerOutParameter(10, Types.INTEGER);
 			    boolean cut =cu.execute();
 			    successcnt=cu.getInt(10);
-			   
+			    System.out.println("sucess"+successcnt);
+
+			
 			    
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import models.InsertManager;
 import dao.DBManager;
 import dto.MessageObjects;
+import fsao.BulkUpload;
 import fsao.CreateUserAc;
 
 /**
@@ -45,6 +46,7 @@ public class UserInsert
 		{
 			insertMessage=insertManager.UpdateUser(connection, request, response);
 		}
+	
 		
 		else
 		{

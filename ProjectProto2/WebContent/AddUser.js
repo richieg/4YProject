@@ -12,7 +12,9 @@ document.getElementById("myBod").addEventListener("load", getUserData(0));
 
 
 
-
+$('#myModal').on('hidden.bs.modal', function (e) {
+	  $(this).removeData();
+	});
  
 
 
@@ -23,12 +25,23 @@ $(function() {
 	});
 
 
-
+//bulk upload
+$('#i_file').change( function(event) {
+	var tmppath = URL.createObjectURL(event.target.files[0]);
+	alert(tmppath);
+	$('#uploadButton').click(function(){insertUser(tmppath);
+		
+		
+		
+		
+		
+	});
+});
 
 
 	
 
-$.validate({
+/*$.validate({
    
     modules : 'location, date, security, file',
     onError : function() {
@@ -44,7 +57,7 @@ $.validate({
         message : 'This input has an invalid value for some reason'
       };
     }
-  });
+  });*/
 
 
 //Button onclick methods
@@ -88,7 +101,7 @@ $.validate({
 		$('#SubmitButton').click(function()
 					{
 			
-						insertUser();
+						insertUser(1);
 				});
 
 
@@ -214,7 +227,20 @@ $.validate({
 	        .row( $(this).parents('tr') );
 		    
 		    $('#ShowRecButton').click(function(){getUserRecs(userid,function(result){if(result==true){$('#recordtablediv').show();}});
+		    });
+		    $('#userrectable').on( 'click', '#editgrade', function () {
+		
 		    	
+		    	var courseid = $(this).closest('tr').find('td:first').text();
+		    	
+		    	var grade = $(this).closest('tr').find('#grade').val();
+		    	//var courseid= $('#scourseID').val();
+		    	//$('#myModal').modal('hide');
+		    	
+		    	
+		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true)updateStudentGrade(courseid,userid,grade,function(result) {if (result==true){$('#myModal').modal('show'),$( "#recmessage" ).fadeIn( 400 ).delay( 1000 ).fadeOut(400);};});
+		    	
+		    	});
 		    
 		    	
 		    	
@@ -232,18 +258,19 @@ $.validate({
 		    	"&postcode="+$('#postcode').val()+"&phone="+$('#phone').val()+"&email="+$('#email').val()+"&checknum="+instruct+"&userid="+userid;
 		    	//resetModal(myBackup);
 		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){updateUser(data,function(result){if(result==true){getUserData(0),resetModal(myBackup),$('#recordtablediv').hide();}});};
+	
+		    	});
 		    });
-			});
-		    
+		
 		    
 		    $('#closemyModal').click(function(){
 		    	
-		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){resetModal(myBackup),$('#recordtablediv').hide();}else{$('#myModal').modal('show');}});}
+		    	bootbox.confirm("Are you sure you want to cancel without saving?", function(result) {if (result==true){resetModal(myBackup),$('#recordtablediv').hide();}else{$('#myModal').modal('show');}});});
 
-		    	
-		    	);
-		
+			
+
 		});
+
 		
 		function resetModal(myBackup)
 		{
@@ -374,13 +401,22 @@ $.validate({
 /***********************************Data Retrival Fucntions*********************************/
 	
 				
-		function getUserRecs(userid,callback){
+		function getUserRecs(userid,roleid,callback){
 			/*var rows = rectable
 		    .rows()
 		    .remove()
 		    .draw();*/
+			var instruct=null;
+			if(roledid==0)
+				{
+				instruct=6;
+				}
+			else
+				{
+				instruct=7;
+				}
 			
-			data="userid="+userid+"&instruct=6";
+			data="userid="+userid+"&instruct="+instruct;
 			
 			$.ajax
 			({
@@ -400,8 +436,15 @@ $.validate({
 			{
 				
 				//userdata=[data.coursename,data.start,data.end,data.grade];
-				 $("#userrectable").append("<tr><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td>" + data.grade + "</td></tr>");
-				//rectable.row.add(userdata).draw();
+				if(instruct==6)
+				{
+				 $("#userrectable").append("<tr><td>" + data.courseid + "</td><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td>" + data.grade + "</td></tr>");
+				}
+				else
+					{
+					$("#userrectable").append("<tr><td>" + data.courseid + "</td><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td></tr>");
+					$('#grade').hide();
+					}
 			});
 			}
 			
@@ -445,7 +488,7 @@ $.validate({
 			
 			}
 			else if(a==2)
-{
+			{
 				
 				dataString="archived=0,0&role=1,1&instruct=1";
 			
@@ -505,25 +548,75 @@ $.validate({
 		};
 
 
-
-
-
-
-	
-	
-	
-	
-
-
-
-
-
-	
-
-			function insertUser(){
+		
+		function updateStudentGrade(courseid,studentid,grade,callback)
+		{
+			Data="instructid=8&courseid="+courseid+"&studentid="+studentid+"&grade="+grade;
+			alert(Data);
+			$.ajax({
+				type: "POST",
+				url: "StudentData",
+				data:Data,
+				dataType:"json",
+				cache: false,
+				success: function(data)
+				{
+					 $('#recmessage').empty();
+					 $('#sfmessage').empty();
+					if(data.StudentMessage.length)
+					{
+					$.each(data.StudentMessage, function(i,data)
+					{
+					
+					//var user_data="<div>"+data.fname + " "+data.lname + " " + data.address1+"</div>";
+					messageid=data.messagecode;
+					message=data.insertmessagestring;
+					if(messageid==1)
+					{
+					callback(true);
+					}
+				
+				
+					 $('#recmessage').prepend(message);
+				
+					 
+				
+				
+					});
+				
+						//$('#ModalMessage').modal('show'),$('#myModal').modal('show');
+						//$('#catModal').find('form')[0].reset();
+						// $('#courseModal').find('form')[0].reset();
+					
+					
+					}
+				
+				}
+					
+				});
+	    
 			
+		
+	};
+				
+
+
+	
+	
+	
+	
+
+
+
+
+
+	
+
+			function insertUser(a){
+			var dataString=null;
 			
-			
+			if(a==1)
+			{
 			var fname = $("#firstName").val();
 			var lname = $("#lastName").val();
 			var address1 = $("#address1").val();
@@ -533,7 +626,8 @@ $.validate({
 			var postcode = $("#postcode").val();
 			var phone = $("#phone").val();
 			var email = $("#email").val();
-			var dob = $("#dob").val();
+			var dob = $("#datepicker").val();
+			alert(dob);
 			var role = $("#role").val();
 			alert (role);
 			var checknum = $("#checknum").val();
@@ -545,8 +639,12 @@ $.validate({
 			
 			
 			
-			var dataString="fname="+fname+"&lname="+lname+"&address1="+address1+"&address2="+address2+"&address3="+address3+"&address4="+address4+"&postcode="+postcode+"&phone="+phone+"&email="+email+"&dob="+dob+"&checknum="+checknum+"&role="+role;
-			
+			dataString="fname="+fname+"&lname="+lname+"&address1="+address1+"&address2="+address2+"&address3="+address3+"&address4="+address4+"&postcode="+postcode+"&phone="+phone+"&email="+email+"&dob="+dob+"&checknum="+checknum+"&role="+role;
+			}
+			else
+				{
+				dataString="filepath="+a+"&checknum=10";
+				}
 
 		
 			
@@ -596,7 +694,7 @@ $.validate({
 					$('#myModal').find('form')[0].reset();
 					//$('#induserform').find("input[type=text], textarea").val("");
 					 //$('#checknum').val("1");
-					 getUser(0);
+					 getUserData(0);
 				
 				}
 				}
