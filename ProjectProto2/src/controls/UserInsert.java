@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import models.InsertManager;
+import models.UserInsertManager;
 import dao.DBManager;
 import dto.MessageObjects;
 import fsao.BulkUpload;
@@ -33,7 +33,7 @@ public class UserInsert
 		{
 	    int checknum= Integer.parseInt(request.getParameter("checknum"));  
 		DBManager db= new DBManager();
-		InsertManager insertManager= new InsertManager();
+		UserInsertManager insertManager= new UserInsertManager();
 		//CreateUserAc cs = new CreateUserAc();
 		ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
 		//String message = null;

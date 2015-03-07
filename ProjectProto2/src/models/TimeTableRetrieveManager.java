@@ -10,6 +10,7 @@ import dao.CategoryCourseRetrieveData;
 import dao.InsertTimeTableData;
 import dao.RetrieveTimeTableData;
 import dto.CategoryCourseObjects;
+import dto.MessageObjects;
 import dto.TimeTableObjects;
 
 public class TimeTableRetrieveManager {
@@ -22,7 +23,7 @@ public class TimeTableRetrieveManager {
 	
 	RetrieveTimeTableData rdata=new RetrieveTimeTableData();
 
-			
+
 			try {
 			// Here you can validate before connecting DAO class, eg. User session condition
 		
@@ -37,18 +38,17 @@ public class TimeTableRetrieveManager {
 
 }
 	
-	
-	
-	public ArrayList<TimeTableObjects> InsertTTData(Connection connection, HttpServletRequest request,
+	public ArrayList<TimeTableObjects> GetTimeTable(Connection connection, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ArrayList<TimeTableObjects> ttData = null;
-
-	InsertTimeTableData idata=new InsertTimeTableData ();
+	
+	RetrieveTimeTableData rdata=new RetrieveTimeTableData();
+	System.out.println("got ot manager to get ttdata");
 			
 			try {
 			// Here you can validate before connecting DAO class, eg. User session condition
 		
-			ttData=idata.InsertTTData(connection, request, response);
+			ttData=rdata.RetireveTimeTable(connection, request, response);
 
 		
 			} 
@@ -56,6 +56,28 @@ public class TimeTableRetrieveManager {
 			throw e;
 			}
 			return ttData;
+
+}
+	
+	
+	
+	public ArrayList<MessageObjects> InsertTTData(Connection connection, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ArrayList<MessageObjects> message = null;
+
+	InsertTimeTableData idata=new InsertTimeTableData ();
+	System.out.println("got ot manager toi nsert ttdata");	
+			try {
+			// Here you can validate before connecting DAO class, eg. User session condition
+		
+			message=idata.InsertTTData(connection, request, response);
+
+		
+			} 
+			catch (Exception e) {
+			throw e;
+			}
+			return message;
 
 }
 }

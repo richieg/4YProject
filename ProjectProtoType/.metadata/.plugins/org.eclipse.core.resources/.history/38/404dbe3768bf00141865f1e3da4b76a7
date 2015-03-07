@@ -1,0 +1,315 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+
+
+
+
+
+
+
+import dto.RecordObjects;
+import dto.UserObjects;
+import dto.UserObjectsInitial;
+
+public class RetrieveData {
+	
+	
+	
+	
+	public ArrayList<UserObjectsInitial>GetUserDataInitial(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+	{
+		ArrayList<UserObjectsInitial> userData = new ArrayList<UserObjectsInitial>();
+		
+		String username = null;
+		String userpass = null;
+		
+
+	try
+	{
+	username = request.getParameter("user");
+	System.out.println(username);
+	
+	
+	
+    userpass= request.getParameter("pwd");
+    System.out.println(userpass);
+   
+	PreparedStatement ps = connection.prepareStatement("SELECT userid,userrole,userpass FROM TB_UserLogin where username=?");
+	ps.setString(1, username);
+    //ps.setString(2, userpass);	
+	ResultSet rs = ps.executeQuery();
+	while(rs.next())
+	{
+		/*int fname=rs.getInt("userid");
+		System.out.print("/n" +fname +"/n");
+		int fpass=rs.getInt("userrole");
+		System.out.print("/n" +fpass +"/n");
+		*/
+	String huserpass=rs.getString("userpass");
+	System.out.println(huserpass);
+	SecurityManager sm = new SecurityManager();
+	if(SecurityManager.validatePassword(userpass,huserpass))
+	{
+		System.out.println("Password ok");
+	UserObjectsInitial UserObjectInitial = new UserObjectsInitial();
+	UserObjectInitial.setUserid(rs.getInt("userid"));
+	UserObjectInitial.setUserrole(rs.getInt("userrole"));
+	userData.add(UserObjectInitial);
+	}
+	else
+	{
+		UserObjectsInitial UserObjectInitial = new UserObjectsInitial();
+		UserObjectInitial.setUserid(0);
+		UserObjectInitial.setUserrole(0);
+		userData.add(UserObjectInitial);
+	}
+	
+	}
+	return userData;
+	}
+	catch(Exception e)
+	{
+	throw e;
+	}
+	}
+
+public ArrayList<UserObjects> GetUserData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+{
+	PreparedStatement ps = null;
+	
+	ArrayList<UserObjects> userData = new ArrayList<UserObjects>();
+try
+{
+String archived=request.getParameter("archived");
+String role = request.getParameter("role");
+String misc = request.getParameter("misc");
+String courseid = request.getParameter("courseid");
+int instruct=Integer.valueOf(request.getParameter("instruct"));
+
+System.out.println("archive"+archived);
+System.out.println("role"+role);
+System.out.println(archived.substring(0, 1));
+System.out.println(archived.substring(2, 3));
+
+ if(instruct==1)
+ {
+	 System.out.println("got to statement"); 
+ ps = connection.prepareStatement("SELECT userid,firstName,lastName,address,address2,address3,personalphone,personalemail,postcode,dob,role FROM TB_User where archived in (?,?) and role in(?,?)");
+ }
+ else if (instruct==2)
+ {
+ ps = connection.prepareStatement("SELECT userid,firstName,lastName,address,address2,address3,personalphone,personalemail,postcode,dob,role FROM TB_User where archived in (?,?) and role in(?,?) and userid not in(select tutorid from tb_tutor_courses where semesterid=? and courseid=?)");
+
+ ps.setString(5,misc);
+ ps.setString(6,courseid);
+ }
+ else if (instruct==3)
+ {
+ ps = connection.prepareStatement("SELECT userid,firstName,lastName,address,address2,address3,personalphone,personalemail,postcode,dob,role FROM TB_User where archived in (?,?) and role in(?,?) and userid not in(select student_id from tb_student_courses where TutorCourseID=?)");
+ 
+ ps.setString(5,courseid);
+ }
+ 
+ else if (instruct==4)
+ {
+	 ps = connection.prepareStatement("SELECT userid,firstName,lastName,address,address2,address3,personalphone,personalemail,postcode,dob,role,grade FROM TB_User inner join tb_student_courses on tb_student_courses.student_id=tb_user.userid where tb_user.archived in (?,?) and role in(?,?) and tb_student_courses.TutorCourseID=?");
+	 ps.setString(5,courseid);
+ }
+
+ 
+ 
+ 
+ 
+ps.setString(1, archived.substring(0, 1));
+ps.setString(2, archived.substring(2, 3));
+ps.setString(3, role.substring(0, 1));
+ps.setString(4, role.substring(2, 3));
+ResultSet rs = ps.executeQuery();
+while(rs.next())
+{
+	int userid=rs.getInt("userid");
+	String roler=rs.getString("role");
+	if (roler.equals("0"))
+	{
+		roler="Student";
+	}
+	else{roler="Tutor";
+	
+	}
+	
+	
+UserObjects UserObject = new UserObjects();
+UserObject.setUserid(userid);
+UserObject.setFname(rs.getString("firstName"));
+UserObject.setLname(rs.getString("lastName"));
+UserObject.setAddress1(rs.getString("address"));
+UserObject.setAddress2(rs.getString("address2"));
+UserObject.setAddress3(rs.getString("address3"));
+UserObject.setPostcode(rs.getString("postcode"));
+UserObject.setDob(rs.getString("dob"));
+UserObject.setEmail(rs.getString("personalemail"));
+UserObject.setPhone(rs.getString("personalphone"));
+
+UserObject.setRole(roler);
+if(instruct==4)
+{
+	String grade=rs.getString("grade");
+	
+	UserObject.setMisc("<b>Grade<b>: <input  class='col-sm-4'  value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
+
+}
+else
+{
+	UserObject.setMisc("<input class='checkbox' id='"+userid+"' type='checkbox'>");
+}
+
+
+//System.out.print(UserObject);
+userData.add(UserObject);
+
+
+
+
+
+	
+
+}
+return userData;
+}
+catch(Exception e)
+{
+throw e;
+}
+}
+
+public ArrayList<RecordObjects>GetRecs(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+{
+	PreparedStatement ps = null;
+	int userid=Integer.valueOf(request.getParameter("userid"));
+	int instruct=Integer.valueOf(request.getParameter("instruct"));
+	ArrayList<RecordObjects> userRecord = new ArrayList<RecordObjects>();
+try
+{
+
+
+
+	 if(instruct==6)
+	 {
+	 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename,grade from tb_student_courses inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID = tb_student_courses.TutorCourseID inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_student_courses.Student_ID=?");
+	 }
+	 else{
+		 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename from tb_tutor_courses inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_tutor_courses.TutorID=?");
+		 
+	 }
+	 ps.setInt(1,userid);
+	 ResultSet rs = ps.executeQuery();
+	 
+	 while(rs.next())
+	 {
+	 	
+	
+	 RecordObjects RecObjects = new RecordObjects();
+	 RecObjects.setCourseid(rs.getInt("courseid"));
+	 RecObjects.setCoursename(rs.getString("coursename"));
+	 RecObjects.setStart(rs.getString("startdate"));
+	 RecObjects.setEnd(rs.getString("enddate"));
+	 if(instruct==6)
+	 {
+	 String grade=rs.getString("grade");
+	 RecObjects.setGrade("<input class='col-sm-4' value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
+	 }
+	 else
+	 {
+		 RecObjects.setGrade("N/A"); 
+	 }
+	 //System.out.print(UserObject);
+	 userRecord.add(RecObjects);
+
+
+
+
+
+	 	
+
+	 }
+	 
+
+}
+catch(Exception e)
+{
+throw e;
+}
+return userRecord;
+}
+
+
+
+
+
+
+
+
+
+
+public ArrayList<UserObjects> GetTutorData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+{
+	PreparedStatement ps = null;
+	
+	ArrayList<UserObjects> userData = new ArrayList<UserObjects>();
+try
+{
+String archived=request.getParameter("archived");
+String role = request.getParameter("role");
+
+System.out.println("archive"+archived);
+System.out.println("role"+role);
+System.out.println(archived.substring(0, 1));
+System.out.println(archived.substring(2, 3));
+
+
+ ps = connection.prepareStatement("SELECT userid,firstName,lastName,address FROM TB_User where archived in (?,?) and role in(?,?)");
+
+ps.setString(1, archived.substring(0, 1));
+ps.setString(2, archived.substring(2, 3));
+ps.setString(3, role.substring(0, 1));
+ps.setString(4, role.substring(2, 3));
+ResultSet rs = ps.executeQuery();
+while(rs.next())
+{
+	int userid=rs.getInt("userid");
+	
+UserObjects UserObject = new UserObjects();
+UserObject.setUserid(userid);
+UserObject.setFname(rs.getString("firstName"));
+UserObject.setLname(rs.getString("lastName"));
+UserObject.setAddress1(rs.getString("address"));
+UserObject.setMisc("<input class='checkbox' id='"+userid+"' type='checkbox'>");
+//System.out.print(UserObject);
+userData.add(UserObject);
+
+
+
+
+
+	
+
+}
+return userData;
+}
+catch(Exception e)
+{
+throw e;
+}
+}
+
+
+}

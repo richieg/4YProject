@@ -1,0 +1,37 @@
+package models;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.CategoryCourseRetrieveData;
+import dao.TimeTableRetrieveData;
+import dto.CategoryCourseObjects;
+import dto.TimeTableObjects;
+
+public class TimeTableRetrieveManager {
+	
+	
+	
+	public ArrayList<TimeTableObjects> GetTTData(Connection connection, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ArrayList<TimeTableObjects> ttData = null;
+	
+	TimeTableRetrieveData rdata=new TimeTableRetrieveData();
+			
+			try {
+			// Here you can validate before connecting DAO class, eg. User session condition
+		
+			ttData=rdata.GetCatData(connection, request, response);
+
+		
+			} 
+			catch (Exception e) {
+			throw e;
+			}
+			return ttData;
+
+}
+}

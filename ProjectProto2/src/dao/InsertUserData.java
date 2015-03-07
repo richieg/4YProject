@@ -6,6 +6,7 @@ import dto.MessageObjects;
 
 
 
+
 import java.security.spec.InvalidKeySpecException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -21,6 +22,8 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import models.SecurityManager;
 
 public class InsertUserData {
 	

@@ -1,0 +1,76 @@
+package controls;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import models.TimeTableRetrieveManager;
+
+import com.google.gson.Gson;
+
+import dao.DBManager;
+import dto.TimeTableObjects;
+
+
+	@WebServlet("/TimeTableInsert")
+	public class TimeTableInsert extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public TimeTableInsert() {
+	super();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	response.setContentType("text/html;charset=UTF-8");
+	PrintWriter out = response.getWriter();
+	String ttdata=null;
+	Gson gson = new Gson();
+	try
+	{
+	String instruct=request.getParameter("instruct");
+
+	DBManager db= new DBManager();
+	TimeTableRetrieveManager retManager= new TimeTableRetrieveManager();
+	ArrayList<TimeTableObjects> ttData = null;
+	
+	Connection connection = db.Get_Connection();
+	//if(instruct.equals("1")|| instruct.equals("2") )
+			//{
+		ttData= retManager.InsertTTData(connection, request, response) ;
+		ttdata = gson.toJson(ttData);
+			//}
+	/*if(instruct.equals("2"))
+			{
+		System.out.println("ControllerEventListener for course instruct id="+instruct);
+			courseData=retManager.GetCourseData(connection, request, response);
+			catdata = gson.toJson(courseData);
+			//System.out.println(catData);
+			}*/
+	
+
+	
+	out.println("{\"TimeTableData\":"+ttdata+"}");
+	//ut.println(catdata);
+
+	ttData=null;
+	}
+	catch (Exception ex)
+	{
+	out.println("Error: " + ex.getMessage());
+	}
+	finally
+	{
+	out.close();
+	}
+	}
+
+}
+
+

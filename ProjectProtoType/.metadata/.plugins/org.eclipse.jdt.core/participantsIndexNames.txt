@@ -1,0 +1,7 @@
+INDEX VERSION 1.126
+C:\Users\Richie\Documents\Project\ProjectProtoType\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\729250180.index
+\ProjectProto2 - Copy\src
+C:\Users\Richie\Documents\Project\ProjectProtoType\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2055735545.index
+\ProjectProto2\src
+C:\Users\Richie\Documents\Project\ProjectProtoType\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3543691741.index
+\ProjectDev\src

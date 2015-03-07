@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dao.DBManager;
-import models.RetrieveManager;
+import models.UserRetrieveManager;
 
 
 @WebServlet("/GetUserDataInitial")
@@ -32,7 +32,7 @@ try
 {
 	System.out.print("got to controller");
 DBManager db= new DBManager();
-RetrieveManager retManager= new RetrieveManager();
+UserRetrieveManager retManager= new UserRetrieveManager();
 ArrayList userData = null;
 Connection connection = db.Get_Connection();
 userData = retManager.GetUserDataInitial(connection, request, response) ;

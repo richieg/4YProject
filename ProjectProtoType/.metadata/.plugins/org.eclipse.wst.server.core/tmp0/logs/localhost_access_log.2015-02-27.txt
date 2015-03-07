@@ -1,0 +1,8 @@
+127.0.0.1 - - [27/Feb/2015:00:00:04 +0000] "POST /ProjectProto2/FileUploadServlet HTTP/1.1" 405 1067
+127.0.0.1 - - [27/Feb/2015:00:04:12 +0000] "GET / HTTP/1.1" 404 951
+127.0.0.1 - - [27/Feb/2015:00:04:14 +0000] "GET /ProjectProto2/userindex.jsp HTTP/1.1" 200 11125
+127.0.0.1 - - [27/Feb/2015:00:04:15 +0000] "POST /ProjectProto2/GetUserData HTTP/1.1" 200 1838
+127.0.0.1 - - [27/Feb/2015:00:04:28 +0000] "POST /ProjectProto2/FileUploadServlet HTTP/1.1" 500 1430
+127.0.0.1 - - [27/Feb/2015:00:04:59 +0000] "GET /ProjectProto2/userindex.jsp HTTP/1.1" 200 11125
+127.0.0.1 - - [27/Feb/2015:00:04:59 +0000] "POST /ProjectProto2/GetUserData HTTP/1.1" 200 1838
+127.0.0.1 - - [27/Feb/2015:00:05:08 +0000] "POST /ProjectProto2/FileUploadServlet HTTP/1.1" 500 1430

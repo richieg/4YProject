@@ -16,7 +16,9 @@ import models.TimeTableRetrieveManager;
 import com.google.gson.Gson;
 
 import dao.DBManager;
+import dto.MessageObjects;
 import dto.TimeTableObjects;
+import dto.UserObjectsInitial;
 
 
 	@WebServlet("/TimeTableInsert")
@@ -34,26 +36,31 @@ import dto.TimeTableObjects;
 	Gson gson = new Gson();
 	try
 	{
-	String instruct=request.getParameter("instruct");
+	int instruct=Integer.valueOf(request.getParameter("instruct"));
 
 	DBManager db= new DBManager();
 	TimeTableRetrieveManager retManager= new TimeTableRetrieveManager();
+	ArrayList<MessageObjects> imessage = null;
 	ArrayList<TimeTableObjects> ttData = null;
-	
+	System.out.println("instruct in cintrol for timetable="+instruct);
 	Connection connection = db.Get_Connection();
-	//if(instruct.equals("1")|| instruct.equals("2") )
-			//{
-		ttData= retManager.InsertTTData(connection, request, response) ;
-		ttdata = gson.toJson(ttData);
-		System.out.println(ttdata);
-			//}
-	/*if(instruct.equals("2"))
+		if(instruct==0)
+		{
+			ttData=retManager.GetTimeTable(connection, request, response);
+		}
+		else
+		{
+			imessage= retManager.InsertTTData(connection, request, response) ;
+			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
+			System.out.println(messagecode);
+			if(messagecode==1)
 			{
-		System.out.println("ControllerEventListener for course instruct id="+instruct);
-			courseData=retManager.GetCourseData(connection, request, response);
-			catdata = gson.toJson(courseData);
-			/System.out.println(catData);
-			}*/
+				ttData=retManager.GetTimeTable(connection, request, response);
+			}
+		}
+		ttdata = gson.toJson(ttData);
+		System.out.println("tdata="+ttdata);
+	
 	
 
 	

@@ -1,0 +1,78 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@ include file="head.jsp" %>
+<%@ include file="commonmodals.jsp" %>
+</head>
+<body>
+
+<form class="form-horizontal" role="form" id="incatform" style="width:100%">
+ 
+  
+  
+
+<div>
+
+
+
+
+
+  <label class="control-label col-sm-2" for="day" style="padding-left:0px">Day</label>
+
+  <div class="col-sm-2">
+  <select class="form-control" id="daysel" name="daysel">
+      <option id="2">- Select One -</option>
+</select>
+</div>
+
+
+  <label class="control-label col-sm-2" for="cours">Time</label>
+
+  <div class="col-sm-2">
+  <select class="form-control" id="timesel" name="timesel">
+      <option id="1">- Select One -</option>
+</select>
+</div>
+
+</div>
+
+
+  <label class="control-label col-sm-2" for="coursename">Course</label>
+
+  <div class="col-sm-2">
+  <select class="form-control" id="coursesel" name="coursesel">
+      <option id="1">- Select One -</option>
+</select>
+</div>
+
+
+  <label class="control-label col-sm-2" for="room">Room</label>
+
+  <div class="col-sm-2">
+  <select class="form-control" id="roomsel" name="roomsel">
+      <option id="1">- Select One -</option>
+</select>
+</div>
+
+
+
+
+
+
+
+
+    
+    
+    
+ 
+
+
+
+
+</form>
+
+</body>
+</html>

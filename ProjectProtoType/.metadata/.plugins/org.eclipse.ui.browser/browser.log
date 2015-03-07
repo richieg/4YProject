@@ -1,0 +1,81 @@
+
+Jan 06, 2015 10:58:40.84 NEW SESSION
+Jan 06, 2015 10:58:40.84 1420541920837	GMPInstallManager.simpleCheckAndInstall	INFO	Last check was: 90087 seconds ago, minimum seconds: 86400
+Jan 06, 2015 10:58:40.84 1420541920837	GMPInstallManager._getURL	INFO	Using url: https://aus4.mozilla.org/update/3/GMP/%VERSION%/%BUILD_ID%/%BUILD_TARGET%/%LOCALE%/%CHANNEL%/%OS_VERSION%/%DISTRIBUTION%/%DISTRIBUTION_VERSION%/update.xml
+Jan 06, 2015 10:58:40.84 1420541920839	GMPInstallManager._getURL	INFO	Using url (with replacement): https://aus4.mozilla.org/update/3/GMP/34.0/20141125180439/WINNT_x86-msvc/en-US/release/Windows_NT%206.1.1.0%20(x64)/default/default/update.xml
+Jan 06, 2015 10:58:40.84 1420541920841	GMPInstallManager.checkForAddons	INFO	sending request to: https://aus4.mozilla.org/update/3/GMP/34.0/20141125180439/WINNT_x86-msvc/en-US/release/Windows_NT%206.1.1.0%20(x64)/default/default/update.xml
+Jan 06, 2015 10:58:41.70 1420541921704	GMPInstallManager.onLoadXML	INFO	request completed downloading document
+Jan 06, 2015 10:58:41.71 1420541921705	GMPInstallManager.onLoadXML	INFO	allowNonBuiltIn: false
+Jan 06, 2015 10:58:41.72 1420541921720	GMPInstallManager.simpleCheckAndInstall	INFO	Found 1 addons advertised.
+Jan 06, 2015 10:58:41.72 1420541921721	GMPInstallManager.simpleCheckAndInstall	INFO	Found addon: gmp-gmpopenh264 (isValid: true, isInstalled: true, isOpenH264: true, hashFunction: sha512, hashValue: 235c9a6fc530ce38a03e46c6daa4c2538a6281d5e786fcd25b3de1e7d8b4ef97cd94502fa6f55d48928805603a30c4fa0921dfc540641265c33731c3fc0254ff, size: 272266)
+Jan 06, 2015 10:58:41.72 1420541921721	GMPInstallManager.simpleCheckAndInstall	INFO	No new addons to install, returning
+Jan 06, 2015 10:59:07.10 1420541947095	GMPInstallManager.simpleCheckAndInstall	INFO	Last check was: 25 seconds ago, minimum seconds: 86400
+Jan 06, 2015 10:59:07.10 1420541947095	GMPInstallManager.simpleCheckAndInstall	INFO	Will not check for updates.
+Jan 06, 2015 10:59:07.87 1420541947868	GMPInstallManager.simpleCheckAndInstall	INFO	Last check was: 26 seconds ago, minimum seconds: 86400
+Jan 06, 2015 10:59:07.88 1420541947868	GMPInstallManager.simpleCheckAndInstall	INFO	Will not check for updates.
+Jan 06, 2015 11:00:32.65 
+Jan 06, 2015 11:00:32.65 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 11:00:32.65 
+Jan 06, 2015 11:00:32.65 
+Jan 06, 2015 11:00:32.65 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 11:00:32.65 
+Jan 06, 2015 11:05:25.76 1420542325743	addons.update-checker	WARN	Update manifest for {972ce4c6-7e08-4474-a285-3208198ce6fd} did not contain an updates property
+Jan 06, 2015 14:47:11.59 
+Jan 06, 2015 14:47:11.61 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 14:47:11.61 
+Jan 06, 2015 14:47:11.61 
+Jan 06, 2015 14:47:11.62 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 14:47:11.62 
+Jan 06, 2015 14:47:11.62 
+Jan 06, 2015 14:47:11.62 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 14:47:11.62 
+Jan 06, 2015 14:47:11.62 
+Jan 06, 2015 14:47:11.62 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 14:47:11.62 
+Jan 06, 2015 14:54:00.61 *************************
+Jan 06, 2015 14:54:00.61 A coding exception was thrown in a Promise resolution callback.
+Jan 06, 2015 14:54:00.61 See https://developer.mozilla.org/Mozilla/JavaScript_code_modules/Promise.jsm/Promise
+Jan 06, 2015 14:54:00.61 
+Jan 06, 2015 14:54:00.61 Full message: TypeError: access to strict mode caller function is censored
+Jan 06, 2015 14:54:00.61 Full stack: NS_ASSERT@resource://gre/modules/debug.js:50:7
+Jan 06, 2015 14:54:00.61 this.SearchSuggestionController.prototype._dedupeAndReturnResults@resource://gre/modules/SearchSuggestionController.jsm:321:5
+Jan 06, 2015 14:54:00.61 Handler.prototype.process@resource://gre/modules/Promise.jsm -> resource://gre/modules/Promise-backend.js:865:23
+Jan 06, 2015 14:54:00.61 this.PromiseWalker.walkerLoop@resource://gre/modules/Promise.jsm -> resource://gre/modules/Promise-backend.js:744:7
+Jan 06, 2015 14:54:00.61 
+Jan 06, 2015 14:54:00.61 *************************
+Jan 06, 2015 15:05:59.47 
+Jan 06, 2015 15:05:59.48 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:05:59.48 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:05:59.48 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:05:59.48 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:05:59.48 
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:10:39.92 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:10:39.92 
+Jan 06, 2015 15:22:32.90 
+Jan 06, 2015 15:22:32.91 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:22:32.91 
+Jan 06, 2015 15:22:32.91 
+Jan 06, 2015 15:22:32.91 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:22:32.91 
+Jan 06, 2015 15:22:32.91 
+Jan 06, 2015 15:22:32.91 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:22:32.91 
+Jan 06, 2015 15:22:32.91 
+Jan 06, 2015 15:22:32.91 ###!!! [Child][DispatchAsyncMessage] Error: (msgtype=0xA20001,name=PTexture::Msg___delete__) Route error: message sent to unknown actor ID
+Jan 06, 2015 15:22:32.91 

@@ -1,0 +1,90 @@
+/**
+ * 
+ */
+
+	
+
+	
+	
+	
+	function loginuser(){
+		var username = $("#user").val();
+		var password = $("#pwd").val();
+	
+		var user_data=" ";
+		dataString = "user="+username+"&pwd="+password;
+		alert(dataString);
+		$.ajax
+		({
+		type: "GET",
+		url: "GetUserDataInitial",
+		dataType:"json",
+		data: dataString,
+		cache: "false",
+		success: function(data)
+		{
+			
+	
+		alert("got to here");
+		if(data.UserInitial.length)
+		{
+		$.each(data.UserInitial, function(i,data)
+		{
+			var userid=data.userid;
+			var userrole=data.userrole;
+		//var user_data="<div>"+data.fname + " "+data.lname + " " + data.address1+"</div>";
+		user_data="userid="+userid+"&userrole="+userrole;
+		//$(user_data).appendTo("#content");
+		alert(user_data);
+		var num=userLog(user_data);
+		alert(num);
+	
+		if(num="1")
+		{
+		alert(num + "main");
+		window.location = "index.jsp";
+		
+		}
+		
+		 //$("#table").append(user_data).removeClass("hidden");
+	
+		
+			});
+		
+		
+	
+		}
+		
+		}
+		
+		});
+	
+
+	};
+	
+	function userLog(user_data){
+		this.user_data1=user_data;
+		//alert(user_data1 + "userdata1");
+		$.ajax({
+			type: "POST",
+			url: "LoginUser",
+			data: user_data1,
+			cache: false,
+			success: function(data)
+			{
+				alert("success");
+		
+			}
+			});
+		return 1;
+	};
+	
+
+	
+
+	
+	
+
+	
+	
+	

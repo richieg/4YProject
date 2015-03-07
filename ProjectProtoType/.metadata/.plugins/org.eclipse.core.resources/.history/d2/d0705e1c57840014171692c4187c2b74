@@ -1,0 +1,154 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <script src="js/jquery-2.1.0.min.js"></script>
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type='text/javascript'>
+  
+$(document).ready(function()
+{
+	$.ajax
+	({
+	type: "GET",
+	url: "GetUserData",
+	dataType:"json",
+	success: function(data)
+	{
+	if(data.User.length)
+	{
+	$.each(data.User, function(i,data)
+	{
+	//var user_data="<div>"+data.fname + " "+data.lname + " " + data.address1+"</div>";
+	var user_data="<tr><td>"+data.fname+"</td><td>"+data.lname+"</td><td>"+data.address1+"</tr>";
+	//$(user_data).appendTo("#content");
+	 $("#table").append(user_data).removeClass("hidden");
+	});
+	}
+	else
+	{
+	$("#content").html("No Results");
+	}
+	}
+	});
+$('#SubmitButton').click(function()
+{
+	
+
+
+
+
+var fname = $("#firstName").val();
+var lname = $("#lastName").val();
+var address1 = $("#address1").val();
+var dataString = "fname="+fname+"&lname="+lname+"&address1="+address1;
+
+
+
+
+$.ajax({
+type: "POST",
+url: "InsertData",
+data: dataString,
+cache: false,
+success: function(data)
+{
+	
+$("#Userform").val('');
+$("#alertmessage").prepend("New user "+data+" has been entered successfully");
+$("#Userform").focus();
+}
+});
+return false;
+});
+});
+
+
+</script>
+    
+<title>TEAd@S</title>
+  <link href="CSS\bootstrap.min.css" rel="stylesheet">
+    <link href="CSS\main.css" rel="stylesheet">
+</head>
+
+
+<body>
+   <header>
+        <img class="logo" src="Images\logo_orange.png" alt="Call Collect">
+    </header>
+	<br>
+	<br>
+	<div id="alertmessage"></div>
+	<h1 class="h">
+     
+    </h1>
+    <div class="container-fluid">
+  <table id="table" class="ko-grid">
+    <tr>
+        <th>First Name </th>
+        <th>Last Name </th>
+         <th>Address</th>
+    </tr>
+</table>
+
+<form id=Userform" class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>New User</legend>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="firstName">First Name</label>
+  <div class="controls">
+    <input id='firstName' name="firstName" placeholder="First Name" class="input-large" required="This is required" type="text">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="lastName">Last Name</label>
+  <div class="controls">
+    <input id='lastName' name="lastName" placeholder="Last Name" class="input-large" required="This is required" type="text">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="address1">Address 1</label>
+  <div class="controls">
+    <input id='address1' name="address1" placeholder="Address 1" class="input-large" required="" type="text">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="address2">Address 23</label>
+  <div class="controls">
+    <input id="address2" name="address2" placeholder="Address 2" class="input-large" type="text">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="control-group">
+  <label class="control-label" for="submit"></label>
+  <div>
+    <button id="SubmitButton" class="btn btn-sm btn-primary">Save Me</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+<div id='content'></div>
+</body>
+
+</html>
+
+

@@ -1,0 +1,88 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <script src="js/jquery-2.1.0.min.js"></script>
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+         <script type='text/javascript' src="UserLogin.js"></script>
+    <script type='text/javascript'>
+
+    $(document).ready(function(){$('#LoginButton').click(function()
+    		{
+    
+    	var num=loginuser();
+    	alert(num + "main");
+    	if(num==1)
+    		{
+    		window.location = "../index.html";
+    		
+    		}
+    		
+    	//alert(user_data + "main");
+        //userLog();
+    		});
+  
+    		});
+
+</script>
+    
+<title>TEAd@S</title>
+  <link href="CSS\bootstrap.min.css" rel="stylesheet">
+    <link href="CSS\main.css" rel="stylesheet">
+</head>
+
+
+<body id="myBod1">
+   <header>
+        <img class="logo" src="Images\logo_orange.png" alt="TEAd@S">
+    </header>
+	<br>
+	<br>
+	<div id="alertmessage"></div>
+	<h1 class="h">
+     
+    </h1>
+    
+<form id="Userform" class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Login</legend>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="user">User Name</label>
+  <div class="controls">
+    <input id="user" name="user" placeholder="User Name" class="input-large" required="This is required" type="text">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="pwd">Password</label>
+  <div class="controls">
+    <input id="pwd" name="pwd" placeholder="Password" class="input-large" required="This is required" type="text">
+    
+  </div>
+</div>
+
+
+
+<!-- Button -->
+
+  <div>
+    <button id="LoginButton" class="btn btn-primary">Login</button>
+  </div>
+
+</fieldset>
+</form>
+
+<div id='content'></div>
+</body>
+
+</html>
+
+

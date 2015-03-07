@@ -1,0 +1,284 @@
+package dao;
+
+import java.security.NoSuchAlgorithmException;
+
+import dto.MessageObjects;
+
+
+
+import java.security.spec.InvalidKeySpecException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+
+
+
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class InsertUserData {
+	
+	
+	
+	public ArrayList<MessageObjects>InsertUser(Connection connection, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		
+		
+		ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
+			
+			String fname=null;
+			String lname=null;
+			String address1=null;
+			String address2=null;
+			String address3=null;
+			
+			String postcode=null;
+			int phone=0;
+			String email=null;
+			String dob =null;
+			String reqtype=null;
+			
+		
+			String roles=null;
+			int checknum=0;
+			int role=0;
+			String outcome = null;
+			
+			try {
+			System.out.print("got to data insert");
+		    fname = request.getParameter("fname");
+		    lname = request.getParameter("lname");
+		    address1 = request.getParameter("address1");
+		    address2 = request.getParameter("address2");
+		    address3 = request.getParameter("address3");
+	
+		    postcode = request.getParameter("postcode");
+		    phone = Integer.parseInt(request.getParameter("phone"));
+		    email = request.getParameter("email");
+		    dob = request.getParameter("dob");
+		    roles=request.getParameter("role");
+		    System.out.println(dob);
+		    checknum= Integer.parseInt(request.getParameter("checknum"));  
+		    
+		    System.out.println(roles);
+		    if(roles.equals("Tutor"))
+		    {
+		    	role=1;
+		    }
+		    else if(roles.equals("Student"))
+		    {
+		    	role=0;
+		    }
+		    else
+		    {
+		    	role=3;
+		    }
+		
+		   	if(checknum==1)
+		   	{
+		   	checknum=CheckForDups(fname,lname,address1,dob,connection);
+		
+		
+			
+			
+		   	}
+		
+			if(checknum==0)
+			{
+				outcome=InsertSingleUser(fname, lname,  address1,  address2, address3,postcode,phone,email,dob,role,connection);
+			
+			MessageObjects messageObjects = new MessageObjects();
+			messageObjects.setMessagecode(2);
+			messageObjects.setInsertmessagestring("New User " +outcome+ " Added Successfully");
+			insertMessage.add(messageObjects);
+			//outcome=InsertSingleUser(fname, lname,  address1,  address2,  address3,address4,postcode,phone,email,dob, role,connection);
+			}
+			
+			else{
+				insertMessage=ReturnPosDups(fname,lname,address1,dob,connection);
+				
+			}
+			
+			
+			
+			return insertMessage ;
+			
+				
+
+			
+			} catch (Exception e) {
+			throw e;
+			}
+			}
+			
+	
+//Functions/ Methods
+	
+	//function to check for possible duplicates
+	public int CheckForDups(String fname,String lname,String address1, String dob, Connection connection )
+	{
+		
+		System.out.println("returned user fname:::"+fname+" "+lname);
+		int dupcnt = 0 ;
+		CallableStatement cu;
+		try {
+			cu = connection.prepareCall("{Call checkUsers(?,?,?,?,?)}");
+			cu.setString(1, fname);
+		   	cu.setString(2, lname);
+		   	cu.setString(3, address1);
+		   	cu.setString(4, dob);
+		    cu.registerOutParameter(5, Types.INTEGER);
+		    boolean cut =cu.execute();
+		   
+		    	dupcnt= cu.getInt(5);
+		    	System.out.println("returned count::"+dupcnt);
+		    	
+		    
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dupcnt;
+	   
+	   
+		
+	
+		
+	}
+	public String InsertSingleUser(String fname, String lname, String address1, String address2, String address3, String postcode,int phone,String email,String dob, int role, Connection connection) 
+	{
+		
+		String sr=null;
+		Random rand=new Random();
+		int userid=0;
+		Boolean logDB=false;
+		int extid = rand.nextInt(100);
+		System.out.println("extid::"+extid);
+		String externalid=String.valueOf(extid);
+		System.out.println("extid::"+externalid);
+		CallableStatement ps;
+		try {
+			ps = connection.prepareCall("{Call InsertUser(?,?,?,?,?,?,?,?,?,?,?,?)}");
+			ps.setString(1, fname);
+			ps.setString(2, lname);
+			ps.setString(3, address1);
+			ps.setString(4, address2);
+			ps.setString(5, address3);
+		
+			ps.setString(6, postcode);
+			ps.setInt(7, phone);
+			ps.setString(8, email);
+			ps.setString(9, dob);
+			ps.setString(10,externalid);
+			ps.setInt(11,role);
+			
+			ps.registerOutParameter(12, Types.VARCHAR);
+		
+			
+			
+			//System.out.println("got to here");
+		
+			Boolean rs = ps.execute();
+			 sr=ps.getString(12);
+			 
+			 userid=Integer.valueOf(sr.substring(2,sr.length()));
+			 System.out.println("returned id:::" + userid);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+		
+		
+		
+		
+		SecurityManager sm = new SecurityManager();
+		if(sr!=null)
+		{
+			String hashusername = null;
+			String hashuserpass = null;
+			try {
+				//hashusername = SecurityManager.createHash(sr);
+				hashuserpass = SecurityManager.createHash(lname);
+				logDB=InsertToLoginDB(userid,sr,hashuserpass,role,connection);
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+		}
+		System.out.println("returned user id:::");
+		System.out.println(sr);		
+		
+		
+
+		
+		
+		
+		
+	
+		return sr;
+	
+			}
+	
+	
+	public ArrayList<MessageObjects> ReturnPosDups(String fname,String lname,String address1, String dob, Connection connection ){
+		String efname = null;
+		String elname=null;
+		PreparedStatement ps;
+		ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
+		try {
+			ps = connection.prepareStatement("SELECT firstName,lastName FROM TB_User where firstname=? and lastname=?");
+			ps.setString(1, fname);
+			ps.setString(2, lname);
+			ResultSet rse = ps.executeQuery();
+			while(rse.next())
+			{
+			efname=rse.getString("firstName");
+			elname=rse.getString("lastName");
+			
+			MessageObjects messageObjects = new MessageObjects();
+			messageObjects.setMessagecode(1);
+			messageObjects.setInsertmessagestring("Possible duplicate user:  " +efname+ " " +elname+" "+"Please Review and Resubmit"+"</br>");
+			insertMessage.add(messageObjects);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return insertMessage; //"<div style='color:red'>Possible duplication of users details: <tr><td>"+efname+"</td>"+" "+"<td><td>"+elname+ "<button id=\"SubmitButton1\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#ModalActionAlert\">Restore</button>";
+	
+	}
+	public Boolean InsertToLoginDB(int userid,String username,String userpass,int userrole,Connection connection){
+		
+		    PreparedStatement ps;
+		    Boolean rse = null;
+			try {
+				ps = connection.prepareStatement("INSERT into TB_UserLogin values(?,?,?,?)");
+				ps.setInt(1, userid);
+				ps.setString(2, username);
+				ps.setString(3, userpass);
+				ps.setInt(4, userrole);
+				System.out.println("returned id:::" + userid);
+				System.out.println("returned id:::" + userrole);
+				 rse= ps.execute();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		return rse;
+		}
+	
+}
+
+
+

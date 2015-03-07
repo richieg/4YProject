@@ -1,0 +1,270 @@
+/**
+ * 
+ */
+$(document).ready(function(){
+	
+	var dayid=null;
+	var timeid=null;
+	var courseid=null;
+	var roomid=null;
+	getDataForSelectors(1,0,0,0);
+	
+	
+	
+	$('#daysel').change(function() {
+		alert("hello");
+		
+		dayid=$('#daysel option:selected').attr('id');
+		alert(dayid);
+		if(dayid!=-1)
+		{
+		alert("ok");
+		getDataForSelectors(2,dayid,0,0);
+		}
+	
+	});
+	
+	$('#timesel').change(function() {
+		alert("hello");
+		
+		timeid=$('#timesel option:selected').attr('id');
+		alert(timeid);
+		if(timeid!=-1)
+		{
+		alert("ok");
+		getDataForSelectors(3,dayid,timeid,0);
+		}
+	
+	});
+	$('#coursesel').change(function() {
+		alert("hello");
+		
+		courseid=$('#coursesel option:selected').attr('id');
+		alert(timeid);
+		if(courseid!=-1)
+		{
+		alert("ok");
+		getDataForSelectors(4,dayid,timeid,courseid);
+		}
+	
+	});
+	
+	
+	$('#adde').click(function(){
+		alert("button hot");
+		
+		roomid=$('#roomsel option:selected').attr('id');
+		getTableData(5,dayid,timeid,courseid,roomid,function(){drawtimetable(timecols,timerows);});
+		
+	});
+	
+	function drawtimetable(columns,data){
+	
+			    
+		    	
+		        oTable = $('#timetable').DataTable({
+		        	 
+		                "aoColumnDefs": columns,
+		                "aaData": data
+		               
+		        });
+		      
+		    };
+		
+
+
+function getDataForSelectors(a,b,c,d)
+{
+	var sel=null;
+	dataString="instruct="+a+"&attrib1="+b+"&attrib2="+c+"&attrib3="+d;
+	
+	if(a==1)
+	{
+		sel="#daysel";
+		
+	}
+	if(a==2)
+	{
+		sel="#timesel";
+		
+	}
+	if(a==3)
+	{
+		sel="#coursesel";
+		
+	}
+	if(a==4)
+	{
+		sel="#roomsel";
+		
+	}
+
+	$.ajax
+	({
+	type: "POST",
+	url: "TimeTableRetrieve",
+	dataType:"json",
+	data: dataString,
+	cache: false,
+	success: function(data)
+	{
+	if(data.TimeTableData.length)
+	{
+		
+
+		//callback(id,name);
+		
+		
+	$.each(data.TimeTableData, function(i,data)
+	{
+	
+		
+		
+
+		setdaySels(data.id,data.iname,sel);
+
+	//table.row.add(userdata).draw();
+
+
+	});
+
+	}
+	else
+	{
+	$("#content").html("No Results");
+	}
+	}
+	});
+	alert("at end");
+return;
+};
+
+	
+function getTableData(a,b,c,d,e,callback)
+{
+	dataString="instruct="+a+"&attrib1="+b+"&attrib2="+c+"&attrib3="+d+"&attrib4="+d;
+	alert(dataString);
+$.ajax
+({
+type: "POST",
+url: "TimeTableInsert",
+dataType:"json",
+data: dataString,
+cache: false,
+success: function(data)
+{
+if(data.TimeTableData.length)
+{
+	
+timecols = [{
+	    "sTitle": "",
+	    "mData": "iname",
+	    "aTargets": [0]
+	},
+	{"sTitle": "9.00",
+	            "mData": "cell",
+	            "bSortable": false,
+            "aTargets": [1]
+    }, {
+        "sTitle": "10.00",
+            "mData": "cell1",
+            "bSortable": false,
+            "aTargets": [2]
+    }, {
+        "sTitle": "11.00",
+            "mData": "cell2",
+            "bSortable": false,
+            "aTargets": [3]
+    },
+    {
+        "sTitle": "12.00",
+            "mData": "cell3",
+            "aTargets": [4]
+    },
+    {
+        "sTitle": "",
+            "mData": "cell4",
+            "bSortable": false,
+            "aTargets": [5]
+    },
+    {
+        "sTitle": "14.00",
+            "mData": "cell5",
+            "bSortable": false,
+            "aTargets": [6]
+    },
+    {
+        "sTitle": "15.00",
+            "mData": "cell6",
+            "bSortable": false,
+            "aTargets": [7]
+    },	
+    {
+        "sTitle": "16.00",
+            "mData": "cell7",
+            "bSortable": false,
+            "aTargets": [8]
+    },
+    {
+        "sTitle": "17.00",
+            "mData": "cell8",
+            "bSortable": false,
+            "aTargets": [9]
+    },
+    {
+        "sTitle": "18.00",
+            "mData": "cell9",
+            "bSortable": false,
+            "aTargets": [6]
+    }
+    ];
+	
+	timerows=data.Category;
+	callback(timecols,timerows);
+	
+	
+$.each(data.TimeTableData, function(i,data)
+{
+
+	
+	
+
+//setCatSels(data.categoryid,data.catname);
+
+
+//table.row.add(userdata).draw();
+
+
+});
+
+}
+else
+{
+$("#content").html("No Results");
+}
+}
+});
+alert("at end");
+return;
+};
+
+	
+	
+	function setdaySels(id,name,sel)
+	{
+		var o = new Option("option text", "value");
+		o.id=id;
+		/// jquerify the DOM object 'o' so we can use the html method
+		$(o).html(name);
+		$(sel).append(o);
+		
+	}
+	
+
+
+
+
+
+
+
+});

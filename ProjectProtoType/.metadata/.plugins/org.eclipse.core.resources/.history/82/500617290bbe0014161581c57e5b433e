@@ -1,0 +1,711 @@
+/**
+ * 
+ */
+
+$(document).ready(function(){
+	
+var table=$('#usertable').DataTable();
+//var rectable=$('#userrectable').DataTable();
+//call get user when page loads
+document.getElementById("myBod").addEventListener("load", getUserData(0));
+
+
+
+
+$('#myModal').on('hidden.bs.modal', function (e) {
+	  $(this).removeData();
+	});
+ 
+
+
+//form functionality
+
+$(function() {
+	$( "#datepicker" ).datepicker({changeYear: true,yearRange: "-100:+0",dateFormat: 'yy-mm-dd'});
+	});
+
+
+//bulk upload
+$('#i_file').change( function(event) {
+	var tmppath = URL.createObjectURL(event.target.files[0]);
+	alert(tmppath);
+	$('#uploadButton').click(function(){insertUser(tmppath);
+		
+		
+		
+		
+		
+	});
+});
+
+
+	
+
+$.validate({
+   
+    modules : 'location, date, security, file',
+    onError : function() {
+      alert('Validation failed');
+    },
+    onSuccess : function() {
+      alert('The form is valid!');
+      return false; // Will stop the submission of the form
+    },
+    onValidate : function() {
+      return {
+        element : $('#some-input'),
+        message : 'This input has an invalid value for some reason'
+      };
+    }
+  });
+
+
+//Button onclick methods
+  
+//called when user hits "Restore User" button
+	  $('#updateButton').click(function()
+			{
+		 
+	
+		  
+				//gets users that have been deleted previously
+				getUserData(1);
+				$('#adduser1').hide();
+				$('#updateButton').hide();
+				$('#allusers').show();
+				
+				
+				
+			});
+
+	  //called when return to previous button selected in restore screnn
+
+		$('#allusers').click(function()
+			{
+				   
+					//$("#usertable").empty();
+			
+			
+					getUserData(0);
+					$('#adduser1').show();
+					$('#updateButton').show();
+					$('#allusers').hide();
+				
+					
+					
+					
+				});
+		
+		//called when submit button on user form modal hit
+
+		$('#SubmitButton').click(function()
+					{
+			
+						insertUser(1);
+				});
+
+
+
+		//called when submit oon confirm modal hit
+		$('#SubmitButton1').click(function()
+				{
+			
+	
+			 $('#checknum').val("0");        
+				});
+
+
+
+
+		//when restore button is hit the following retrieves the id
+		//and calls insertdata to perform the update
+		/*$(document).on('click','.rud',function ()
+				{
+		
+				var row=this.id;
+				//var role=$(this).attr('role');
+				
+				$('#ModalConfirm').modal('show');
+	
+				$('#ConfirmButton').click(function(){
+					$('#ModalConfirm').modal('hide');
+				
+				});
+				});*/
+		
+		$('.display tbody').on( 'click', '#deleteuser', function () {
+			var instruct=null;
+			instruct=4;
+			var userid=null;
+			userid = $(this).closest('tr').find('td:first').text();
+			
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+	      
+		
+		
+		    completeUpdateDel(userid,row,instruct);
+		      
+		        
+		        	  
+		        
+		        
+		   
+		  
+		});
+		
+		
+		/*$('.display tbody').on( 'click', '#deleteuser', function () {
+			
+			instruct=4;
+			var userid = $(this).closest('tr').find('td:first').text();
+			
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+	      
+		
+		
+			
+		      
+		        bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(userid,row,instruct);};
+		        	  
+		        	}); 
+		        
+		   
+		  
+		});*/
+		
+		
+		
+		$('.display tbody').on( 'click', '#restoreuser', function () {
+			var instruct=null;
+			instruct=2;
+			var userid=null;
+			userid = $(this).closest('tr').find('td:first').text();
+			alert(userid);
+			
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+	      
+		    completeUpdateDel(userid,row,instruct);
+		});
+		
+		
+		
+		
+		$('.display tbody').on( 'click', '#edituser', function () {
+			
+			var instruct=5;
+			
+			var userid = $(this).closest('tr').find('td:first').text();
+			$('#address1').val($(this).closest('tr').find("td").eq(4).text());
+			$('#address2').val($(this).closest('tr').find("td").eq(5).text());
+			$('#address3').val($(this).closest('tr').find("td").eq(6).text());
+			$('#postcode').val($(this).closest('tr').find("td").eq(7).text());
+			$('#email').val($(this).closest('tr').find("td").eq(9).text());
+			$('#phone').val($(this).closest('tr').find("td").eq(8).text());
+			$('#firstnamediv').hide();
+			$('#lastnamediv').hide();
+			$('#dobdiv').hide();
+			$('#rolediv').hide();
+			$('#SubmitButton').hide();
+			$('#UpdateUserButton').show();
+			$('#ShowRecButton').show();
+			$('#myModal').modal('show');
+			var myBackup = $('#myModal').clone();
+			//$('#').val();
+			
+			var row=null;
+			
+		    row=table
+	        .row( $(this).parents('tr') );
+		    
+		    $('#ShowRecButton').click(function(){getUserRecs(userid,function(result){if(result==true){$('#recordtablediv').show();}});
+		    });
+		    $('#userrectable').on( 'click', '#editgrade', function () {
+		
+		    	
+		    	var courseid = $(this).closest('tr').find('td:first').text();
+		    	
+		    	var grade = $(this).closest('tr').find('#grade').val();
+		    	//var courseid= $('#scourseID').val();
+		    	//$('#myModal').modal('hide');
+		    	
+		    	
+		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true)updateStudentGrade(courseid,userid,grade,function(result) {if (result==true){$('#myModal').modal('show'),$( "#recmessage" ).fadeIn( 400 ).delay( 1000 ).fadeOut(400);};});
+		    	
+		    	});
+		    
+		    	
+		    	
+		    	
+		    	
+		    });
+		    
+		  
+		   
+		    
+		    
+		    $('#UpdateUserButton').click(function(){
+		    	
+		    	var data="address1="+$('#address1').val()+"&address2="+$('#address2').val()+"&address3="+$('#address3').val()+
+		    	"&postcode="+$('#postcode').val()+"&phone="+$('#phone').val()+"&email="+$('#email').val()+"&checknum="+instruct+"&userid="+userid;
+		    	//resetModal(myBackup);
+		    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){updateUser(data,function(result){if(result==true){getUserData(0),resetModal(myBackup),$('#recordtablediv').hide();}});};
+	
+		    	});
+		    });
+		
+		    
+		    $('#closemyModal').click(function(){
+		    	
+		    	bootbox.confirm("Are you sure you want to cancel without saving?", function(result) {if (result==true){resetModal(myBackup),$('#recordtablediv').hide();}else{$('#myModal').modal('show');}});});
+
+			
+
+		});
+
+		
+		function resetModal(myBackup)
+		{
+			
+			$('#myModal').modal('hide').remove();
+			 var myClone = myBackup.clone();
+		        $('body').append(myClone);
+		       
+		};
+		
+		
+		function completeUpdateDel(userid,row,instruct)
+		{
+			bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(userid,row,instruct);};
+		});
+		};
+		
+		function updateUser(data,callback){
+			
+			$.ajax({
+				type: "POST",
+				url: "InsertData",
+				data: data,
+				dataType:"json",
+				cache: false,
+				success: function(data)
+				{
+					 $('#sfmessage').empty();
+					if(data.Message.length)
+					{
+					$.each(data.Message, function(i,data)
+					{
+					
+					
+					var messagecode=data.messagecode;
+					var message=data.insertmessagestring;
+				
+					 $('#sfmessage').prepend(message);
+					
+					if(messagecode==1)
+						{
+						callback(true);
+						}
+	
+					});
+					$('#ModalMessage').modal('show');
+					}
+				}
+					 
+					
+				});
+					
+			
+		
+		
+		
+			};	
+				
+				
+		function upDel(userid,row,instruct)
+		{
+			
+			var dataString=null;
+		
+			
+			
+			
+			dataString="userid="+userid+"&checknum="+instruct;
+			
+				
+				$.ajax({
+					type: "POST",
+					url: "InsertData",
+					data: dataString,
+					dataType:"json",
+					cache: false,
+					success: function(data)
+					{
+						 $('#sfmessage').empty();
+						if(data.Message.length)
+						{
+						$.each(data.Message, function(i,data)
+						{
+						
+						var messageid=data.messagecode;
+						
+						var message=data.insertmessagestring;
+						if(messageid==2)
+							{
+							  row
+						        .remove()
+						        .draw();
+							
+							}
+					
+						 $('#sfmessage').prepend(message);
+						
+						
+		
+						});
+						$('#ModalMessage').modal('show');
+						 
+						}
+						else
+						{
+						$("#content").html("No Results");
+						}
+						}
+					});
+				
+				
+				
+				
+					
+				};
+
+
+
+ 
+		
+		
+	
+
+
+
+
+
+/***********************************Data Retrival Fucntions*********************************/
+	
+				
+		function getUserRecs(userid,roleid,callback){
+			/*var rows = rectable
+		    .rows()
+		    .remove()
+		    .draw();*/
+			var instruct=null;
+			if(roledid==0)
+				{
+				instruct=6;
+				}
+			else
+				{
+				instruct=7;
+				}
+			
+			data="userid="+userid+"&instruct="+instruct;
+			
+			$.ajax
+			({
+			type: "POST",
+			url: "GetUserData",
+			dataType:"json",
+			data: data,
+			cache: false,
+			success: function(data)
+			{
+			if(data.User.length)
+			{
+				
+				   
+				
+			$.each(data.User, function(i,data)
+			{
+				
+				//userdata=[data.coursename,data.start,data.end,data.grade];
+				if(instruct==6)
+				{
+				 $("#userrectable").append("<tr><td>" + data.courseid + "</td><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td>" + data.grade + "</td></tr>");
+				}
+				else
+					{
+					$("#userrectable").append("<tr><td>" + data.courseid + "</td><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td></tr>");
+					$('#grade').hide();
+					}
+			});
+			}
+			
+				callback(true);
+			
+			
+			
+			}
+			
+			
+			
+			});
+			
+			
+			
+			
+		};
+
+
+   //called for various functions what it returns depends upon what a is
+		function getUserData(a){
+			var dataString=null;
+			
+			//var table=$('#usertable').DataTable();
+			var rows = table
+		    .rows()
+		    .remove()
+		    .draw();
+			
+			
+			if(a==0)
+				{
+			
+				dataString="archived=0,0&role=1,0&instruct=1";
+			
+				}
+			else if(a==1)
+			{
+				
+				dataString="archived=1,1&role=1,0&instruct=1";
+			
+			}
+			else if(a==2)
+			{
+				
+				dataString="archived=0,0&role=1,1&instruct=1";
+			
+			}
+			
+			
+			
+			$.ajax
+			({
+			type: "POST",
+			url: "GetUserData",
+			dataType:"json",
+			data: dataString,
+			cache: false,
+			success: function(data)
+			{
+			if(data.User.length)
+			{
+				
+				   
+				
+			$.each(data.User, function(i,data)
+			{
+				
+				
+				
+	
+			if(a==0)
+				{
+				
+				//<button id="4" class="btn btn-danger"" role="delete" title="Delete Category"><span class="glyphicon glyphicon-refresh"></span></button>
+				
+				//<button id="6"  role="update" title="Update Category"></button>
+					button1="<button id='edituser' class='btn btn-primary' title='Edit User Info'><span class='glyphicon glyphicon-pencil'</span></button>";
+					button2="<button id='deleteuser' class='btn btn-danger'><span class=\"glyphicon glyphicon-trash\"></span></button>";
+					button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
+					//userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=3"+data.userid+" class=\"rud\" role=\"update\">update</button><button id=4"+data.userid+" class=\"rud\" role=\"delete\" >Delete</button></td></tr>";
+	//<span class=\"glyphicon glyphicon-trash\"></span>
+				}
+			else{
+					button1="<button id='restoreuser' class='btn btn-success' title='restore User'><span class='glyphicon glyphicon-refresh'></button>";
+					button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
+					button2="";//<button id=5"+data.userid+" class=\"rud\" role=\"delete\"></button>";
+				    //userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=2"+data.userid+" class=\"rud\" role=\"restore\">Restore</button>";
+			}
+			userdata=[data.userid,data.role,data.fname,data.lname, data.address1,data.address2,data.address3,data.postcode,data.phone,data.email,button1,button2,button3];
+			table.row.add(userdata).draw();
+		
+			 //$("#usertable").append(userData).removeClass("hidden");
+			});
+		
+			}
+			
+			}
+			});
+		
+		};
+
+
+		
+		function updateStudentGrade(courseid,studentid,grade,callback)
+		{
+			Data="instructid=8&courseid="+courseid+"&studentid="+studentid+"&grade="+grade;
+			alert(Data);
+			$.ajax({
+				type: "POST",
+				url: "StudentData",
+				data:Data,
+				dataType:"json",
+				cache: false,
+				success: function(data)
+				{
+					 $('#recmessage').empty();
+					 $('#sfmessage').empty();
+					if(data.StudentMessage.length)
+					{
+					$.each(data.StudentMessage, function(i,data)
+					{
+					
+					//var user_data="<div>"+data.fname + " "+data.lname + " " + data.address1+"</div>";
+					messageid=data.messagecode;
+					message=data.insertmessagestring;
+					if(messageid==1)
+					{
+					callback(true);
+					}
+				
+				
+					 $('#recmessage').prepend(message);
+				
+					 
+				
+				
+					});
+				
+						//$('#ModalMessage').modal('show'),$('#myModal').modal('show');
+						//$('#catModal').find('form')[0].reset();
+						// $('#courseModal').find('form')[0].reset();
+					
+					
+					}
+				
+				}
+					
+				});
+	    
+			
+		
+	};
+				
+
+
+	
+	
+	
+	
+
+
+
+
+
+	
+
+			function insertUser(a){
+			var dataString=null;
+			
+			if(a==1)
+			{
+			var fname = $("#firstName").val();
+			var lname = $("#lastName").val();
+			var address1 = $("#address1").val();
+			var address2 = $("#address2").val();
+			var address3 = $("#address3").val();
+			var address4 = $("#address4").val();
+			var postcode = $("#postcode").val();
+			var phone = $("#phone").val();
+			var email = $("#email").val();
+			var dob = $("#dob").val();
+			var role = $("#role").val();
+			alert (role);
+			var checknum = $("#checknum").val();
+			var messageid=null;
+			var message=null;
+			
+			
+			
+			
+			
+			
+			dataString="fname="+fname+"&lname="+lname+"&address1="+address1+"&address2="+address2+"&address3="+address3+"&address4="+address4+"&postcode="+postcode+"&phone="+phone+"&email="+email+"&dob="+dob+"&checknum="+checknum+"&role="+role;
+			}
+			else
+				{
+				dataString="filepath="+a+"&checknum=10";
+				}
+
+		
+			
+			
+			//called to insert user data
+			
+			
+			$.ajax({
+			type: "POST",
+			url: "InsertData",
+			data: dataString,
+			dataType:"json",
+			cache: false,
+			success: function(data)
+			{
+				 $('#message').empty();
+				 $('#sfmessage').empty();
+				if(data.Message.length)
+				{
+				$.each(data.Message, function(i,data)
+				{
+				
+				//var user_data="<div>"+data.fname + " "+data.lname + " " + data.address1+"</div>";
+				messageid=data.messagecode;
+				message=data.insertmessagestring;
+			
+				if(messageid==1)
+				{
+				
+				 $('#message').prepend(message);
+				}
+				else
+				{
+				 
+				 $('#sfmessage').prepend(message);
+				}
+				 
+			
+			
+				});
+				if(messageid==1)
+					{
+				$('#ModalActionAlert').modal('show');
+					}
+				else{
+					$('#ModalMessage').modal('show');
+					$('#myModal').find('form')[0].reset();
+					//$('#induserform').find("input[type=text], textarea").val("");
+					 //$('#checknum').val("1");
+					 getUser(0);
+				
+				}
+				}
+				else
+				{
+				$("#content").html("No Results");
+				}
+				}
+			});
+	
+
+			};
+
+
+});//doc.ready function

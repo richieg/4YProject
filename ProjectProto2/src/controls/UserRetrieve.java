@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dao.DBManager;
-import models.RetrieveManager;
+import models.UserRetrieveManager;
 import dto.RecordObjects;
 import dto.UserObjects;
 
@@ -35,7 +35,7 @@ import dto.UserObjects;
 	{
 	int instructid=Integer.valueOf(request.getParameter("instruct"));
 	DBManager db= new DBManager();
-	RetrieveManager retManager= new RetrieveManager();
+	UserRetrieveManager retManager= new UserRetrieveManager();
 	ArrayList<UserObjects> userData = null;
 	Connection connection = db.Get_Connection();
 	Gson gson = new Gson();

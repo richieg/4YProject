@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import models.CategoryCourseManager;
-import models.InsertManager;
+import models.UserInsertManager;
 import models.StudentDataManager;
 import dao.CategoryCourseInsertData;
 import dao.DBManager;

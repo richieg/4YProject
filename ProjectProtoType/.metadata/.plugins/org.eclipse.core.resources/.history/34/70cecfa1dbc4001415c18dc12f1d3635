@@ -1,0 +1,60 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dto.MessageObjects;
+import dto.TimeTableObjects;
+
+public class InsertTimeTableData {
+	
+	
+	public ArrayList<MessageObjects> InsertTTData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+	{
+		PreparedStatement ps = null;
+		PreparedStatement ps1 = null;
+		int instruct=Integer.valueOf(request.getParameter("instruct"));
+		int attrib1=Integer.valueOf(request.getParameter("attrib1"));
+		int attrib2=Integer.valueOf(request.getParameter("attrib2"));
+		int attrib3=Integer.valueOf(request.getParameter("attrib3"));
+		int attrib4=Integer.valueOf(request.getParameter("attrib4"));
+		//int attrib4=Integer.valueOf(request.getParameter("attrib4"));
+		ArrayList<MessageObjects> insertMessage = new ArrayList<>();
+		int rse=0;
+		
+		ps = connection.prepareStatement("INSERT into TB_timetabletemp values(?,?,?,?,?,?)");
+		ps.setInt(1,1);
+		ps.setInt(2,attrib1);
+		ps.setInt(3,attrib2);
+		ps.setInt(4,attrib3);
+		ps.setInt(5,attrib4);
+		ps.setInt(6,0);
+		
+		rse= ps.executeUpdate();
+		System.out.println(rse);
+		MessageObjects messageObjects = new MessageObjects();
+		if(rse>0)
+		{  
+		
+			messageObjects.setMessagecode(1);
+			messageObjects.setInsertmessagestring("<div style='color:blue'>New entry added to timetable successfully</div>");
+			insertMessage.add(messageObjects);
+			
+			
+		}
+		else
+		{
+			messageObjects.setMessagecode(2);
+			messageObjects.setInsertmessagestring("<div style='color:red'>An error has occured please contact IT!</div>");
+			insertMessage.add(messageObjects);
+		}
+		return insertMessage;
+		}
+
+
+}

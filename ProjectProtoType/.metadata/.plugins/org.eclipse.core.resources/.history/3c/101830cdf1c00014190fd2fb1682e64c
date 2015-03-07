@@ -1,0 +1,93 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dto.TimeTableObjects;
+
+public class InsertTimeTableData {
+	
+	
+	public ArrayList<TimeTableObjects> InsertTTData(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+	{
+		PreparedStatement ps = null;
+		PreparedStatement ps1 = null;
+		int instruct=Integer.valueOf(request.getParameter("instruct"));
+		int attrib1=Integer.valueOf(request.getParameter("attrib1"));
+		int attrib2=Integer.valueOf(request.getParameter("attrib2"));
+		int attrib3=Integer.valueOf(request.getParameter("attrib3"));
+		int attrib4=Integer.valueOf(request.getParameter("attrib4"));
+		//int attrib4=Integer.valueOf(request.getParameter("attrib4"));
+		ArrayList<TimeTableObjects> ttData = new ArrayList<>();
+		int rse=0;
+		
+		ps = connection.prepareStatement("INSERT into TB_timetabletemp values(?,?,?,?,?,?)");
+		ps.setInt(1,1);
+		ps.setInt(2,attrib1);
+		ps.setInt(3,attrib2);
+		ps.setInt(4,attrib3);
+		ps.setInt(5,attrib4);
+		ps.setInt(6,0);
+		
+		rse= ps.executeUpdate();
+		System.out.println(rse);
+		if(rse>0)
+		{  System.out.println("got to here 1");
+			ps1=connection.prepareStatement("select day,timeslot,tutorcourse,roomid from tb_timetabletemp order by day,timeslot;");
+			 System.out.println("got to here 2");
+		ResultSet rs = ps1.executeQuery();
+		int curday=0;
+		
+		int [] [] slots = null;
+		
+		int day=0;
+		int time=0;
+		int tc=0;
+		int room=0;
+		
+		
+
+		int [] slotscnt = null;
+	    while(rs.next())
+		{
+	    
+	    day=rs.getInt("day");
+	    System.out.println(day);
+	    time=rs.getInt("timeslot");
+	    System.out.println(time);
+	    tc=rs.getInt("tutorcourse");
+	    System.out.println(tc);
+	    room=rs.getInt("roomid");
+	    System.out.println(room);
+	    slotscnt= new int[0];
+	    slots = new int [0] [0] ;
+	    
+	
+	    	
+	    	slotscnt[time]=slotscnt[time]+1;
+	    	System.out.println(slotscnt[time]);
+	    	slots[time][slotscnt[time]]=tc;
+	    	System.out.println(slots[time][slotscnt[time]]);
+	    	
+	
+		TimeTableObjects ttObject = new TimeTableObjects();
+		ttObject.setId(0);
+		ttObject.setIname("NULL");
+		ttData.add(ttObject);
+		}
+	
+		
+		
+		
+		}
+		
+		return ttData;
+	}
+	
+
+}

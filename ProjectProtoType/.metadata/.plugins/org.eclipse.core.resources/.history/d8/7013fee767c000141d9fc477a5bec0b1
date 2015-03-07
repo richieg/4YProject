@@ -1,0 +1,21 @@
+package dto;
+
+public class TimeTableObjects {
+	
+	
+	public int getDayid() {
+		return dayid;
+	}
+	public void setDayid(int dayid) {
+		this.dayid = dayid;
+	}
+	public String getDayname() {
+		return dayname;
+	}
+	public void setDayname(String dayname) {
+		this.dayname = dayname;
+	}
+	private int dayid;
+	private String dayname;
+
+}

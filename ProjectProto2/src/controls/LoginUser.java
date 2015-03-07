@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 //http://www.journaldev.com/1907/java-servlet-session-management-tutorial-with-examples-of-cookies-httpsession-and-url-rewriting
 
 
-import models.RetrieveManager;
+import models.UserRetrieveManager;
 
 import com.google.gson.Gson;
 
@@ -52,7 +52,7 @@ import dto.UserObjectsInitial;
 	    	System.out.print("user" + user );
 	        System.out.print("got to controller");
 	        DBManager db= new DBManager();
-	        RetrieveManager retManager= new RetrieveManager();
+	        UserRetrieveManager retManager= new UserRetrieveManager();
 	        ArrayList userData = null;
 	        Connection connection = db.Get_Connection();
 	        userData = retManager.GetUserDataInitial(connection, request, response) ;
