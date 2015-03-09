@@ -3,7 +3,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +35,7 @@ public class RetrieveTimeTableData {
 		//int archived=Integer.parseInt(request.getParameter("archived"));
 		if(instruct==1)
 		{
-		 ps = connection.prepareStatement("Select id,iname from tb_days where (select count(day) from tb_timetabletemp)<50;");
+		 ps = connection.prepareStatement("Select id,iname from tb_days;");
 		}
 		else if(instruct==2)
 		{
@@ -61,7 +63,7 @@ public class RetrieveTimeTableData {
 			ps.close();
 			if(resreq==2)
 			{
-				ps=connection.prepareStatement("select room_id as id,roomname as iname from tb_room where roomcapacity>=(select capacity from tb_tutor_courses where tutorcourseid=?) and pcqty>=(select capacity from tb_tutor_courses where tutorcourseid=?) and room_id not in (select roomid from tb_timetabletemp where day=? and timeslot=?);");
+				ps=connection.prepareStatement("select distinct room_id as id,roomname as iname from tb_room where roomcapacity>=(select capacity from tb_tutor_courses where tutorcourseid=?) and pcqty>=(select capacity from tb_tutor_courses where tutorcourseid=?) and room_id not in (select roomid from tb_timetabletemp where day=? and timeslot=?);");
 				ps.setInt(1,attrib3);
 				ps.setInt(2,attrib3);
 				ps.setInt(3,attrib1);
@@ -69,7 +71,7 @@ public class RetrieveTimeTableData {
 			}
 			else
 			{
-				ps=connection.prepareStatement("select room_id as id,roomname as iname from tb_room where roomcapacity>=(select capacity from tb_tutor_courses where tutorcourseid=?) and room_id not in (select roomid from tb_timetabletemp where day=? and timeslot=?);");
+				ps=connection.prepareStatement("select distinct room_id as id,roomname as iname from tb_room where roomcapacity>=(select capacity from tb_tutor_courses where tutorcourseid=?) and room_id not in (select roomid from tb_timetabletemp where day=? and timeslot=?);");
 				ps.setInt(1,attrib3);
 
 				ps.setInt(2,attrib1);
@@ -153,7 +155,7 @@ public class RetrieveTimeTableData {
 			
 			    while(rs.next())
 				{
-			    System.out.println("got to here 3");
+			   
 			    day=rs.getInt("day");
 			    dayname=rs.getString("dayname");
 			    time=rs.getInt("timeslot");
@@ -163,36 +165,20 @@ public class RetrieveTimeTableData {
 			    roomname=rs.getString("roomname");
 			    tutorname=rs.getString("tname");
 			    
-			    System.out.println(day);
-			    System.out.println(dayname);
-			    
-			    
-			    System.out.println(time);
-			  
-			    System.out.println(tc);
-			    
-			    System.out.println(coursename);
-			
-			    System.out.println(room);
-			    System.out.println(roomname);
+	
 			   
 			
 				  
 			    
 			    	slotscnt[time]=slotscnt[time]+1;
-			    	System.out.println("slots cnt"+slotscnt[time]);
+			    	
 			    	slots[time][slotscnt[time]]="<button class='btn btn-danger' id='deleteE' day='"+day+"' time='"+time+"' course='"+tc+"'>X</button><br><span style='color:blue'>"+coursename+"</span><br><span style='color:red'>"+tutorname+"</span><br><span style='color:green'>"+roomname+"</sapn>";
-			    	System.out.println(slots[time][slotscnt[time]]);
-			    	
-			    	
-			    	System.out.println("got to here 1 !!!!!");
+			    
 			  
 			    }
 			    
 			    
-			    System.out.println("got to here 2!!!!!");
 			
-					System.out.println("got to here 3 !!!!!");
 				for(int b=0;b<timeslots;b++)
 				{
 				TimeTableObjects ttObject = new TimeTableObjects();
@@ -250,9 +236,34 @@ public class RetrieveTimeTableData {
 			}
 		
 		
+			public ArrayList<TimeTableObjects> RetireveSemesterDetails(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+			{
+				PreparedStatement ps1;
+				String startdate;
+				String enddate;
+				ArrayList<TimeTableObjects> ttData = new ArrayList<>();
+				
+				ps1=connection.prepareStatement("select id,SemesterID,StartDate,EndDate from tb_semester;");
+				ResultSet rs = ps1.executeQuery();
+				
 		
-		
-		
+				while (rs.next())
+				{
+					  SimpleDateFormat ft = 
+						      new SimpleDateFormat ("dd.MM.yyyy");
+					  startdate=ft.format(rs.getDate("StartDate"));
+					  enddate=ft.format(rs.getDate("EndDate"));
+					
+					TimeTableObjects ttObject = new TimeTableObjects();
+					ttObject.setSemid(rs.getInt("semesterID"));
+					ttObject.setStartdate(startdate);
+					ttObject.setEndate(enddate);
+					ttData.add(ttObject);
+					
+				}
+				return ttData;
+				
+			}
 		
 		
 		

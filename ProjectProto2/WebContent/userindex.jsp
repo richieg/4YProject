@@ -181,7 +181,7 @@ Return to previous
 <div id="dobdiv" class="form-group">
    <label class="control-label col-sm-4" for="dob">Date of Birth</label>
   <div class="col-sm-4">
-    <input id="datepicker" name="dob" placeholder="Date of Birth"  type="text" required="true">
+    <input id="datepicker" name="dob" placeholder="Date of Birth"  type="text" required="true"  class="form-control">
 
   </div>
 </div>

@@ -9,19 +9,25 @@
 	var roomid=null;
 	var timecols=null;
 	var timerows=null;
+	var semid=null;
+	var startdate=null;
+	var enddate=null;
 	getDataForSelectors(1,0,0,0);
 	getTableData(0,dayid,timeid,courseid,roomid,function(){drawtimetable(timecols,timerows);});
 	
 	
-	
-	$('#nt').click(function(){
-		alert("button hot");
-	
-		getDataForSelectors(1,0,0,0);
-
-		
-	});
-	
+	$(function() {
+		$( "#startdate" ).datepicker({changeYear: true,yearRange: "-10:+10",dateFormat: 'yy-mm-dd'});
+		});
+	$(function() {
+		$( "#enddate" ).datepicker({changeYear: true,yearRange: "-10:+10",dateFormat: 'yy-mm-dd'});
+		});
+	$(function() {
+		$( "#hstartdate" ).datepicker({changeYear: true,yearRange: "-10:+10",dateFormat: 'yy-mm-dd'});
+		});
+	$(function() {
+		$( "#henddate" ).datepicker({changeYear: true,yearRange: "-10:+10",dateFormat: 'yy-mm-dd'});
+		});
 	
 
 
@@ -29,48 +35,52 @@
 	
 	
 	$('#daysel').change(function() {
-		alert("hello");
+	
 		
 		dayid=$('#daysel option:selected').attr('id');
-		alert(dayid);
+		
 		if(dayid!=-1)
 		{
-		alert("ok");
+	
 		getDataForSelectors(2,dayid,0,0);
+		$("#timesel").removeAttr("disabled");
+
 		}
 		
 	});
 	
 	$('#timesel').change(function() {
-		alert("hello");
+		
 		
 		timeid=$('#timesel option:selected').attr('id');
-		alert(timeid);
+	
 		if(timeid!=-1)
 		{
-		alert("ok");
+	
 		getDataForSelectors(3,dayid,timeid,0);
+		$("#coursesel").removeAttr("disabled");
 		}
 	
 	});
 	$('#coursesel').change(function() {
-		alert("hello");
+
 		
 		courseid=$('#coursesel option:selected').attr('id');
-		alert(timeid);
+	
 		if(courseid!=-1)
 		{
-		alert("ok");
+	
 		getDataForSelectors(4,dayid,timeid,courseid);
+		$("#roomsel").removeAttr("disabled");
 		}
 	
 	});
 	
 	$('#roomsel').change(function() {
-		alert("hello");
+	
 		
 		roomid=$('#roomsel option:selected').attr('id');
-		alert(roomid);
+		
 		
 	
 	});
@@ -78,26 +88,163 @@
 	
 	
 	 $('#timetable').on( 'click', '#deleteE', function () {
-		 
-			var dayid=this.getAttribute('day');
-			var timeid=this.getAttribute('time');
-			var courseid=this.getAttribute('course');
-			alert(dayid);
-			alert(timeid);
-			alert(courseid);
+		 $("#timetable").dataTable().fnDestroy();
+			var dayid1=this.getAttribute('day');
+			var timeid1=this.getAttribute('time');
+			var courseid1=this.getAttribute('course');
+		
+			getTableData(2,dayid1,timeid1,courseid1,0,function(){drawtimetable(timecols,timerows);});
+			
 			 
 		 
 		 });
+	 
+	 
+	 $('#savewip').click(function(){
+		 bootbox.confirm("Are you sure you want to save this draft?", function(result) {if (result==true){saveTT(3,0);};
+		 });
+	 });
+	 
+	 $('#savettsem').click(function(){
+		 startdate=$('#startdate').val();
+		 enddate=$('#enddate').val();
+		 var semester=$('#semsel').val();
+			 
+		 InsertSem(5,startdate,enddate,semester,function(semesterid){$("#newsemtable").append("<tr><td>" + semester + "</td><td>" + startdate + "</td><td>" + enddate + "</td></tr>");});
+		 $('#newsemtablediv').show();
+		 $('#newsemdiv').hide();
+	        
+		 
+		 
+		
+		 
+	 });
 		 
 	
 	
-	$('#adde').click(function(){
-		alert("button hot");
-		$("#timetable").dataTable().fnDestroy();
+
+	
+	
+	$('#existingsem').change(function () {
+		
+	
+	        
+	        var id=$('#existingsem').val();
+	        alert(id);
+	        if(id=="Yes")
+	        {
+	        getSemesterDetails();
+	        $('#semtablediv').show();
+	        $('#savettm').show();
+	      
+	        }
+	        else
+	        	{
+	        	$('#newsemdiv').show();
+	        	
+	        	}
+	        
+	        $('#intialdiv').hide();
+	        
+	      
+	     
+	    
+	    
+	  });
+	
+	$('#existingsem1').change(function () {
+		
+		
+        
+        var id=$('#existingsem1').val();
+        alert(id);
+        if(id=="Yes")
+        {
+        getSemesterDetails();
+        $('#newsemesterhols').show();
+        $('#holsels').hide();
+      
+        }
+    
+        $('#savesemhols').hide();
+        $('#savettm').show();
+     
+    
+    
+  });
+	
+	
+	
+
+	 $('#hols').on( 'click', '#savesperiod', function () {
+		 
+		var hstartdate = $(this).closest('tr').find('#hstartdate').val();
+	    var henddate = $(this).closest('tr').find('#henddate').val();
+		 InsertSem(6,hstartdate,henddate,semid,function(result){if(result==1){$('#hols').append("<tr><td><label for='dob'>Start Date</label></td><td><input id='hstartdate' name='hstartdate' placeholder='Start Date'  type='text' required='true' class='form-control'></td><td>&nbsp;</td><td><label for='dob'>End Date</label></td><td><input id='henddate' name='henddate' placeholder='End Date'  type='text' required='true' class='form-control'></td><td>&nbsp;</td><td><button id='savesperiod' class='btn btn-success' title='Add Holiday Period'><span class='glyphicon glyphicon-plus'></span></button></td></tr>");}});
+		 
+	 });
+	
+	
+	
+	
+	
+	 $('#semtable').on( 'click', '#semcheck', function () {
+		
+		alert("hello");
+	    if($(this).is(":checked")) {
+	    	
+	    	semid=this.getAttribute('name');
+	        
+	        
+	        alert(semid);
+	    
+	        
+	       
+	      
+	     
+	    }
+	    
+	  });
+	 
+	 
+	 $('#savettm').click(function(){
+		alert("oala");
+		 saveTT(4,semid);
+		 
+		 
+	 });
+	 
+	 
+	 
+	 
+		$('#adde').click(function(){
+			
+			$("#timetable").dataTable().fnDestroy();
+			
+			refreshSels();
+				var o1 = new Option("option text", "value");
+				$(o1).html("- Select One-");	
+				$(o1).prependTo('#daysel');
+
+			//roomid=$('#roomsel option:selected').attr('id');
+			getTableData(1,dayid,timeid,courseid,roomid,function(){drawtimetable(timecols,timerows), getDataForSelectors(1,0,0,0);});
+			
+		});
+		
+		
+		
+		$('#refreshsels').click(function(){
+			refreshSels();
+		});
+	function refreshSels()
+	{
+		
+		
 		 $('#daysel')
 		 	.find('option')
 		    .remove()
 		    .end();
+		 
 		 $('#timesel')
 		 	.find('option')
 		    .remove()
@@ -110,14 +257,12 @@
 		 	.find('option')
 		    .remove()
 		    .end();
-			var o1 = new Option("option text", "value");
-			$(o1).html("- Select One-");	
-			$(o1).prependTo('#daysel');
-
-		//roomid=$('#roomsel option:selected').attr('id');
-		getTableData(1,dayid,timeid,courseid,roomid,function(){drawtimetable(timecols,timerows);});
+		 $("#roomsel").attr("disabled", "disabled");
+		 $("#timesel").attr("disabled", "disabled");
+		 $("#coursesel").attr("disabled", "disabled");
+		 $("#daysel").removeAttr("disabled");
 		
-	});
+	};
 	
 	
 
@@ -136,9 +281,56 @@
 		        });
 		        $('#timetable th:nth-child(1)').hide();
 		        $('#timetable td:nth-child(1)').hide();
+		        $('#timetable_length').hide();
 		      
 		    };
 		    
+		    
+		    
+function getSemesterDetails(){
+	
+	
+	dataString="instruct=5";
+	
+	$.ajax
+	({
+	type: "POST",
+	url: "TimeTableRetrieve",
+	dataType:"json",
+	data: dataString,
+	cache: false,
+	success: function(data)
+	{
+	if(data.TimeTableData.length)
+	{
+		
+
+		//callback(id,name);
+		
+		
+	$.each(data.TimeTableData, function(i,data)
+	{
+	
+		
+		
+
+		 $("#semtable").append("<tr><td>" + data.semid + "</td><td>" + data.startdate + "</td><td>" + data.endate + "</td><td><input type='checkbox' id='semcheck' name='"+data.id+"'></td></tr>");
+
+
+	});
+
+
+
+	}
+
+	}
+	});
+	alert("at end");
+return;
+};
+
+	
+
 		    
 	
 		
@@ -152,6 +344,8 @@ function getDataForSelectors(a,b,c,d)
 	if(a==1)
 		
 	{
+		
+
 		sel="#daysel";
 		 $(sel)
 		 	.find('option')
@@ -161,20 +355,24 @@ function getDataForSelectors(a,b,c,d)
 		 	.find('option')
 		    .remove()
 		    .end();
+		 $("#timesel").attr("disabled", "disabled");
 		 $('#coursesel')
 		 	.find('option')
 		    .remove()
 		    .end();
+		 $("#coursesel").attr("disabled", "disabled");
 		 $('#roomsel')
 		 	.find('option')
 		    .remove()
 		    .end();
+		 $("#roomsel").attr("disabled", "disabled");
 			
 	
 		
 	}
 	if(a==2)
 	{
+		 $("#daysel").attr("disabled", "disabled");
 		sel="#timesel";
 		 $(sel)
 		 	.find('option')
@@ -192,6 +390,7 @@ function getDataForSelectors(a,b,c,d)
 	}
 	if(a==3)
 	{
+		 $("#timesel").attr("disabled", "disabled");
 		sel="#coursesel";
 		 $(sel)
 		 	.find('option')
@@ -205,15 +404,16 @@ function getDataForSelectors(a,b,c,d)
 	}
 	if(a==4)
 	{
+		 $("#coursesel").attr("disabled", "disabled");
 		sel="#roomsel";
 		
 	}
 	
 	
-	 $("#coursenamesel")
+	 /*$("#coursenamesel")
 	 	.find('option')
 	    .remove()
-	    .end();
+	    .end();*/
 
 	$.ajax
 	({
@@ -256,10 +456,130 @@ function getDataForSelectors(a,b,c,d)
 return;
 };
 
+
+
+
+function InsertSem(instruct,startdate,enddate,semester,callback)
+{
+	
+	dataString="instruct="+instruct+"&semester="+semester+"&startdate="+startdate+"&enddate="+enddate;
+	
+	
+	$.ajax
+	({
+	type: "POST",
+	url: "TimeTableInsert",
+	dataType:"json",
+	data: dataString,
+	cache: false,
+	success: function(data)
+	{
+	if(data.TimeTableData1.length)
+	{
+		
+		 $('#sfmessage').empty();
+			$.each(data.TimeTableData1, function(i,data)
+					{
+					
+						
+						
+
+					
+
+
+				
+	
+
+			semid=data.messagecode;
+			message=data.insertmessagestring;
+		
+		
+		
+	
+		
+			 
+		
+					});
+		
+		
+			
+				callback(semid);
+
+				};
+
+				//
+
+				} //
+				});
+				alert("at end");
+				return;
+				};
+
+
+
+
+
+
+function saveTT(instruct,semester)
+{
+	
+	dataString="instruct="+instruct+"&semid="+semester;
+	
+	
+	$.ajax
+	({
+	type: "POST",
+	url: "TimeTableInsert",
+	dataType:"json",
+	data: dataString,
+	cache: false,
+	success: function(data)
+	{
+	if(data.TimeTableData1.length)
+	{
+		
+		 $('#sfmessage').empty();
+			$.each(data.TimeTableData1, function(i,data)
+					{
+					
+						
+						
+
+					
+
+
+				
+	
+
+			messageid=data.messagecode;
+			message=data.insertmessagestring;
+		
+		
+		
+			 $('#sfmessage').prepend(message);
+		
+			 
+		
+					});
+		
+		
+				$('#ModalMessage').modal('show');
+
+
+				};
+
+				//
+
+				} //
+				});
+				alert("at end");
+				return;
+				};
+
 	
 function getTableData(instruct,b,c,d,e,callback)
 {
-	if(instruct==1)
+	if(instruct==1 || instruct==2)
 	{
 	dataString="instruct="+instruct+"&attrib1="+b+"&attrib2="+c+"&attrib3="+d+"&attrib4="+e;
 	}
@@ -279,7 +599,7 @@ success: function(data)
 {
 if(data.TimeTableData1.length)
 {
-	
+
 timecols = [{
 	
     "sTitle": "",
@@ -356,19 +676,7 @@ timecols = [{
 	callback(timecols,timerows);
 	
 	
-$.each(data.TimeTableData, function(i,data)
-{
 
-	alert(data.iname);
-	
-
-//setCatSels(data.categoryid,data.catname);
-
-
-//table.row.add(userdata).draw();
-
-
-});
 
 } //
 

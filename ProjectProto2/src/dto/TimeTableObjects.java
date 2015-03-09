@@ -89,6 +89,27 @@ public class TimeTableObjects {
 	private String cell7;
 	private String cell8;
 	private String cell9;
+	public String getStartdate() {
+		return startdate;
+	}
+	public void setStartdate(String startdate) {
+		this.startdate = startdate;
+	}
+	public String getEndate() {
+		return endate;
+	}
+	public void setEndate(String endate) {
+		this.endate = endate;
+	}
+	public int getSemid() {
+		return semid;
+	}
+	public void setSemid(int semid) {
+		this.semid = semid;
+	}
+	private String startdate;
+	private String endate;
+	private int semid;
 	
 	
 	

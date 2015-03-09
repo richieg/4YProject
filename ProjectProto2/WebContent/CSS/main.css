@@ -148,10 +148,43 @@ margin-top:-255px;
    display:none;
 }
 
-#timetable th:nth-child(1){
+
+#timetable tbody{
+   border-style: none;
+}
+#timetable thead{
+   border-top-style: none;
+}
+#timetable tr:nth-child(1){
+   border-top-style: none;
+}
+
+#timetable td:nth-child(2){
+ border-right-color: rgb(204, 204, 204);
+border-right-style: solid;
+border-right-width: 1px;
+
+border-top-style: none;
+border-bottom-style: none;
+}
+
+#timetable td:nth-child(1){
    display:none;
 }
 
+
+#timetable{
+
+
+border-top-color: rgb(204, 204, 204);
+border-top-style: solid;
+border-top-width: 1px;
+
+
+border-bottom-color: rgb(204, 204, 204);
+border-bottom-style: solid;
+border-bottom-width: 1px;
+}
 
 #timetable th{
    background-color:#FFFEFF;

@@ -47,8 +47,9 @@ import dto.UserObjectsInitial;
 		if(instruct==0)
 		{
 			ttData=retManager.GetTimeTable(connection, request, response);
+			ttdata = gson.toJson(ttData);
 		}
-		else
+		else if(instruct==1)
 		{
 			imessage= retManager.InsertTTData(connection, request, response) ;
 			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
@@ -57,8 +58,46 @@ import dto.UserObjectsInitial;
 			{
 				ttData=retManager.GetTimeTable(connection, request, response);
 			}
+			ttdata = gson.toJson(ttData);
 		}
-		ttdata = gson.toJson(ttData);
+		else if(instruct==2){
+				imessage= retManager.DeleteTTData(connection, request, response) ;
+				int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
+				System.out.println(messagecode);
+				if(messagecode==1)
+				{
+					ttData=retManager.GetTimeTable(connection, request, response);
+				}
+				ttdata = gson.toJson(ttData);
+		}
+		else if(instruct==3){
+			imessage= retManager.SaveTTasWIP(connection, request, response) ;
+			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
+			System.out.println(messagecode);
+			ttdata = gson.toJson(imessage);
+		}
+		
+		else if(instruct==4){
+			imessage= retManager.SaveTTPerm(connection, request, response) ;
+			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
+			System.out.println(messagecode);
+			ttdata = gson.toJson(imessage);
+	}
+		
+		
+		else if(instruct==5){
+			imessage= retManager.InsertSemester(connection, request, response) ;
+			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
+			System.out.println(messagecode);
+			ttdata = gson.toJson(imessage);
+	}
+		else if(instruct==6){
+			imessage= retManager.InsertHolsPeriods(connection, request, response) ;
+			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
+			System.out.println(messagecode);
+			ttdata = gson.toJson(imessage);
+	}
+	
 		System.out.println("tdata="+ttdata);
 	
 	

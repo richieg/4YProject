@@ -41,33 +41,33 @@ import dto.TimeTableObjects;
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		String catdata=null;
+		String ttdata=null;
 		Gson gson = new Gson();
 		try
 		{
-		String instruct=request.getParameter("instruct");
+		int instruct=Integer.valueOf(request.getParameter("instruct"));
 	
 		DBManager db= new DBManager();
 		TimeTableRetrieveManager retManager= new TimeTableRetrieveManager();
 		ArrayList<TimeTableObjects> ttData = null;
 		
 		Connection connection = db.Get_Connection();
-		//if(instruct.equals("1")|| instruct.equals("2") )
-				//{
-			ttData= retManager.GetTTData(connection, request, response) ;
-				catdata = gson.toJson(ttData);
-				//}
-		/*if(instruct.equals("2"))
-				{
-			System.out.println("ControllerEventListener for course instruct id="+instruct);
-				courseData=retManager.GetCourseData(connection, request, response);
-				catdata = gson.toJson(courseData);
-				//System.out.println(catData);
-				}*/
 		
+		
+		if(instruct==5)
+		{
+			ttData=retManager.GetSemDetails(connection, request, response);
+		}
+		else
+		{
+		
+			ttData= retManager.GetTTData(connection, request, response) ;
+		}
+				ttdata = gson.toJson(ttData);
+	
 
 		
-		out.println("{\"TimeTableData\":"+catdata+"}");
+		out.println("{\"TimeTableData\":"+ttdata+"}");
 		//ut.println(catdata);
 
 		ttData=null;
