@@ -38,7 +38,7 @@ h1.h{
 .menu {
     margin: 0 auto;
     padding-top: 20px;
-	padding-left:10%;
+	
 }
 
 .menu a {
@@ -156,16 +156,17 @@ margin-top:-255px;
    border-top-style: none;
 }
 #timetable tr:nth-child(1){
-   border-top-style: none;
+   border-style: none;
 }
 
 #timetable td:nth-child(2){
  border-right-color: rgb(204, 204, 204);
 border-right-style: solid;
 border-right-width: 1px;
-
+width:100px;
 border-top-style: none;
-border-bottom-style: none;
+
+
 }
 
 #timetable td:nth-child(1){
@@ -176,49 +177,109 @@ border-bottom-style: none;
 #timetable{
 
 
-border-top-color: rgb(204, 204, 204);
-border-top-style: solid;
-border-top-width: 1px;
+border-color: rgb(204, 204, 204);
+border-style: solid;
+border-width: 1px;
 
 
-border-bottom-color: rgb(204, 204, 204);
-border-bottom-style: solid;
-border-bottom-width: 1px;
+}
+#timetable_filter{
+	display:none;
+}
+#timetable_info{
+	display:none;
 }
 
 #timetable th{
-   background-color:#FFFEFF;
+   background-color:#fff9b8;
+   border-color: rgb(204, 204, 204);
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-width: 1px;
+
   
 }
 
 #timetable tr:nth-child(1){
-   background-color:#E7FEFF;
+   background-color:#f8fbff;
 }
-#timetable tr:nth-child(2){background-color:#E7FEFF;
+#timetable tr:nth-child(2){background-color:#f8fbff;
 }
-#timetable tr:nth-child(3){background-color:#E7FEFF;
+#timetable tr:nth-child(3){background-color:#f8fbff;
 }
-#timetable tr:nth-child(4){background-color:#E7FEFF;
+#timetable tr:nth-child(4){background-color:#f8fbff;
 }
-#timetable tr:nth-child(5){background-color:#E7FEFF;
+#timetable tr:nth-child(5){
+	background-color:#f8fbff;
+	border-color: rgb(204, 204, 204);
+	border-bottom-style: solid;
+	border-width: 1px;
 }
 
 
 
 #timetable tr:nth-child(6){
-   background-color:#AEC6CF;
+   background-color:#fffcf8;
 }
 #timetable tr:nth-child(7){
-   background-color:#AEC6CF;
+   background-color:#fffcf8;
 }
 #timetable tr:nth-child(8){
-   background-color:#AEC6CF;
+   background-color:#fffcf8;
 }
 #timetable tr:nth-child(9){
-   background-color:#AEC6CF;
+   background-color:#fffcf8;
 }
 #timetable tr:nth-child(10){
-   background-color:#AEC6CF;
+	background-color:#fffcf8;
+	border-color: rgb(204, 204, 204);
+	border-bottom-style: solid;
+	border-width: 1px;
+   background-color:#fffcf8;
+}
+#entryadd{
+	border-style: none;
+	border-color:#ffffff;
+}
+
+
+
+
+.space{
+	height:40px;
+	margin-bottom:40px;
+}
+
+
+.tableboxsml{
+	border-color: #F8F8F8;
+	border-style: solid;
+	border-width: 1px;
+	padding-top:10px;
+	padding-bottom:10px;
+    width: 65%;
+    margin: 0 auto;
+       background-color:#F8F8F8;
+}
+.tableboxmed{
+	width: 75%;
+		border-color: #F8F8F8;
+	border-style: solid;
+	border-width: 1px;
+	padding-top:10px;
+	padding-bottom:10px;
+   
+    margin: 0 auto;
+       background-color:#F8F8F8;
+}
+
+.buttonbox{
+	text-align:center;
+}
+.tableboxlg{
+
+    width: 95%;
+    margin: 0 auto;
 }
 
 

@@ -110,6 +110,14 @@ public class TimeTableObjects {
 	private String startdate;
 	private String endate;
 	private int semid;
+	private String timetabletitle;
+
+	public String getTimetabletitle() {
+		return timetabletitle;
+	}
+	public void setTimetabletitle(String timetabletitle) {
+		this.timetabletitle = timetabletitle;
+	}
 	
 	
 	

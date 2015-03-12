@@ -21,11 +21,13 @@ public class InsertTimeTableData {
 		System.out.println("got to tt inset");
 		PreparedStatement ps = null;
 		PreparedStatement ps1 = null;
+		int ttid=0;
 		int instruct=Integer.valueOf(request.getParameter("instruct"));
-		int attrib1=Integer.valueOf(request.getParameter("attrib1"));
-		int attrib2=Integer.valueOf(request.getParameter("attrib2"));
-		int attrib3=Integer.valueOf(request.getParameter("attrib3"));
-		int attrib4=Integer.valueOf(request.getParameter("attrib4"));
+		int dayid=Integer.valueOf(request.getParameter("dayid"));
+		int timeid=Integer.valueOf(request.getParameter("timeid"));
+		int courseid=Integer.valueOf(request.getParameter("courseid"));
+		int roomid=Integer.valueOf(request.getParameter("roomid"));
+		int timetableid=Integer.valueOf(request.getParameter("timetableid"));
 		
 		
 		System.out.println(instruct);
@@ -33,13 +35,16 @@ public class InsertTimeTableData {
 		ArrayList<MessageObjects> insertMessage = new ArrayList<>();
 		int rse=0;
 		System.out.println("got to tt inset");
-		ps = connection.prepareStatement("INSERT into TB_timetabletemp values(?,?,?,?,?,?)");
-		ps.setInt(1,1);
-		ps.setInt(2,attrib1);
-		ps.setInt(3,attrib2);
-		ps.setInt(4,attrib3);
-		ps.setInt(5,attrib4);
+	
+		
+		ps = connection.prepareStatement("INSERT into TB_timetabletemp values(?,?,?,?,?,?,?)");
+		ps.setInt(1,timetableid);
+		ps.setInt(2,dayid);
+		ps.setInt(3,timeid);
+		ps.setInt(4,courseid);
+		ps.setInt(5,roomid);
 		ps.setInt(6,1);
+		ps.setString(7,"2015-03-10");
 		
 		rse= ps.executeUpdate();
 		System.out.println(rse);
@@ -105,9 +110,9 @@ public class InsertTimeTableData {
 	{
 	
 		CallableStatement ps = null;
-	
+		PreparedStatement pr=null;
 		int semid=Integer.valueOf(request.getParameter("semid"));
-		
+		int instruct=Integer.valueOf(request.getParameter("instruct"));
 		//int attrib4=Integer.valueOf(request.getParameter("attrib4"));
 		ArrayList<MessageObjects> insertMessage = new ArrayList<>();
 		Boolean rse=false;
@@ -130,6 +135,26 @@ public class InsertTimeTableData {
 			messageObjects.setMessagecode(1);
 			messageObjects.setInsertmessagestring("<div style='color:blue'>New entry added to timetable successfully</div>");
 			insertMessage.add(messageObjects);
+			if(instruct==11)
+			{ 
+				
+				pr=connection.prepareStatement("insert into tb_timetabletemp select * from tb_timetabletemp2;");
+				int ss=pr.executeUpdate();
+				System.out.println("value after insert to temp from temps2"+ss);
+				if(ss>0)
+				{
+					
+					pr=connection.prepareStatement("delete from tb_timetabletemp where semesterid=?");
+					pr.setInt(1,semid);
+					int st=pr.executeUpdate();
+					System.out.println("value after delete fromtfrom temps2"+st);
+					if(st>0)
+					{
+						pr=connection.prepareStatement("delete from tb_timetabletemp2");
+						int sp=pr.executeUpdate();
+					}
+				}
+			}
 			
 			
 		}
@@ -301,9 +326,9 @@ public class InsertTimeTableData {
 		PreparedStatement ps = null;
 		
 		int instruct=Integer.valueOf(request.getParameter("instruct"));
-		int attrib1=Integer.valueOf(request.getParameter("attrib1"));
-		int attrib2=Integer.valueOf(request.getParameter("attrib2"));
-		int attrib3=Integer.valueOf(request.getParameter("attrib3"));
+		int dayid=Integer.valueOf(request.getParameter("dayid"));
+		int timeid=Integer.valueOf(request.getParameter("timeid"));
+		int courseid=Integer.valueOf(request.getParameter("courseid"));
 	
 		
 		
@@ -314,13 +339,13 @@ public class InsertTimeTableData {
 		System.out.println("got to tt delete");
 		ps = connection.prepareStatement("Delete from TB_timetabletemp where day=? and timeslot=? and tutorcourse=?;");
 	
-		ps.setInt(1,attrib1);
-		ps.setInt(2,attrib2);
-		ps.setInt(3,attrib3);
+		ps.setInt(1,dayid);
+		ps.setInt(2,timeid);
+		ps.setInt(3,courseid);
 	
 		
 		rse= ps.executeUpdate();
-		System.out.println(rse);
+		System.out.println("value after delete="+rse);
 		MessageObjects messageObjects = new MessageObjects();
 		if(rse>0)
 		{  

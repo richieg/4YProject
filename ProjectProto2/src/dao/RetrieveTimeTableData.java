@@ -78,6 +78,17 @@ public class RetrieveTimeTableData {
 				ps.setInt(3,attrib2);
 			}
 		}
+		else if (instruct==7)
+		{
+			ps=connection.prepareStatement("select distinct tb_semester.semesterid as id, year(startdate) as iname from tb_timetable inner join tb_semester on tb_semester.ID=tb_timetable.semesterid;");
+			
+		}
+		
+		else if (instruct==8)
+		{
+			ps=connection.prepareStatement("select distinct tb_semester.semesterid as id, year(startdate) as iname from tb_timetable inner join tb_semester on tb_semester.ID=tb_timetable.semesterid where tb_semesterid=?;");
+			
+		}
 		 //ps.setInt(1, instruct);
 		 //ps.setInt(2,archived);
 		
@@ -85,16 +96,14 @@ public class RetrieveTimeTableData {
 		ResultSet rs = ps.executeQuery();
 		while(rs.next())
 		{
-			
-			System.out.println(rs.getString("iname"));
 		
 		TimeTableObjects ttObject = new TimeTableObjects();
 		ttObject.setId(rs.getInt("id"));
 		ttObject.setIname(rs.getString("iname"));
-	
+		
 		
 		ttData.add(ttObject);
-
+		
 		   
 
 
@@ -116,18 +125,97 @@ public class RetrieveTimeTableData {
 		{
 				
 		PreparedStatement ps1;
+		PreparedStatement ps2;
+		PreparedStatement ps3;
+		ResultSet rs;
+		int ttid = -2;
+		int timetableid=-2;
+		int instruct=Integer.valueOf(request.getParameter("instruct"));
 		ArrayList<TimeTableObjects> ttData = new ArrayList<>();
+		String [] tables={"tb_timetable","tb_timetabletemp"};
+	
+		ttid=Integer.valueOf(request.getParameter("table"));
+		
+		System.out.println("ttid for update="+ttid);
+		int ack=0;
+	
+		System.out.println("got to dao");
+		System.out.println("ttid"+ttid);
+		String table=null;
+		String fromWhere=null;
+		
+	
+		
+		
+		
+		System.out.println(table);
+		
+		
+		if(instruct==10)
+		{
+			ack=1;
+			timetableid=Integer.valueOf(request.getParameter("timetableid"));
+			ps1=connection.prepareStatement("insert into tb_timetabletemp2 select * from tb_timetabletemp;");
+			int res = ps1.executeUpdate();
+			if(res>0)
+			{
+			ps1=connection.prepareStatement("delete from tb_timetabletemp;");
+			int res2=ps1.executeUpdate();
+			if(res2>0)
+			{
+				ps1=connection.prepareStatement("insert into tb_timetabletemp (semesterid,day,timeslot,tutorcourse,roomid) select semesterid,day,timeslot,TutorCourse,roomid from tb_timetable where semesterid=?;");
+				ps1.setInt(1,timetableid);
+				int res3=ps1.executeUpdate();
+				if(res3>0)
+				{
+					ps1=connection.prepareStatement("delete from tb_timetable where semesterid=?;");
+					ps1.setInt(1,timetableid);
+					int res5=ps1.executeUpdate();
+					if(res5>0)
+					{
+					ack=0;
+					ttid=1;
+					}
+				}
+				
+			}
+			else
+			{
+				ps3=connection.prepareStatement("delete from tb_timetabletemp;");
+				ps2=connection.prepareStatement("insert into tb_timetabletemp select * from tb_timetabletemp2;");
+				int res4=ps2.executeUpdate();
+				int res5=ps3.executeUpdate();
+			}
+			}
+			
+		}
+		if(ack==0)
+		{
+		table=tables[ttid];
+		if(instruct==0)
+		{
+			fromWhere="(select max(semesterid) from "+table+")";
+		}
+		else
+		{
+			timetableid=Integer.valueOf(request.getParameter("timetableid"));
+			fromWhere=""+timetableid+"";
+		}
+	
 		for(int daycnt=0;daycnt<5;daycnt++)
 		{
-		ps1=connection.prepareStatement("select day,tb_days.iname as dayname,timeslot,tutorcourse,coursename,roomid,roomname,concat(substring(FirstName,1,1),'.', LastName) as tname from tb_timetabletemp " 
-		+ "inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID =tb_timetabletemp.TutorCourse "
-		+ "inner join tb_courses on tb_courses.course_id=tb_tutor_courses.courseid "
-		+ "inner join tb_days on tb_days.id=tb_timetabletemp.day "
+		ps1=connection.prepareStatement("select day,tb_days.iname as dayname,timeslot,tutorcourse,coursename,roomid,roomname,concat(substring(FirstName,1,1),'.', LastName) as tname,"+table+".semesterid as sem, year(startdate) as year from " +table
+		+ " inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID ="+table+".TutorCourse "
+		+ "inner join tb_courses on tb_courses.course_id=tb_tutor_courses.courseid join tb_semester on tb_semester.ID="+table+".semesterid "
+		+ "inner join tb_days on tb_days.id="+table+".day "
 		+ "inner join tb_user on tb_user.UserID=tb_tutor_courses.TutorID "
-		+ "inner join tb_room on tb_room.Room_ID=tb_timetabletemp.RoomID where day=? order by day,timeslot;");
-			   System.out.println("got to here 2");
+		+ "inner join tb_room on tb_room.Room_ID="+table+".RoomID where day=? and "+table+".semesterid="+fromWhere+" order by day,timeslot;");
+			   System.out.println(ps1);
+		
+			
 			   ps1.setInt(1, daycnt);
-				ResultSet rs = ps1.executeQuery();
+			  
+			rs = ps1.executeQuery();
 				int curday=0;
 				
 				String [] [] slots;
@@ -137,7 +225,10 @@ public class RetrieveTimeTableData {
 				int day=0;
 				int time=0;
 				int tc=0;
+				int semesterid=0;
 				int room=0;
+				String timetabletitle=null;
+				
 				String dayname=null;
 				String roomname = null;
 				String coursename=null;
@@ -150,7 +241,7 @@ public class RetrieveTimeTableData {
 				slots=new String[times][timeslots];
 				setSlots(slotscnt,slots,times,timeslots);
 				
-				
+		
 			
 			
 			    while(rs.next())
@@ -164,6 +255,23 @@ public class RetrieveTimeTableData {
 			    room=rs.getInt("roomid");
 			    roomname=rs.getString("roomname");
 			    tutorname=rs.getString("tname");
+			    semesterid=rs.getInt("sem");
+			    timetabletitle=("Semester: "+rs.getString("sem").concat(" ").concat("Year: "+rs.getString("year")));
+			    
+			    
+			    String button = null;
+				
+				if(ttid==1 || instruct==10)
+				{
+					button="<button class='btn btn-danger' id='deleteE' day='"+day+"' time='"+time+"' course='"+tc+"'>X</button>";
+				}
+				else
+				{
+					
+						button="";
+			
+				}
+			    
 			    
 	
 			   
@@ -172,7 +280,7 @@ public class RetrieveTimeTableData {
 			    
 			    	slotscnt[time]=slotscnt[time]+1;
 			    	
-			    	slots[time][slotscnt[time]]="<button class='btn btn-danger' id='deleteE' day='"+day+"' time='"+time+"' course='"+tc+"'>X</button><br><span style='color:blue'>"+coursename+"</span><br><span style='color:red'>"+tutorname+"</span><br><span style='color:green'>"+roomname+"</sapn>";
+			    	slots[time][slotscnt[time]]=button+"<br><span style='color:blue'>"+coursename+"</span><br><span style='color:red'>"+tutorname+"</span><br><span style='color:green'>"+roomname+"</sapn>";
 			    
 			  
 			    }
@@ -203,15 +311,18 @@ public class RetrieveTimeTableData {
 				ttObject.setCell7(slots[7][b]);
 				ttObject.setCell8(slots[8][b]);
 				ttObject.setCell9(slots[9][b]);
-
+				ttObject.setId(semesterid);
+				ttObject.setTimetabletitle(timetabletitle);
 				System.out.println(ttObject.getCell1());
 			
 				ttData.add(ttObject);
 				}
-			
+		}
+		
+
 				
 				
-				}	
+}	
 			
 				
 		return ttData;

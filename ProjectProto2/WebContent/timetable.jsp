@@ -8,6 +8,28 @@
 <html>
 <body>
 
+    <div id="menu" class="menu">
+        <a href="userindex.jsp">
+            <img src="Images\users1.jpg" /><br>
+            Tutor & Student Management
+        </a>
+        <a href="courseindex.html">
+            <img src="Images\course2.png" />
+            Category & Course Management
+        </a>
+     
+        <a href="fieldReps.html">
+            <img src="Images\timetable1.png" />
+            Timetables
+        </a>
+		  <a href="fieldReps.html">
+            <img src="Images\report.png" /><br>
+            Reports
+        </a>
+       
+      
+    </div>
+
 
 <button class="btn btn-primary" data-toggle="modal" 
    data-target="#catModal" id="addcattegory">

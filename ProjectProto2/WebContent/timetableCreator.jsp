@@ -9,10 +9,55 @@
 <script type='text/javascript' src="TimeTableCreator.js"></script>
 </head>
 <body>
-<div id="selects div" class="container-fluid">
-<div class="center-block">
+<ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Library</a></li>
+  <li class="active">Data</li>
+</ol>
+
+<div id="intialdiv" class="tableboxmed">
+
+<div class="buttonbox">
+<h2>Timetable Action Menu</h2>
+<button class="btn btn-danger" id="editttc">
+ 
+
+ <span class="glyphicon glyphicon-pencil"></span> Current Timetable
+</button>
+
+
+
+<button class="btn btn-primary" id="edrafttt">
+
+<span class="glyphicon glyphicon-plus"></span>/ <span class="glyphicon glyphicon-pencil"></span> Draft Timetable
+</button>
+
+<button class="btn btn-success" id="savett"  data-toggle="modal" 
+   data-target="#semestermodal" id="addcattegory">
+
+<span class="glyphicon glyphicon-plus"></span>/ <span class="glyphicon glyphicon-pencil"></span> Semester Details
+</button>
+<button class="btn btn-info" id="savett"  data-toggle="modal" 
+   data-target="#semestermodal" id="addcattegory">
+
+<span class="glyphicon glyphicon-plus"></span>/ <span class="glyphicon glyphicon-pencil"></span> Room Details
+</button>
+</div>
+</div>
+
+
+
+
+
+
+
+<div id="timetablecreator">
+<h1>Time Table Editor</h1>
+<div class="space"></div>
+<div class="tableboxsml">
 <br>
-<table class="table">
+
+<table id='entryadd' class="table">
 
 <tr>
  
@@ -26,7 +71,9 @@
 
 
 <td>
-Day
+ <label for="day">Day</label>
+</td>
+<td>
   <select class="form-control" id="daysel" name="daysel">
       <option id="-1">- Select Day -</option>
 </select>
@@ -35,7 +82,9 @@ Day
 
 
 <td>
-Time
+ <label for="time">Time</label>
+ </td>
+ <td>
   <select class="form-control" id="timesel" name="timesel">
       <option id="-1">- Select Time -</option>
 </select>
@@ -46,7 +95,9 @@ Time
 
 
 <td>
-Course
+ <label for="course">Course</label>
+ </td>
+ <td>
   <select class="form-control" id="coursesel" name="coursesel">
       <option id="-1">- Select Course -</option>
 </select>
@@ -54,7 +105,9 @@ Course
 </td>
 
 <td>
-Room
+ <label for="room">Room</label>
+ </td>
+ <td>
   <select class="form-control" id="roomsel" name="roomsel">
       <option id="-1">- Select Room -</option>
 </select>
@@ -62,23 +115,19 @@ Room
 
 </td>
 <td style="width:45px">
-Add<br>
-<button class="btn btn-success"  id="adde"><span class="glyphicon glyphicon-plus"></span></button>
+
+<button class="btn btn-success" title='Add Entry' id="adde"><span class="glyphicon glyphicon-plus"></span></button>
 </td>
 <td style="width:45px">
-Reset<br>
-<button class="btn btn-danger"  id="refreshsels"><span class="glyphicon glyphicon-refresh"></span></button>
+
+<button class="btn btn-danger" title='Reset'  id="refreshsels"><span class="glyphicon glyphicon-refresh"></span></button>
 </td>
 
 </tr>
 
 </table>
-</div>
-</div>
-
-<div>
-
-<button class="btn btn-primary" id="savewip">
+<div class="buttonbox">
+<button class="btn btn-primary" id="savewip" style="display:none">>
  
 
   Save as Draft
@@ -87,19 +136,38 @@ Reset<br>
 
 
 <button class="btn btn-primary" id="savett"  data-toggle="modal" 
-   data-target="#semestermodal" id="addcattegory">
+   data-target="#semestermodal" style="display:none">>
 
 Save as Timetable
 </button>
 
+
+<button class="btn btn-primary" id="savec" style="display:none">Save Changes</button>
 </div>
+<div>
+</div>
+</div>
+
+</div>
+
+
+
 <br>
 <br>
 
 
+<h1 id="ttitle"></h1>
+<div class="tableboxlg">
+<div class="col-sm-2">
+<label for="timetableselect">Select a Different Timetable</label>
+ <select id="timetableselect" name="timetableselect" class="form-control">
+ 
+</select>
+</div>
+</div>
+<div class="space"></div>
 
-
- <div id="timetablediv"><table class="display" id="timetable" width="100%" cellspacing="0"></table></div>
+ <div id="timetablediv" class="tableboxlg"><table class="display" id="timetable" width="100%" cellspacing="0"></table></div>
  
  
  <!-- Modal -->

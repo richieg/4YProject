@@ -44,7 +44,7 @@ import dto.UserObjectsInitial;
 	ArrayList<TimeTableObjects> ttData = null;
 	System.out.println("instruct in cintrol for timetable="+instruct);
 	Connection connection = db.Get_Connection();
-		if(instruct==0)
+		if(instruct==0 || instruct==10)
 		{
 			ttData=retManager.GetTimeTable(connection, request, response);
 			ttdata = gson.toJson(ttData);
@@ -62,13 +62,10 @@ import dto.UserObjectsInitial;
 		}
 		else if(instruct==2){
 				imessage= retManager.DeleteTTData(connection, request, response) ;
-				int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
-				System.out.println(messagecode);
-				if(messagecode==1)
-				{
-					ttData=retManager.GetTimeTable(connection, request, response);
-				}
-				ttdata = gson.toJson(ttData);
+				
+				
+			
+				ttdata = gson.toJson(imessage);
 		}
 		else if(instruct==3){
 			imessage= retManager.SaveTTasWIP(connection, request, response) ;
@@ -77,7 +74,7 @@ import dto.UserObjectsInitial;
 			ttdata = gson.toJson(imessage);
 		}
 		
-		else if(instruct==4){
+		else if(instruct==4 || instruct==11){
 			imessage= retManager.SaveTTPerm(connection, request, response) ;
 			int messagecode=((MessageObjects) imessage.get(0)).getMessagecode();
 			System.out.println(messagecode);
