@@ -4,24 +4,22 @@
 
 $(document).ready(function(){
 	
-var table=$('#usertable').DataTable();
+var table=$('#usertable').DataTable({"aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ "no-sort" ]}
+     ]});
 //var rectable=$('#userrectable').DataTable();
 //call get user when page loads
 document.getElementById("myBod").addEventListener("load", getUserData(0));
 
 
 
-
-$('#myModal').on('hidden.bs.modal', function (e) {
-	  $(this).removeData();
-	});
  
 
 
 //form functionality
 
 $(function() {
-	$( "#datepicker" ).datepicker({changeYear: true,yearRange: "-100:+0",dateFormat: 'yy-mm-dd'});
+	$( "#datepicker" ).datepicker({changeYear: true,yearRange: "-80:-16",changeMonth: true,dateFormat: 'yy-mm-dd'});
 	});
 
 
@@ -63,6 +61,7 @@ $('#adduser1').click(function()
 				$('#adduser1').hide();
 				$('#updateButton').hide();
 				$('#allusers').show();
+				$('#bulkuploadbtn').hide();
 				
 				
 				
@@ -80,6 +79,7 @@ $('#adduser1').click(function()
 					$('#adduser1').show();
 					$('#updateButton').show();
 					$('#allusers').hide();
+					$('#bulkuploadbtn').show();
 				
 					
 					
@@ -100,8 +100,9 @@ $('#adduser1').click(function()
 		$('#SubmitButton1').click(function()
 				{
 			
-	
-			 $('#checknum').val("0");        
+			$('#myModal').modal('show');
+			 $('#checknum').val("0");
+		
 				});
 
 
@@ -397,7 +398,7 @@ $('#adduser1').click(function()
 		    .remove()
 		    .draw();*/
 			var instruct=null;
-			if(roledid==0)
+			if(roleid==0)
 				{
 				instruct=6;
 				}
@@ -498,7 +499,8 @@ $('#adduser1').click(function()
 			if(data.User.length)
 			{
 				
-				   
+				
+  
 				
 			$.each(data.User, function(i,data)
 			{
@@ -524,7 +526,7 @@ $('#adduser1').click(function()
 					button2="";//<button id=5"+data.userid+" class=\"rud\" role=\"delete\"></button>";
 				    //userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=2"+data.userid+" class=\"rud\" role=\"restore\">Restore</button>";
 			}
-			userdata=[data.userid,data.role,data.fname,data.lname, data.address1,data.address2,data.address3,data.postcode,data.phone,data.email,button1,button2,button3];
+			userdata=[data.userid,data.role,data.fname,data.lname, data.address1,data.address2,data.address3,data.postcode,data.phone,data.email,button1,button2];
 			table.row.add(userdata).draw();
 		
 			 //$("#usertable").append(userData).removeClass("hidden");
@@ -618,6 +620,7 @@ $('#adduser1').click(function()
 			var email = $("#email").val();
 			var dob = $("#datepicker").val();
 			alert(dob);
+		
 			var role = $("#role").val();
 			alert (role);
 			var checknum = $("#checknum").val();

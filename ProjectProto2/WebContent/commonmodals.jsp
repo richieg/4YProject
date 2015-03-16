@@ -34,6 +34,45 @@
 
 
 
+<div class="modal fade" id="ModalActionAlert" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+           
+            <h4 class="modal-title" id="myModalLabel">
+               Message
+            </h4>
+         </div>
+         <div class="modal-body">
+		 <div id="message"></div>
+
+
+</div>
+
+
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">Close
+            </button>
+             <button type="button" id="SubmitButton1" class="btn btn-priamry" 
+               data-dismiss="modal">Submit
+            </button>
+             
+            
+           
+         </div>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+
+
+
 
 <div class="modal fade" id="ModalConfirm" tabindex="-1" role="dialog" 
    aria-labelledby="myModalLabel" aria-hidden="true">
@@ -87,7 +126,7 @@
          </div>
          <div class="modal-body">
 		 <div><h4>Please select  a file .csv to upload</h4></div>
-<input type="file" id="i_file" value=""> 
+
 
         <form method="POST" action="FileUploadServlet" enctype="multipart/form-data" >
             File:

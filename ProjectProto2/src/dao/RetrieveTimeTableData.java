@@ -143,6 +143,7 @@ public class RetrieveTimeTableData {
 		System.out.println("ttid"+ttid);
 		String table=null;
 		String fromWhere=null;
+		String optString=null;
 		
 	
 		
@@ -195,11 +196,19 @@ public class RetrieveTimeTableData {
 		if(instruct==0)
 		{
 			fromWhere="(select max(semesterid) from "+table+")";
+			optString=">0";
 		}
+		else if(instruct==20)
+		{
+			optString="="+Integer.valueOf(request.getParameter("tutorid"));
+			fromWhere="(select max(semesterid) from "+table+")";
+		}
+			
 		else
 		{
 			timetableid=Integer.valueOf(request.getParameter("timetableid"));
 			fromWhere=""+timetableid+"";
+			optString=">0";
 		}
 	
 		for(int daycnt=0;daycnt<5;daycnt++)
@@ -209,7 +218,7 @@ public class RetrieveTimeTableData {
 		+ "inner join tb_courses on tb_courses.course_id=tb_tutor_courses.courseid join tb_semester on tb_semester.ID="+table+".semesterid "
 		+ "inner join tb_days on tb_days.id="+table+".day "
 		+ "inner join tb_user on tb_user.UserID=tb_tutor_courses.TutorID "
-		+ "inner join tb_room on tb_room.Room_ID="+table+".RoomID where day=? and "+table+".semesterid="+fromWhere+" order by day,timeslot;");
+		+ "inner join tb_room on tb_room.Room_ID="+table+".RoomID where day=? and "+table+".semesterid="+fromWhere+" and tutorid " +optString+ " order by day,timeslot;");
 			   System.out.println(ps1);
 		
 			
@@ -375,6 +384,43 @@ public class RetrieveTimeTableData {
 				return ttData;
 				
 			}
+			
+			
+			
+			public ArrayList<TimeTableObjects> RetireveTutorTT(Connection connection,HttpServletRequest request,HttpServletResponse response) throws Exception
+			{
+				PreparedStatement ps1;
+				String startdate;
+				String enddate;
+				ArrayList<TimeTableObjects> ttData = new ArrayList<>();
+				
+				ps1=connection.prepareStatement("select tutorcourseid,tb_times.iname as timeslot,CourseName,RoomName from tb_timetable inner join tb_tutor_courses on tb_tutor_courses.tutorcourseid=tb_timetable.tutorcourse inner join tb_courses on tb_courses.course_id=tb_tutor_courses.CourseID inner join tb_times on tb_times.id=tb_timetable.timeslot inner join tb_room on tb_room.Room_ID=tb_timetable.RoomID where day = dayofweek(curdate()) and tutorid=?;");
+				ps1.setInt(1, Integer.valueOf(request.getParameter("tutorid")));
+				ResultSet rs = ps1.executeQuery();
+				
+		
+				while (rs.next())
+				{
+					 /* SimpleDateFormat ft = 
+						      new SimpleDateFormat ("dd.MM.yyyy");
+					  startdate=ft.format(rs.getDate("StartDate"));
+					  enddate=ft.format(rs.getDate("EndDate"));*/
+					
+					TimeTableObjects ttObject = new TimeTableObjects();
+					ttObject.setCell(rs.getString("timeslot"));
+					ttObject.setCell1(rs.getString("coursename"));
+					ttObject.setCell2(rs.getString("roomname"));
+					ttObject.setCell3("<button class='btn btn-info' id='rollcall'><span class='glyphicon glyphicon-eye-open'></span></button>");
+					ttData.add(ttObject);
+					
+				}
+				return ttData;
+				
+			}
+			
+			
+			
+			
 		
 		
 		

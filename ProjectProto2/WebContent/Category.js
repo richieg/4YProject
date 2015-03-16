@@ -14,16 +14,35 @@ $(document).ready( function () {
 	var studentcols=null;
 	var studentrows=null;
 	var students=[];
+	var myBackup=null;
 	
 	 intializePage();
 	
-  
+	 
+  /*******************Modal Reset Function*******************************************************/
+		function resetModal(modal,myBackup)
+		{
+			
+			$(modal).modal('hide').remove();
+			 var myClone = myBackup.clone();
+		        $('body').append(myClone);
+		       
+		};
  
     
 
   /*********************Button Event Functions************************************************************/  
 
-	 
+	$('#closecor').click(function()
+		{
+		bootbox.confirm("Are you sure you want to cancel without saving?", function(result) {if (result==true){resetModal('#courseModal',myBackup);}else{$('#courseModal').modal('show');}});
+
+		});
+	$('#closecat').click(function()
+		{
+		bootbox.confirm("Are you sure you want to cancel without saving?", function(result) {if (result==true){resetModal('#catModal',myBackup);}else{$('catModal').modal('show');}});
+
+		});
 	 
     $('#viewc').click(function()
     	{
@@ -76,7 +95,8 @@ $(document).ready( function () {
     
     $('#SubmitButtoncat').click(function()
     		{
-    	bootbox.confirm("Are you sure you want to add this category", function(result) {if (result==true){insertCatCourse(1),resetCatTable(0);};
+    	bootbox.confirm("Are you sure you want to add this category", function(result) {if (result==true){insertCatCourse(1,function(result){if(result==true){resetCatTable(0),resetModal('#catModal',myBackup)
+    		;}});};
     	});
     		});
     
@@ -89,7 +109,8 @@ $(document).ready( function () {
     $('#CourseSubmitButton').click(function()
     {
   
-    	bootbox.confirm("Are you sure you want to add this course?", function(result) {if (result==true){insertCatCourse(2);};
+    	bootbox.confirm("Are you sure you want to add this course?", function(result) {if (result==true){insertCatCourse(2,function(result){if(result==true){resetCatTable(0),resetModal('#courseModal',myBackup)
+    		;}});};
     	});
     	
     	
@@ -112,11 +133,13 @@ $(document).ready( function () {
 	
 	
 	$('#category').on( 'click', '#addcourse', function () {
+		myBackup = $('#courseModal').clone();
 		getTutorsForTutorSels();
 		var a = $(this).closest('tr').find('td:first').text();
 		var b = $(this).closest('tr').find("td").eq(1).text();
 		getCourseNamesforSels(a);
 		$('#cccatid').val(a);
+		$("#catnamesel option[id='"+a+"']").attr('selected', 'selected');
 		$('#catName').val(b);
 		$("#courseModal").modal('show');
 		console.log(studentcols,studentrows);
@@ -126,11 +149,12 @@ $(document).ready( function () {
 
 	$('#addc').click(function () 
 	{
-
+		myBackup = $('#courseModal').clone();
 		getTutorsForTutorSels();
 		getCourseNamesforSels(0);
 		$('#ncatnamedd').hide();
 		$('#ncatnamed').show();
+		$('#ccatnamesel').show();
 		$("#courseModal").modal('show');
 
 
@@ -516,7 +540,7 @@ $(document).ready( function () {
 					var o2 = new Option("option text", "value");
 					o2.id=catid;
 					/// jquerify the DOM object 'o' so we can use the html method
-					$(o2).html(catid+ " " +catname);
+					$(o2).html(catname);
 					$("#catnamesel").append(o2);
 					
 			    }
@@ -543,15 +567,23 @@ $(document).ready( function () {
 					});
 					
 					
-					$('#semestersel').change(function() {
+					$('#catnamesel').change(function() {
 						alert("hello");
 						
-						var courseid=$('#coursenamesel option:selected').attr('id');
-						if(courseid!=1)
-						{
-						var semid=$('#semestersel option:selected').attr('id');
-						//getUserForCourses(1,1,courseid,2,semid,function(){console.log(studentcols,studentrows);});
-						}
+						//ccatname()
+						var catid=$('#catnamesel option:selected').attr('id');
+						if(catid!=1)
+							{
+							$('#ccatname').hide();
+							getCourseNamesforSels(catid);
+							}
+						else
+							{
+							$('#ccatname').show();
+							getCourseNamesforSels(0);
+							}
+							
+						
 					
 					});
 				
@@ -596,11 +628,13 @@ $(document).ready( function () {
 						            "aTargets": [1]
 						    }, {
 						        "sTitle": "Description",
+						        "bSortable": false,
 						            "mData": "catdescript",
 						            "aTargets": [2]
 						    },
 						    {
 						        "sTitle": "Courses",
+						        "bSortable": false,
 						            "mData": "btn4",
 						            "aTargets": [3]
 						    },
@@ -661,6 +695,10 @@ $(document).ready( function () {
 				 	.find('option')
 				    .remove()
 				    .end();
+					var o1 = new Option("option text", "value");
+					o1.id=1;
+					$(o1).html("- Select One-");	
+					$(o1).prependTo("#coursenamesel");
 				dataString="instruct=2&archived="+a;
 				alert(dataString);
 							$.ajax
@@ -680,14 +718,9 @@ $(document).ready( function () {
 								
 									 
 										 });
-								var o1 = new Option("option text", "value");
-								$(o1).html("- Select One-");	
-								$(o1).prependTo("#coursenamesel");
+							
 										}
-										else
-										{
-											$("#coursenamesel").append("- No Options -");
-										}
+									
 										}
 										});
 									
@@ -996,15 +1029,15 @@ $(document).ready( function () {
 	
 	
     
-    function insertCatCourse(a){
+    function insertCatCourse(a,callback){
 		var Data=null;
 		var courseid=null;
 		var catid=null;
-		alert(a);
+	
 		if(a==1 || a==6)
 		{
 		catid=$('#catID').val();
-		alert(catid);
+	
 		var name = $("#categoryName").val();
 		var description = $("#catDescript").val();
 		Data="instructid="+a+"&name="+name+"&description="+description+"&catid="+catid;
@@ -1014,7 +1047,7 @@ $(document).ready( function () {
 			//var catid = $("#ncatname").val();
 			//var catid2=$("#ncatname").getVal();
 			var catid=$('#cccatid').val();
-			alert("catid="+catid);
+		
 			//alert("catid="+catid2);
 			if(a==7)
 				{
@@ -1029,16 +1062,16 @@ $(document).ready( function () {
 			
 			
 			
-			catid=$('#cccatid').val();
-			alert("GOT TO HERE");
+		
+			var catid=$('#catnamesel option:selected').attr('id');
 			var coursename = $("#courseName").val();
 			alert("coursename="+coursename);
 			var level=$('#level option:selected').attr('id');
 			var accredbodname=$('#accreditbod').val();
 			var tutorid=$('#tutorsel option:selected').attr('id');
-			var semesterid=$('#semestersel option:selected').attr('id');
+		
 			var capacity=$('#capacity').val();
-			alert(capacity);
+		
 			var equipreq=$('#equipsel option:selected').attr('id');
 			
 			if(courseid!=1)
@@ -1049,7 +1082,7 @@ $(document).ready( function () {
 			
 	
 			Data=("instructid="+a+"&catid="+catid+"&courseid="+courseid+"&coursename="+coursename+"&level="+level+"&accredbodname="
-					+accredbodname+"&tutorid="+tutorid+"&semesterid="+semesterid+"&capacity="+capacity+"&equipreq="+equipreq);
+					+accredbodname+"&tutorid="+tutorid+"&capacity="+capacity+"&equipreq="+equipreq);
 			
 			
 			
@@ -1089,6 +1122,16 @@ $(document).ready( function () {
 					$('#ModalMessage').modal('show');
 					$('#catModal').find('form')[0].reset();
 					$('#courseModal').find('form')[0].reset();
+					alert(messageid);
+				if(messageid=="6")
+				{
+					
+					callback(true);
+				}
+				else
+				{
+					callback(false);
+				}
 				
 				
 				}

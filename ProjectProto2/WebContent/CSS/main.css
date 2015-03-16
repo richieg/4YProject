@@ -118,13 +118,37 @@ background: #000;
 display: none;
 }
 
+#usertable{
+
+
+border-color: rgb(204, 204, 204);
+border-style: solid;
+border-width: 1px;
+
+
+}
+
+#usertabe_filter{
+	width:200px;
+}
+
+#usertable th{
+
+
+border-color: rgb(204, 204, 204);
+border-style-bottom: solid;
+border-width: 1px;
+
+
+}
+
 
 
 #mainform{
 width:960px;
 margin:20px auto;
 padding-top:20px;
-font-family: 'Fauna One', serif;
+
 display:block;
 }
 
@@ -242,6 +266,31 @@ border-width: 1px;
 	border-color:#ffffff;
 }
 
+#catdiv{
+	width:80%;
+	margin:auto;
+}
+
+#category{
+
+
+border-color: rgb(204, 204, 204);
+border-style: solid;
+border-width: 1px;
+
+
+}
+
+#category th{
+
+
+border-color: rgb(204, 204, 204);
+border-style-top: solid;
+border-style-bottom: solid;
+border-width: 1px;
+
+
+}
 
 
 
@@ -262,7 +311,7 @@ border-width: 1px;
        background-color:#F8F8F8;
 }
 .tableboxmed{
-	width: 75%;
+	width: 80%;
 		border-color: #F8F8F8;
 	border-style: solid;
 	border-width: 1px;

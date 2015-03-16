@@ -38,20 +38,19 @@ import dto.MessageObjects;
 			   level=Integer.valueOf(request.getParameter("level"));
 			   accredbodname=request.getParameter("accredbodname");
 			   tutorid=Integer.valueOf(request.getParameter("tutorid"));
-			   semesterid=Integer.valueOf(request.getParameter("semesterid"));
 			   capacity=Integer.valueOf(request.getParameter("capacity"));
 			   equipreq=Integer.valueOf(request.getParameter("equipreq"));
 			 
 			   if (courseid==1)
 			   {
-				   //coursecheck=CheckforCourses(coursename,connection);   
+				   coursecheck=CheckforCourses(coursename,connection);   
 				   //coursecheck=CheckforCourses(coursename+","+","+accredbodname+","+level,connection);   
 			   }
 			 
 			   MessageObjects messageObjects = new MessageObjects();
                if(coursecheck<1)	
                {
-			   rt=InsertToCourses(catid,courseid,coursename,accredbodname,tutorid,semesterid,capacity,equipreq,level,connection);
+			   rt=InsertToCourses(catid,courseid,coursename,accredbodname,tutorid,capacity,equipreq,level,connection);
                
 					System.out.println("rt===="+rt);
 					   if(rt>0)
@@ -79,7 +78,7 @@ import dto.MessageObjects;
 			
 		}
 		
-		public int InsertToCourses(int catid,int courseid,String coursename,String accredbodname,int tutorid,int semesterid,int capacity,int equipreq,int level,Connection connection)
+		public int InsertToCourses(int catid,int courseid,String coursename,String accredbodname,int tutorid,int capacity,int equipreq,int level,Connection connection)
 		
 		{
 		
@@ -88,21 +87,21 @@ import dto.MessageObjects;
 			PreparedStatement ps;
 			int successcnt=0;
 			try {
-				cu = connection.prepareCall("{Call addNewCourse(?,?,?,?,?,?,?,?,?,?)}");
+				cu = connection.prepareCall("{Call addNewCourse(?,?,?,?,?,?,?,?,?)}");
 				cu.setInt(1,catid);
 				cu.setInt(2,courseid);
 			   	cu.setString(3, coursename);
 			   	cu.setString(4, accredbodname);
 			   	cu.setInt(5,tutorid);
-				cu.setInt(6,semesterid);
-				cu.setInt(7,capacity);
-				cu.setInt(8,equipreq);
-				cu.setInt(9,level);
+				
+				cu.setInt(6,capacity);
+				cu.setInt(7,equipreq);
+				cu.setInt(8,level);
 				
 			  
-			    cu.registerOutParameter(10, Types.INTEGER);
+			    cu.registerOutParameter(9, Types.INTEGER);
 			    boolean cut =cu.execute();
-			    successcnt=cu.getInt(10);
+			    successcnt=cu.getInt(9);
 			    System.out.println("sucess"+successcnt);
 
 			

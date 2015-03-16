@@ -11,46 +11,48 @@
 
 
 <body id="myBod2">
+<ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Library</a></li>
+  <li class="active">Data</li>
+</ol>
+<h1 id="pagetitle">Categories</h1>
+
+<div id="intialdiv" class="tableboxmed">
+
+<div class="buttonbox">
+
 
 
  
 
 	
-	
-<!-- Button trigger modal -->
-<br>
-<br>
-<a id="nav" href="index.html" title="Index"><img src="Images\back.png" alt="back"><br>Back to main menu</a>
-
-<h1 id="pagetitle">Categories</h1>
-
-
-<br>
-<br>
 
 
 
-<button id="addcat1" class="btn btn-primary" data-toggle="modal" 
-   data-target="#catModal" id="addcattegory">
+<button id="addcat1" class="btn btn-success" data-toggle="modal" 
+   data-target="#catModal" id="addcattegory"><span class="glyphicon glyphicon-plus"></span>
    Add Category
 </button>
-<button class="btn btn-primary"  id="addc" style="display:none">
+<button class="btn btn-success"  id="addc" style="display:none"><span class="glyphicon glyphicon-plus"></span>
+   
    Add Course
 </button>
-<button class="btn btn-primary"  id="viewc" >
+<button class="btn btn-info"  id="viewc" ><span class="glyphicon glyphicon-eye-open"></span>
+ 
    View Courses
 </button>
-<button class="btn btn-primary"  id="viewcat" style="display:none">
+<button class="btn btn-info"  id="viewcat" style="display:none"><span class="glyphicon glyphicon-eye-open"></span>
    View Categories
 </button>
-<br>
-<br>
+</div>
+</div>
 
 
 
 
 <!-- Tables -->
-  <input type="file" id="fileUpload">
+ 
  <div id="catdiv">   
  <table class="display" id="category" width="100%" cellspacing="0"></table></div> 
  <div id="coursediv"><table class="display" id="courses" width="100%" cellspacing="0"></table></div>
@@ -229,19 +231,7 @@
   </div>
 </div>
 
-        
-        <div id="sem" class="form-group">
-   <label class="control-label col-sm-4" for="sel4">Select Semester:</label>
-   <div class="col-sm-4">
-      <select class="form-control" id="semestersel">
-      <option id="0">- Select One -</option>
-       <option id="1">1</option>
-        <option id="2">2</option>
-         <option id="3">3</option>
-          <option id="4">4</option>
-      </select>
-        </div>
-        </div>
+
 
 
 <div id="level"  class="form-group">
@@ -313,7 +303,7 @@
 
          <div class="modal-footer">
             <button type="button" class="btn btn-default" 
-               data-dismiss="modal">Close
+               data-dismiss="modal" id="close">Close
             </button>
              <button id="CourseSubmitButton" class="btn btn-primary" data-dismiss="modal">Submit</button>
              <button id="CourseUpdateButton" class="btn btn-primary" data-dismiss="modal" style="display:none">Update</button>

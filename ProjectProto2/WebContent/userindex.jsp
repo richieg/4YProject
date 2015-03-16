@@ -7,35 +7,48 @@
      <%@ include file="head.jsp" %>
      <%@ include file="commonmodals.jsp" %>
          <script type='text/javascript' src="AddUser.js"></script>
+         <script type='text/javascript' src="CommonMethods.js"></script>
          
          
 
 
 <body id="myBod">
+<ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Library</a></li>
+  <li class="active">Data</li>
+</ol>
+<h1>User Management</h1>
+
+<div id="intialdiv" class="tableboxmed">
+
+<div class="buttonbox">
+
+<button class="btn btn-success" data-toggle="modal" 
+   data-target="#myModal" id="adduser1"><span class="glyphicon glyphicon-plus"></span>
+   Add User
+</button>
+<button class="btn btn-primary" id="updateButton"><span class="glyphicon glyphicon-refresh"></span>
+  Restore User
+</button>
+<button class="btn btn-warning" id="bulkuploadbtn" data-toggle="modal" 
+   data-target="#bulkupload"><span class="glyphicon glyphicon-import"></span>
+Import Users
+</button>
+<button class="btn btn-primary" id="allusers"><span class="glyphicon glyphicon-eye-open"></span>
+View All Users
+</button>
 
 
   
-	 <div id="alertmessage"></div>
+</div>
+</div>
 	
 	
 <!-- Button trigger modal -->
-<br>
-<br>
 
-<button class="btn btn-primary" data-toggle="modal" 
-   data-target="#myModal" id="adduser1">
-   Add User
-</button>
-<button class="btn btn-primary" id="updateButton">
-  Restore User
-</button>
-<button class="btn btn-primary" id="uploadButton" data-toggle="modal" 
-   data-target="#bulkupload" id="adduser1">
- Upload Users
-</button>
-<button class="btn btn-primary" id="allusers">
-Return to previous
-</button>
+
+
 
 
 	
@@ -49,15 +62,15 @@ Return to previous
     	<th>Role</th>
         <th>First Name </th>
         <th>Last Name </th>
-        <th>Address 1</th>
-        <th>Address 2</th>
-        <th>Address 3</th>
-        <th sortable="false">Post Code</th>
-       	<th class="nonsorting">Phone</th>
-        <th class="nonsorting">Email</th>
-      	<th class="nonsorting"></th>
-        <th class="nonsorting"></th>
-        <th class="nonsorting"></th>
+        <th class="no-sort">Address 1</th>
+        <th class="no-sort">Address 2</th>
+        <th class="no-sort">Address 3</th>
+        <th>Post Code</th>
+       	<th class="no-sort">Phone</th>
+        <th class="no-sort">Email</th>
+      	<th class="no-sort"></th>
+        <th class="no-sort"></th>
+    
        
       
     </tr>
@@ -121,7 +134,7 @@ Return to previous
 <div id="lastnamediv" class="form-group">
   <label class="control-label col-sm-4" for="lastName">Last Name</label>
 <div class="col-sm-4">
-    <input id='lastName' name="lastName" placeholder="Last Name" class="form-control" data-validation="alphanumeric" type="text">
+    <input id='lastName' name="lastName" placeholder="Last Name" class="form-control" data-validation="required" type="text">
     
   </div>
 </div>
@@ -130,7 +143,7 @@ Return to previous
 <div class="form-group">
   <label class="control-label col-sm-4" for="address1">Address 1</label>
   <div class="col-sm-4">
-    <input id='address1' name="address1" placeholder="Address 1" class="form-control"  data-validation="alphanumeric" type="text">
+    <input id='address1' name="address1" placeholder="Address 1" class="form-control"  data-validation="required" type="text">
     
   </div>
 </div>
@@ -139,7 +152,7 @@ Return to previous
 <div class="form-group">
   <label class="control-label col-sm-4"  for="address2">Address 2</label>
 <div class="col-sm-4">
-    <input id="address2" name="address2" placeholder="Address 2" class="form-control"  type="text" required="This is required">
+    <input id="address2" name="address2" placeholder="Address 2" class="form-control"  type="text" data-validation="required">
     
   </div>
 </div>
@@ -157,7 +170,7 @@ Return to previous
 <div class="form-group">
   <label class="control-label col-sm-4" for="postcode">Postcode</label>
   <div class="col-sm-4">
-    <input id="postcode" name="postcode" placeholder="Postode" class="form-control" type="text" data-validation="alphanumeric">
+    <input id="postcode" name="postcode" placeholder="Postode" class="form-control" type="text" data-validation="required">
     
   </div>
 </div>
@@ -181,7 +194,7 @@ Return to previous
 <div id="dobdiv" class="form-group">
    <label class="control-label col-sm-4" for="dob">Date of Birth</label>
   <div class="col-sm-4">
-    <input id="datepicker" name="dob" placeholder="Date of Birth"  type="text" required="true"  class="form-control">
+    <input id="datepicker" name="dob" placeholder="Date of Birth"  type="text" data-validation="required"  class="form-control">
 
   </div>
 </div>
@@ -189,10 +202,11 @@ Return to previous
 <div id="rolediv" class="form-group">
    <label class="control-label col-sm-4" for="sel1">Member Role:</label>
    <div class="col-sm-4">
-      <select class="form-control" id="role">
+      <select class="form-control" id="role" data-validation="required">
       <option id="0">- Select One -</option>
         <option id="1">Tutor</option>
         <option id="2">Student</option>
+        <option id="3">Admin Staff</option>
         </select>
         </div>
         </div>

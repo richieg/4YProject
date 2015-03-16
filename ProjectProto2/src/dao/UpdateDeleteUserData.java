@@ -22,11 +22,13 @@ public class UpdateDeleteUserData {
 	
 	ArrayList<MessageObjects> insertMessage = new ArrayList<MessageObjects>();
 	PreparedStatement ps;
+	PreparedStatement ps1;
 	public ArrayList<MessageObjects> RestoreArchiveUser(Connection connection, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 			
 		
 			int checknum=0;
+			int role=0;
 	
 			String message=null;
 			
@@ -36,18 +38,38 @@ public class UpdateDeleteUserData {
 		    int userid=Integer.parseInt(request.getParameter("userid"));
 		    
 		    
-		 
-		   		
+		    ps1=connection.prepareStatement("Select role from tb_user where userid=?");
+		    ps1.setInt(1, userid);
+			ResultSet rs = ps1.executeQuery();
+			
+			
+			while (rs.next())
+			{
+			role=rs.getInt("role");
+			}
+			
+		    
+		    
 		   		int up=0;
 		   		if(checknum==2)
 		   		{
 		   			ps = connection.prepareStatement("Update tb_user set archived=0 where userid=?");
+		   		
 		   		}
 		   		else
 		   		{
 		   			ps = connection.prepareStatement("Update tb_user set archived=1 where userid=?");
+		   			if(role==2)
+		   			{
+		   				ps1=connection.prepareStatement("Update tb_student_courses set archived=0 where userid=?");
+		   				ps1.setInt(1, userid);
+		   				up=ps.executeUpdate();
+		   			}
 		   		}
 				ps.setInt(1, userid);
+				
+			
+			
 				
 				up = ps.executeUpdate();
 				if(up>0)

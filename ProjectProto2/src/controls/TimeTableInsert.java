@@ -44,7 +44,7 @@ import dto.UserObjectsInitial;
 	ArrayList<TimeTableObjects> ttData = null;
 	System.out.println("instruct in cintrol for timetable="+instruct);
 	Connection connection = db.Get_Connection();
-		if(instruct==0 || instruct==10)
+		if(instruct==0 || instruct==10 || instruct==20)
 		{
 			ttData=retManager.GetTimeTable(connection, request, response);
 			ttdata = gson.toJson(ttData);

@@ -77,7 +77,7 @@ public class InsertUserData {
 		    }
 		    else if(roles.equals("Student"))
 		    {
-		    	role=0;
+		    	role=2;
 		    }
 		    else
 		    {
@@ -217,8 +217,7 @@ public class InsertUserData {
 			}
 				
 		}
-		System.out.println("returned user id:::");
-		System.out.println(sr);		
+	
 		
 		
 
@@ -270,8 +269,7 @@ public class InsertUserData {
 				ps.setString(2, username);
 				ps.setString(3, userpass);
 				ps.setInt(4, userrole);
-				System.out.println("returned id:::" + userid);
-				System.out.println("returned id:::" + userrole);
+		
 				 rse= ps.execute();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

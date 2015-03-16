@@ -32,12 +32,12 @@
 <span class="glyphicon glyphicon-plus"></span>/ <span class="glyphicon glyphicon-pencil"></span> Draft Timetable
 </button>
 
-<button class="btn btn-success" id="savett"  data-toggle="modal" 
+<button class="btn btn-success" id="semdet"  data-toggle="modal" 
    data-target="#semestermodal" id="addcattegory">
 
 <span class="glyphicon glyphicon-plus"></span>/ <span class="glyphicon glyphicon-pencil"></span> Semester Details
 </button>
-<button class="btn btn-info" id="savett"  data-toggle="modal" 
+<button class="btn btn-info" id="roomdet"  data-toggle="modal" 
    data-target="#semestermodal" id="addcattegory">
 
 <span class="glyphicon glyphicon-plus"></span>/ <span class="glyphicon glyphicon-pencil"></span> Room Details
@@ -127,7 +127,7 @@
 
 </table>
 <div class="buttonbox">
-<button class="btn btn-primary" id="savewip" style="display:none">>
+<button class="btn btn-primary" id="savewip" style="display:none">
  
 
   Save as Draft
@@ -136,7 +136,7 @@
 
 
 <button class="btn btn-primary" id="savett"  data-toggle="modal" 
-   data-target="#semestermodal" style="display:none">>
+   data-target="#semestermodal" style="display:none">
 
 Save as Timetable
 </button>

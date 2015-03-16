@@ -23,7 +23,11 @@ public class CategoryCourseRetrieveData {
 	{
 	int archived=Integer.parseInt(request.getParameter("archived"));
 	
-	 ps = connection.prepareStatement("SELECT cat_id,categoryname,categorynotes,count(course_id) as coursecount,btn4,btn1,btn2,btn3 FROM TB_category inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=?  left outer join tb_courses on tb_category.Cat_ID=tb_courses.Category and tb_category.Archived=tb_courses.archived where tb_category.archived=? group by cat_id;");
+	 ps = connection.prepareStatement("SELECT cat_id,categoryname,categorynotes,count(courseid) as coursecount,btn4,btn1,btn2,btn3 FROM TB_category "
+	 		+ "inner join TB_CatCourse_Buttons on TB_CatCourse_Buttons.instructid=? "
+	 		+ "left outer join tb_courses on tb_category.Cat_ID=tb_courses.Category "
+	 		+ "inner join tb_tutor_courses on tb_tutor_courses.courseid=tb_courses.course_id "
+	 		+ "and tb_category.Archived=tb_courses.archived where tb_category.archived=? group by cat_id;");
 	 ps.setInt(1, instruct);
 	 ps.setInt(2,archived);
 	 

@@ -82,6 +82,27 @@ public class TimeTableRetrieveManager {
 
 }
 	
+	public ArrayList<TimeTableObjects> GetTutorTT(Connection connection, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ArrayList<TimeTableObjects> ttData = null;
+	
+	RetrieveTimeTableData rdata=new RetrieveTimeTableData();
+	System.out.println("got ot manager to get ttdata");
+			
+			try {
+			// Here you can validate before connecting DAO class, eg. User session condition
+		
+			ttData=rdata.RetireveTutorTT(connection, request, response);
+
+		
+			} 
+			catch (Exception e) {
+			throw e;
+			}
+			return ttData;
+
+}
+	
 	
 	
 	public ArrayList<MessageObjects> InsertTTData(Connection connection, HttpServletRequest request,

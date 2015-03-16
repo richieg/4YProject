@@ -58,6 +58,10 @@ import dto.TimeTableObjects;
 		{
 			ttData=retManager.GetSemDetails(connection, request, response);
 		}
+		if(instruct==15)
+		{
+			ttData=retManager.GetTutorTT(connection, request, response);
+		}
 		else
 		{
 		

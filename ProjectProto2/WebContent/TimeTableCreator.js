@@ -335,7 +335,7 @@
 	function drawtimetable(columns,data){
 	
 			    
-		    	alert("got to here");
+		    
 		        oTable = $('#timetable').DataTable({
 		        	 
 		                "aoColumnDefs": columns,
