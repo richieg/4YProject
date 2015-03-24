@@ -9,9 +9,11 @@
 <script type='text/javascript' src="Tutor.js"></script>
 </head>
 <body>
+<h1>Semester Timetable</h1>
 
 
 <div id="timetablediv" class="tableboxlg"><table class="display" id="timetable" width="100%" cellspacing="0"></table></div>
+<h1>Today's Schedule</h1>
 <div id="schedulelist" class="tableboxsml"><table class="table" id="schedule" width="100%" cellspacing="0">
 <thead>
     <tr>

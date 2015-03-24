@@ -18,6 +18,16 @@ background: linear-gradient(to bottom, #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 ); /* IE6-9 */
 }
 
+
+
+header1{
+    background-color: #F28500;
+    text-align: center;
+
+   
+}
+
+
 h1.h{
 	color: #05abe0;
 
@@ -271,6 +281,88 @@ border-width: 1px;
 	margin:auto;
 }
 
+
+#coursediv{
+	width:95%;
+	margin:auto;
+}
+
+#students th{
+   background-color:#fddf87;
+   border-color: rgb(204, 204, 204);
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-width: 1px;
+
+  
+}
+#students{
+
+   border-color: rgb(204, 204, 204);
+	border-style: solid;
+	border-style: solid;
+	border-width: 1px;
+
+  
+}
+#usertable th{
+   background-color:#fddf87;
+   border-color: rgb(204, 204, 204);
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-width: 1px;
+
+  
+}
+#usetable{
+
+   border-color: rgb(204, 204, 204);
+	border-style: solid;
+	border-style: solid;
+	border-width: 1px;
+
+  
+}
+
+
+#studentrecs th{
+   background-color:#fddf87;
+   border-color: rgb(204, 204, 204);
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-width: 1px;
+
+  
+}
+#studentrecs{
+
+   border-color: rgb(204, 204, 204);
+	border-style: solid;
+	border-style: solid;
+	border-width: 1px;
+
+  
+}
+
+#courses th{
+   background-color:#fddf87;
+   border-color: rgb(204, 204, 204);
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-width: 1px;
+
+  
+}
+#courses{
+
+   border-color: rgb(204, 204, 204);
+	border-style: solid;
+	border-style: solid;
+	border-width: 1px;
+
+  
+}
+
 #category{
 
 
@@ -283,7 +375,7 @@ border-width: 1px;
 
 #category th{
 
-
+background-color:#fddf87;
 border-color: rgb(204, 204, 204);
 border-style-top: solid;
 border-style-bottom: solid;

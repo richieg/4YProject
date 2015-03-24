@@ -125,12 +125,12 @@
             </h4>
          </div>
          <div class="modal-body">
-		 <div><h4>Please select  a file .csv to upload</h4></div>
+		 <div><h4>Please select  a .csv to upload</h4></div>
 
 
         <form method="POST" action="FileUploadServlet" enctype="multipart/form-data" >
             File:
-            <input type="file" name="file" id="file" /> <br/>
+            <input type="file" name="file" id='file' accept=".csv" /> <br/>
         	<input type="submit" value="Upload File" />
             
         </form>

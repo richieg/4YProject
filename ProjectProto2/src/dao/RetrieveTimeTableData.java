@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dto.CategoryCourseObjects;
 import dto.TimeTableObjects;
 
@@ -39,7 +41,7 @@ public class RetrieveTimeTableData {
 		}
 		else if(instruct==2)
 		{
-			System.out.println("got to second statement");
+			
 		ps = connection.prepareStatement("Select distinct tb_times.id,iname,day from tb_times inner join tb_timetabletemp on tb_timetabletemp.Day =? where timeslot not in(select timeslot from tb_timetabletemp where day=? having count(timeslot)>5 );");
 		ps.setInt(1,attrib1);
 		ps.setInt(2, attrib2);
@@ -362,8 +364,8 @@ public class RetrieveTimeTableData {
 				String startdate;
 				String enddate;
 				ArrayList<TimeTableObjects> ttData = new ArrayList<>();
-				
-				ps1=connection.prepareStatement("select id,SemesterID,StartDate,EndDate from tb_semester;");
+				Gson gson = new Gson();
+				ps1=connection.prepareStatement("select id,SemesterID,StartDate,EndDate from tb_semester where semesterid!=-1;");
 				ResultSet rs = ps1.executeQuery();
 				
 		
@@ -373,7 +375,7 @@ public class RetrieveTimeTableData {
 						      new SimpleDateFormat ("dd.MM.yyyy");
 					  startdate=ft.format(rs.getDate("StartDate"));
 					  enddate=ft.format(rs.getDate("EndDate"));
-					
+					System.out.println(rs.getInt("semesterID")+" "+startdate+" "+enddate);
 					TimeTableObjects ttObject = new TimeTableObjects();
 					ttObject.setSemid(rs.getInt("semesterID"));
 					ttObject.setStartdate(startdate);
@@ -381,6 +383,9 @@ public class RetrieveTimeTableData {
 					ttData.add(ttObject);
 					
 				}
+				String ttdata = gson.toJson(ttData);
+				
+				System.out.println(ttdata);
 				return ttData;
 				
 			}
@@ -394,10 +399,10 @@ public class RetrieveTimeTableData {
 				String enddate;
 				ArrayList<TimeTableObjects> ttData = new ArrayList<>();
 				
-				ps1=connection.prepareStatement("select tutorcourseid,tb_times.iname as timeslot,CourseName,RoomName from tb_timetable inner join tb_tutor_courses on tb_tutor_courses.tutorcourseid=tb_timetable.tutorcourse inner join tb_courses on tb_courses.course_id=tb_tutor_courses.CourseID inner join tb_times on tb_times.id=tb_timetable.timeslot inner join tb_room on tb_room.Room_ID=tb_timetable.RoomID where day = dayofweek(curdate()) and tutorid=?;");
+				ps1=connection.prepareStatement("select tutorcourseid,tb_times.iname as timeslot,CourseName,RoomName from tb_timetable inner join tb_tutor_courses on tb_tutor_courses.tutorcourseid=tb_timetable.tutorcourse inner join tb_courses on tb_courses.course_id=tb_tutor_courses.CourseID inner join tb_times on tb_times.id=tb_timetable.timeslot inner join tb_room on tb_room.Room_ID=tb_timetable.RoomID where day = 0 and tutorid=?;");
 				ps1.setInt(1, Integer.valueOf(request.getParameter("tutorid")));
 				ResultSet rs = ps1.executeQuery();
-				
+				//dayofweek(curdate())
 		
 				while (rs.next())
 				{
@@ -410,7 +415,7 @@ public class RetrieveTimeTableData {
 					ttObject.setCell(rs.getString("timeslot"));
 					ttObject.setCell1(rs.getString("coursename"));
 					ttObject.setCell2(rs.getString("roomname"));
-					ttObject.setCell3("<button class='btn btn-info' id='rollcall'><span class='glyphicon glyphicon-eye-open'></span></button>");
+					ttObject.setCell3("<button class='btn btn-info' id='rollcall' data-toggle='modal' data-target='#rollcallmodal'><span class='glyphicon glyphicon-eye-open'></span></button>");
 					ttData.add(ttObject);
 					
 				}

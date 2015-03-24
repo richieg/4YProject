@@ -35,7 +35,7 @@ public class CategoryCourseInsertData {
 		   MessageObjects messageObjects = new MessageObjects();
 		   if(rt>0)
 		   {
-			   messageObjects.setMessagecode(6);
+			   messageObjects.setMessagecode(1);
 				messageObjects.setInsertmessagestring("<h4>Category Entered Successfully</h4>");
 				categoryMessage.add(messageObjects);
 			    
@@ -43,7 +43,7 @@ public class CategoryCourseInsertData {
 		   }
 		   else
 		   {
-			   messageObjects.setMessagecode(7);
+			   messageObjects.setMessagecode(2);
 				messageObjects.setInsertmessagestring("<h4>An error has occured</h4>");
 				categoryMessage.add(messageObjects);
 		   }

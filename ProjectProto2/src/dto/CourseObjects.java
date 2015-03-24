@@ -32,6 +32,13 @@ private int level;
 private String categoryname;
 private int capacity;
 private int semesterid;
+private String tutorname;
+public String getTutorname() {
+	return tutorname;
+}
+public void setTutorname(String tutorname) {
+	this.tutorname = tutorname;
+}
 public int getSemesterid() {
 	return semesterid;
 }

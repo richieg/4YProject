@@ -195,6 +195,8 @@ $('#adduser1').click(function()
 			var instruct=5;
 			
 			var userid = $(this).closest('tr').find('td:first').text();
+			$('#firstName0').val($(this).closest('tr').find("td").eq(2).text());
+			$('#lastName0').val($(this).closest('tr').find("td").eq(3).text());
 			$('#address1').val($(this).closest('tr').find("td").eq(4).text());
 			$('#address2').val($(this).closest('tr').find("td").eq(5).text());
 			$('#address3').val($(this).closest('tr').find("td").eq(6).text());
@@ -208,8 +210,16 @@ $('#adduser1').click(function()
 			$('#SubmitButton').hide();
 			$('#UpdateUserButton').show();
 			$('#ShowRecButton').show();
+			$('#fisrtnamediv0').show();
+			$('#lastnamediv0').show();
 			$('#myModal').modal('show');
+			$('#userModalLabel').text("Edit Tutor/ Student Details");
 			var myBackup = $('#myModal').clone();
+			var role=($(this).closest('tr').find("td").eq(1).text());
+			if(role=='Student')
+				{
+				$('#usermessage').show();
+				}
 			//$('#').val();
 			
 			var row=null;
@@ -217,8 +227,10 @@ $('#adduser1').click(function()
 		    row=table
 	        .row( $(this).parents('tr') );
 		    
-		    $('#ShowRecButton').click(function(){getUserRecs(userid,function(result){if(result==true){$('#recordtablediv').show();}});
+		    $('#ShowRecButton').click(function(){getUserRecs(userid,role,function(result){if(result==true){$('#recordtablediv').show();}});
 		    });
+		    
+		    
 		    $('#userrectable').on( 'click', '#editgrade', function () {
 		
 		    	
@@ -397,8 +409,9 @@ $('#adduser1').click(function()
 		    .rows()
 		    .remove()
 		    .draw();*/
+			alert(roleid);
 			var instruct=null;
-			if(roleid==0)
+			if(roleid=='Student')
 				{
 				instruct=6;
 				}
@@ -433,8 +446,8 @@ $('#adduser1').click(function()
 				}
 				else
 					{
-					$("#userrectable").append("<tr><td>" + data.courseid + "</td><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td></tr>");
-					$('#grade').hide();
+					$("#userrectable").append("<tr><td>" + data.courseid + "</td><td>" + data.coursename + "</td><td>" + data.start + "</td><td>" + data.end + "</td><td>"+data.grade+"</td></tr>");
+					$('#grade').text("Average Grade");
 					}
 			});
 			}
@@ -514,15 +527,15 @@ $('#adduser1').click(function()
 				//<button id="4" class="btn btn-danger"" role="delete" title="Delete Category"><span class="glyphicon glyphicon-refresh"></span></button>
 				
 				//<button id="6"  role="update" title="Update Category"></button>
-					button1="<button id='edituser' class='btn btn-primary' title='Edit User Info'><span class='glyphicon glyphicon-pencil'</span></button>";
+					button1="<button id='edituser' class='btn btn-primary' title='View/ Edit Info'><span class='glyphicon glyphicon-eye-open'</span>/<span class='glyphicon glyphicon-pencil'</span></button>";
 					button2="<button id='deleteuser' class='btn btn-danger'><span class=\"glyphicon glyphicon-trash\"></span></button>";
-					button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
+					//button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
 					//userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=3"+data.userid+" class=\"rud\" role=\"update\">update</button><button id=4"+data.userid+" class=\"rud\" role=\"delete\" >Delete</button></td></tr>";
 	//<span class=\"glyphicon glyphicon-trash\"></span>
 				}
 			else{
 					button1="<button id='restoreuser' class='btn btn-success' title='restore User'><span class='glyphicon glyphicon-refresh'></button>";
-					button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
+					//button3="<button id='viewprofile' class='btn btn-default'><span class=\"glyphicon glyphicon-eye-open\"></span></button>";
 					button2="";//<button id=5"+data.userid+" class=\"rud\" role=\"delete\"></button>";
 				    //userData="<tr><td id=\"userid\">"+data.userid+"</td><td id=\"fname\">"+data.fname+"</td><td id=\"lname\">"+data.lname+"</td><td id=\"address1\">"+data.address1+"<td><button id=2"+data.userid+" class=\"rud\" role=\"restore\">Restore</button>";
 			}
@@ -619,10 +632,10 @@ $('#adduser1').click(function()
 			var phone = $("#phone").val();
 			var email = $("#email").val();
 			var dob = $("#datepicker").val();
-			alert(dob);
+	
 		
 			var role = $("#role").val();
-			alert (role);
+		
 			var checknum = $("#checknum").val();
 			var messageid=null;
 			var message=null;

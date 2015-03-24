@@ -40,7 +40,7 @@ import dto.UserObjects;
 	Connection connection = db.Get_Connection();
 	Gson gson = new Gson();
 	String userdata=null;
-	if(instructid==6)
+	if(instructid==6 || instructid==7)
 	{
 		ArrayList<RecordObjects> recData = null;
 		recData=retManager.GetRecs(connection, request, response);

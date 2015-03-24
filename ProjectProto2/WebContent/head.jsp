@@ -21,5 +21,5 @@
  
 </head>
   <header>
-      <img class="logo" src="Images\logo_orange.png" alt="TEAd@S">
+      <img class="logo" src="Images\plainhead.png" alt="TEAd@S">
     </header>

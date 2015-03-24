@@ -18,7 +18,7 @@
   <li><a href="#">Library</a></li>
   <li class="active">Data</li>
 </ol>
-<h1>User Management</h1>
+<h1>Tutor/ Student Management</h1>
 
 <div id="intialdiv" class="tableboxmed">
 
@@ -26,17 +26,17 @@
 
 <button class="btn btn-success" data-toggle="modal" 
    data-target="#myModal" id="adduser1"><span class="glyphicon glyphicon-plus"></span>
-   Add User
+   Add New Tutor/ Student
 </button>
 <button class="btn btn-primary" id="updateButton"><span class="glyphicon glyphicon-refresh"></span>
-  Restore User
+  Restore Tutor/ Student
 </button>
 <button class="btn btn-warning" id="bulkuploadbtn" data-toggle="modal" 
    data-target="#bulkupload"><span class="glyphicon glyphicon-import"></span>
-Import Users
+Import Students
 </button>
 <button class="btn btn-primary" id="allusers"><span class="glyphicon glyphicon-eye-open"></span>
-View All Users
+View All Tutors/ Students
 </button>
 
 
@@ -75,11 +75,12 @@ View All Users
       
     </tr>
     </thead>
-      <tfoot>
+  
+    <tbody></tbody>
+        <tfoot>
  
     
     </tfoot>
-    <tbody></tbody>
 </table>
 
 
@@ -108,14 +109,32 @@ View All Users
                   &times;
             </button>
            
-            <h4 class="modal-title" id="myModalLabel">
-               Add New User Details
+            <h4 class="modal-title" id="userModalLabel">
+               Add New Tutor/ Student
             </h4>
          </div>
          <div class="modal-body">
 
-  <h2>New User Form</h2>
+ 
   <form class="form-horizontal" role="form" id="induserform">
+  
+  
+  <div id="firstnamediv0" class="form-group">
+  <label class="control-label col-sm-4" for="firstName0">First Name</label>
+  <div class="col-sm-4">
+    <input id='firstName0' name="firstName" placeholder="First Name" class="form-control"  data-validation="required" type="text" disabled>
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div id="lastnamediv0" class="form-group">
+  <label class="control-label col-sm-4" for="lastName0">Last Name</label>
+<div class="col-sm-4">
+    <input id='lastName0' name="lastName" placeholder="Last Name" class="form-control" data-validation="required" type="text" disabled>
+    
+  </div>
+</div>
  
   
     
@@ -239,6 +258,7 @@ View All Users
          </div>
          <button id="ShowRecButton" class="btn btn-primary" style="display:none">Display Records</button>
 <div id="recordtablediv" style="display:none">
+<h4 id="usermessage" style="color:red; display:none">Please note grades are updated indepently from the information above. Once the <button class="btn btn-primary"> <span class="glyphicon glyphicon-pencil"></span></button> is clicked the new grade is saved to the database.</h4>
  <table id="userrectable" class="table" width="100%" cellspacing="0">
   <thead>
     <tr>

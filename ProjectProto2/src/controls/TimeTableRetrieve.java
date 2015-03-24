@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-import models.TimeTableRetrieveManager;
+import models.TimeTableManager;
 
 	import com.google.gson.Gson;
 
@@ -41,14 +41,14 @@ import dto.TimeTableObjects;
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		String ttdata=null;
-		Gson gson = new Gson();
+		
 		try
 		{
 		int instruct=Integer.valueOf(request.getParameter("instruct"));
-	
+		String ttdata=null;
+		Gson gson = new Gson();
 		DBManager db= new DBManager();
-		TimeTableRetrieveManager retManager= new TimeTableRetrieveManager();
+		TimeTableManager retManager= new TimeTableManager();
 		ArrayList<TimeTableObjects> ttData = null;
 		
 		Connection connection = db.Get_Connection();
@@ -57,8 +57,13 @@ import dto.TimeTableObjects;
 		if(instruct==5)
 		{
 			ttData=retManager.GetSemDetails(connection, request, response);
+			System.out.println("Controller::::"+ttData);
+			
+			
+			
+			
 		}
-		if(instruct==15)
+		else if(instruct==15)
 		{
 			ttData=retManager.GetTutorTT(connection, request, response);
 		}
@@ -67,14 +72,12 @@ import dto.TimeTableObjects;
 		
 			ttData= retManager.GetTTData(connection, request, response) ;
 		}
-				ttdata = gson.toJson(ttData);
-	
-
-		
+		ttdata = gson.toJson(ttData);
+		System.out.println(ttdata);
 		out.println("{\"TimeTableData\":"+ttdata+"}");
 		//ut.println(catdata);
 
-		ttData=null;
+
 		}
 		catch (Exception ex)
 		{

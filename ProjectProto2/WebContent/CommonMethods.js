@@ -2,7 +2,7 @@
  * 
  */
 $(document).ready(function(){
-$.validate({
+/*$.validate({
    
     modules : 'location, date, security, file',
     onError : function() {
@@ -18,6 +18,6 @@ $.validate({
         message : 'This input has an invalid value for some reason'
       };
     }
-  });
+  });*/
 
 });

@@ -109,7 +109,7 @@ System.out.println(archived.substring(2, 3));
 
  if(instruct==1)
  {
-	 System.out.println("got to statement"); 
+	
  ps = connection.prepareStatement("SELECT userid,firstName,lastName,address,address2,address3,personalphone,personalemail,postcode,dob,role FROM TB_User where archived in (?,?) and role in(?,?)");
  }
  else if (instruct==2)
@@ -171,7 +171,7 @@ if(instruct==4)
 {
 	String grade=rs.getString("grade");
 	
-	UserObject.setMisc("<b>Grade<b>: <input  class='col-sm-4'  value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
+	UserObject.setMisc("<b>Grade<b>: <input value='"+grade+"' id='grade' type='text'/><button id='editgrade' class='btn btn-primary' role='edit' title='Edit Grade'><span class='glyphicon glyphicon-pencil'</span></button>");
 
 }
 else
@@ -181,6 +181,7 @@ else
 
 
 //System.out.print(UserObject);
+
 userData.add(UserObject);
 
 
@@ -211,10 +212,10 @@ try
 
 	 if(instruct==6)
 	 {
-	 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename,grade from tb_student_courses inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID = tb_student_courses.TutorCourseID inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_student_courses.Student_ID=?");
+	 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename,grade from tb_student_courses inner join tb_tutor_courses on tb_tutor_courses.TutorCourseID = tb_student_courses.TutorCourseID inner join tb_semester on tb_semester.ID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_student_courses.Student_ID=?");
 	 }
 	 else{
-		 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename from tb_tutor_courses inner join tb_semester on tb_semester.SemesterID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_tutor_courses.TutorID=?");
+		 ps = connection.prepareStatement(" select tb_tutor_courses.TutorCourseID as Courseid,startdate,enddate,coursename,sum(grade)/count(Student_ID) as scoreavg from tb_tutor_courses left outer join tb_student_courses on tb_tutor_courses.TutorCourseID=tb_student_courses.TutorCourseID and grade>0 inner join tb_semester on tb_semester.ID = tb_tutor_courses.SemesterID inner join tb_courses on tb_courses.Course_ID=tb_tutor_courses.CourseID where tb_tutor_courses.TutorID=?;");
 		 
 	 }
 	 ps.setInt(1,userid);
@@ -236,7 +237,7 @@ try
 	 }
 	 else
 	 {
-		 RecObjects.setGrade("N/A"); 
+		 RecObjects.setGrade(rs.getString("scoreavg")); 
 	 }
 	 //System.out.print(UserObject);
 	 userRecord.add(RecObjects);

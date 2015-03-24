@@ -11,6 +11,7 @@
 
 
 <body id="myBod2">
+
 <ol class="breadcrumb">
   <li><a href="#">Home</a></li>
   <li><a href="#">Library</a></li>
@@ -45,6 +46,13 @@
 <button class="btn btn-info"  id="viewcat" style="display:none"><span class="glyphicon glyphicon-eye-open"></span>
    View Categories
 </button>
+<button class="btn btn-info"  id="viewallc" style="display:none"><span class="glyphicon glyphicon-eye-open"></span>
+   View All Courses
+</button>
+<button class="btn btn-info"  id="viewallcs" style="display:none"><span class="glyphicon glyphicon-eye-open"></span>
+   View All Courses
+</button>
+
 </div>
 </div>
 
@@ -56,10 +64,15 @@
  <div id="catdiv">   
  <table class="display" id="category" width="100%" cellspacing="0"></table></div> 
  <div id="coursediv"><table class="display" id="courses" width="100%" cellspacing="0"></table></div>
+ 
+ 
  <div id="studentdiv" style="display:none">
 
 <input id='scourseID' name="catID" placeholder="catID" class="form-control" type="hidden">
-<table class="display" id="students" width="100%" cellspacing="0"></table>
+<div class="tableboxmed">
+<table class="display" id="students" width="100%" cellspacing="0"><thead></thead><tbody></tbody>
+  <tfoot><tr><td></td><td></td><td></td><td></td><td><button id="SubmitButtonstudents" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-plus"></span>Add Selected Students</button></td></tr></tfoot></table>
+
  
 
     
@@ -69,10 +82,15 @@
 
 
          
-             <button id="SubmitButtonstudents" class="btn btn-primary" data-dismiss="modal">Submit</button>
+            
      
          </div>
- 
+ </div>
+  <div id="studentrecsdiv" style="display:none">
+  <div class="tableboxmed">
+  <table class="display" id="studentrecs" width="100%" cellspacing="0"></table>
+  </div>
+  </div>
  
  
 <!-- Modal -->
@@ -156,16 +174,17 @@
                   &times;
             </button>
            
-            <h4 class="modal-title" id="myModalLabel">
-               Add Course Details
+            <h4 class="modal-title" id="courseModalLabel">
+           Create New Course
             </h4>
          </div>
          <div class="modal-body">
 
-  <h2>New Course Form</h2>
-  
+
+
+
   <form class="form-horizontal" role="form" id="courseform" >
- 
+   <h4 id="coursetitle"></h4>
   <div id="ncatidd" class="form-group" style="display:none">
   <label class="control-label col-sm-4" for="courseName"></label>
   <div class="col-sm-4">
@@ -254,7 +273,7 @@
    <label class="control-label col-sm-4" for="sel3">Select Tutor:</label>
    <div class="col-sm-4">
       <select class="form-control" id="tutorsel">
-      <option id="opt1">- Select One -</option>
+      <option id="opt1" value=null>- Select One -</option>
       </select>
         </div>
         </div>

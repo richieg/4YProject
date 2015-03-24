@@ -11,12 +11,115 @@ $(document).ready( function () {
 	var catrows=null;
 	var oTable=null;
 	var ocTable=null;
+	var osTable=null;
+	var osrTable=null;
 	var studentcols=null;
 	var studentrows=null;
 	var students=[];
 	var myBackup=null;
 	
 	 intializePage();
+	 
+
+	 
+	 
+	 
+	 
+	    
+	    function intializePage(){
+	    	   getCatData(0,function(){drawDataTable(catcols,catrows);});
+
+	    	    
+	    	   getCourseDetailsForCoursesTable(0,function(){drawDataTable1(coursecols,courserows);});
+	    	    $('#coursediv').hide();
+	    
+	    	
+	    	
+	    };
+	    
+	    function resetCourseTable(c)
+	    {
+	    	
+	    	$("#courses").dataTable().fnDestroy();
+	    	
+	    	getCourseDetailsForCoursesTable(c,function(){drawDataTable1(coursecols,courserows);});
+	    };
+	    
+	    
+	    function resetCatTable(ca)
+	    {
+	    	
+	    	
+	    	  getCatData(ca,function(){drawDataTable(catcols,catrows);});
+	    };
+	    function resetStudentTable(a,i,b)
+	    {
+	    	
+	    	
+	   
+	    	/*if($("#students").aoData.length>0)
+	    		{
+	    		alert("hello");
+	    		$("#students").dataTable().fnDestroy();
+	    		}*/
+	    	getUserForCourses(0,0,a,i,b,function(){drawStudentTable(studentcols,studentrows);});
+	    };
+	 
+	    
+	    
+	    function drawDataTable(columns, data) {
+	    
+	    	
+	        oTable = $('#category').DataTable({
+	        	 
+	                "aoColumnDefs": columns,
+	                "aaData": data
+	               
+	        });
+	      
+	    };
+	    
+	   function drawDataTable1(columns, data) {
+	    
+	    	
+	        ocTable = $('#courses').DataTable({
+	        	 
+	                "aoColumnDefs": columns,
+	                "aaData": data
+	               
+	        });
+	      
+	    };
+	    
+	   function drawStudentTable(columns, data,instruct) {
+	    
+	    	
+	        osTable = $('#students').DataTable({
+	        	 
+	                "aoColumnDefs": columns,
+	                "aaData": data
+	               
+	        });
+	        //if(instruct==3)
+	        //{
+	        //$('#students').append('<td></td><td></td><td></td><td></td><td><button id="SubmitButtonstudents" class="btn btn-primary" data-dismiss="modal">Add Selected Students</button></td>');
+	        //}
+	    };
+	    
+function drawStudentRecsTable(columns, data,instruct) {
+	    
+	    	
+	        osrTable = $('#studentrecs').DataTable({
+	        	 
+	                "aoColumnDefs": columns,
+	                "aaData": data
+	               
+	        });
+	        //if(instruct==3)
+	        //{
+	        //$('#students').append('<td></td><td></td><td></td><td></td><td><button id="SubmitButtonstudents" class="btn btn-primary" data-dismiss="modal">Add Selected Students</button></td>');
+	        //}
+	    };
 	
 	 
   /*******************Modal Reset Function*******************************************************/
@@ -32,6 +135,13 @@ $(document).ready( function () {
     
 
   /*********************Button Event Functions************************************************************/  
+		
+		
+ /*
+  * Functions to reset modals 
+  * when they have been closed to 
+  * ensure data not cached
+  * */
 
 	$('#closecor').click(function()
 		{
@@ -43,48 +153,319 @@ $(document).ready( function () {
 		bootbox.confirm("Are you sure you want to cancel without saving?", function(result) {if (result==true){resetModal('#catModal',myBackup);}else{$('catModal').modal('show');}});
 
 		});
-	 
+		
+		
+/*Function call to detect when 
+ * "View Courses" 
+ * button selected
+ * */ 
     $('#viewc').click(function()
     	{
 		     	viewc();
 		     	resetCourseTable(0);
     	});
+    $('#viewallc').click(function()
+        	{
+    				
     		
-    	
-    	
-    	function viewc()
-    	{
+    			 
+    				$("#students").dataTable().fnDestroy();
+    				
+    		     	viewc();
+    		     	resetCourseTable(0);
+    		     	 $('#viewallc').hide();
+    		     	
+        	});
+    $('#viewallcs').click(function()
+        	{
+    				
+    		
+    			 
+    				$("#studentrecs").dataTable().fnDestroy();
+    				
+    		     	viewc();
+    		     	resetCourseTable(0);
+    		     	 $('#viewallcs').hide();
+    		     	$('#studentrecsdiv').hide();
+        	});
+    
+ /*
+  * Function call when 
+  * "Add Course" button selected 
+  * in the course view
+  * */   
+    
+	$('#addc').click(function () 
+			{
+				myBackup = $('#courseModal').clone();
+				getTutorsForTutorSels(0);
+				getCourseNamesforSels(0);
+				$('#ncatnamedd').hide();
+				$('#ncatnamed').show();
+				$('#ccatnamesel').show();
+				$("#courseModal").modal('show');
 
-		    	$("#catdiv").hide();
-		        $("#coursediv").show();
-		        $("#studentdiv").hide();
-		    	$("#viewc").hide();
-		    	$("#addcat1").hide();
-		    	$("#viewcat").show();
-		    	$("#addc").show();
-		    	$("#pagetitle").text('Courses');
-    	
-    	};
-    
-    
-    	$('#viewcat').click(function()
-    	{
-	    	$("#category").dataTable().fnDestroy();
-	    	$("#catdiv").show();
-	    	$("#coursediv").hide();
-	    	$("#studentsdiv").hide();
-	    	$("#viewc").show();
-	    	$("#addcat1").show();
-	    	$("#viewcat").hide();
-	    	$("#addc").hide();
-	    	$("#pagetitle").text('Categories');
+
+
+
+			});
+	
+	
+	
+/*
+ * Function called when 
+ * Add Student Button 
+ * selected on course table
+ * 
+ * */
+	
+	$('#courses').on( 'click', '#addstudents', function () 
+	{
+	
+	
+		
+		var a = $(this).closest('tr').find('td:first').text();
+		var b = $(this).closest('tr').find("td").eq(6).text();
+		var instruct=3;
+		getUserForCourses(0,0,a,instruct,b,function(){drawStudentTable(studentcols,studentrows,instruct);});
+		 students[0]=$(this).closest('tr').find('td:first').text();
+		 $('#pagetitle').text("Students");
+		$("#coursediv").hide();
+		$("#studentrecsdiv").hide();
+		$("#studentdiv").show();
+		$('#addcat1').hide();
+    	$('#viewcat').hide();
+    	$('#addc').hide();
+    	$('#viewallc').show();
+    	$('#viewallcs').hide();
+	
+	
+	
+	
+	});
+	
+	
+	
+	/*
+	 * Function called when 
+	 * View Students Button 
+	 * selected on course table
+	 * 
+	 * */	
+	
+	
+	
+	    $('#courses').on( 'click', '#viewcs', function () {
 	    	
-    	
-	    	getCatData(0,function(){drawDataTable(catcols,catrows);});
-    	 
-    	
-    	});
+	    
+	    	
+	    	
+	    	var courseid= $(this).closest('tr').find('td:first').text();
+	    	var coursename= $(this).closest('tr').find("td").eq(1).text();
+	    	$('#pagetitle').text(coursename+" Participants");
+	    	$('#scourseID').val(courseid);
+	    	$('#addcat1').hide();
+	    	$('#viewcat').hide();
+	    	$('#addc').hide();
+	    	$('#viewallcs').show();
+	    	$('#viewallc').hide();
+	    	var instruct=4;
+	    	//alert($('#scourseID').val());
+	    	//resetStudentTable(a,4,0);
+	    
+	    	getUserForCourses(0,0,courseid,instruct,0,function(){drawStudentRecsTable(studentcols,studentrows,instruct),$('#coursediv').hide(),$('#studentrecsdiv').show();});
+	    	
+	    	
+	    });
+	    
+	    
+		/*
+		 * Function called when 
+		 * Delete Course Button 
+		 * selected on course table
+		 * 
+		 * */
+	    
+	    
+	    
+		$('#courses').on( 'click', '#deleteCourse', function () {
+			
+			
+			var row=null;
+			var rowid=null;
+		
+	
+			var a = $(this).closest('tr').find('td:first').text();
+			row=ocTable
+		    .row( $(this).parents('tr') );
+			rowid=5;
+		    CompleteUpDel(a,row,rowid);
+		   
+			  
+			});
+
+		/*
+		 * Function called when 
+		 * Edit Course Button 
+		 * selected on course table
+		 * 
+		 * */
+
+		$('#courses').on( 'click', '#editCourse', function () {
+		
+			var tid=this.getAttribute('tid');
+			
+			getTutorsForTutorSels(tid);
+		
+		
+			var a = $(this).closest('tr').find('td:first').text();
+			var b = $(this).closest('tr').find("td").eq(1).text();
+			var c = $(this).closest('tr').find("td").eq(6).text();
+		
+			
+			$('#cccatid').val(a);
+			$("#courseName").val(b);
+			$("#capacity").val(c);
+			$("#coursename").hide();
+			$("#ccatname").hide();
+			$("#coursenameseld").hide();
+			$("#acrb").hide();
+			
+			$("#sem").hide();
+			$("#req").hide();
+			$("#level").hide();
+			$("#ccatnamesel").hide();
+			
+			$("#CourseUpdateButton").show();
+			$("#CourseSubmitButton").hide();
+			$("#courseModalLabel").val("Edit Course");
+			$("#coursetitle").text("Course: "+b);
+			
+
+		
+		    row=ocTable
+		    .row( $(this).parents('tr') );
+		   
+		    
+		    	rowid=this.id;
+		    	$('#courseModal').modal('show');
+			});
+		
+		
+		
+			
+		    $('#CourseUpdateButton').click(function(){
+		    		
+		    		bootbox.confirm("Are you sure you want to update this course?", function(result) {if (result==true){updateCourse(7),resetCourseTable(0);};
+		    		
+		    		
+		    	});
+			
+			
+			  
+			});
+		    
+	
     
+	/*
+	 * Function call when 
+	 * "View Courses" button 
+	 * on category table selected
+	 * */    
+		$('#category').on( 'click', '#viewc', function () {
+			
+			
+			viewc();
+			var b = $(this).closest('tr').find("td").eq(1).text();
+			var a = $(this).closest('tr').find('td:first').text();
+			
+			$("#pagetitle").text(b+' Courses');
+			resetCourseTable(a);
+			
+	
+			
+		});
+	
+	
+	/*
+	 * Function call when 
+	 * Add Course" button 
+	 * on category table selected
+	 * */
+		
+		$('#category').on( 'click', '#addcourse', function () {
+			myBackup = $('#courseModal').clone();
+			getTutorsForTutorSels(0);
+			var a = $(this).closest('tr').find('td:first').text();
+			var b = $(this).closest('tr').find("td").eq(1).text();
+			getCourseNamesforSels(a);
+			$('#cccatid').val(a);
+			$("#catnamesel option[id='"+a+"']").attr('selected', 'selected');
+			$('#catName').val(b);
+			$("#courseModal").modal('show');
+			console.log(studentcols,studentrows);
+			
+		});
+		
+		
+		/*
+		 * Function call when 
+		 * Delete Category button 
+		 * on category table selected
+		 * */
+		
+		
+		$('#category').on( 'click', '#deleteCat', function () {
+			
+			var row=null;
+			var role=this.getAttribute('role');
+	
+			var a = $(this).closest('tr').find('td:first').text();
+			row=oTable
+	        .row( $(this).parents('tr') );
+		    CompleteUpDel(a,row,4);
+		   });
+    		
+	/*
+	 * Function to set up courses view
+	 * */   	
+	    	
+	    	function viewc()
+	    	{
+	
+			    	$("#catdiv").hide();
+			        $("#coursediv").show();
+			        $("#studentdiv").hide();
+			    	$("#viewc").hide();
+			    	$("#addcat1").hide();
+			    	$("#viewcat").show();
+			    	$("#addc").show();
+			    	$("#pagetitle").text('Courses');
+	    	
+	    	};
+    
+	/*
+	 * Function called when "View Categories"
+	 *  button pressed on courses page
+	 * */ 
+	    	$('#viewcat').click(function()
+	    	{
+		    	$("#category").dataTable().fnDestroy();
+		    	$("#catdiv").show();
+		    	$("#coursediv").hide();
+		    	$("#studentsdiv").hide();
+		    	$("#viewc").show();
+		    	$("#addcat1").show();
+		    	$("#viewcat").hide();
+		    	$("#addc").hide();
+		    	$("#pagetitle").text('Categories');
+		    	
+	    	
+		    	getCatData(0,function(){drawDataTable(catcols,catrows);});
+	    	 
+	    	
+	    	});
+	    
     
  
     
@@ -95,7 +476,7 @@ $(document).ready( function () {
     
     $('#SubmitButtoncat').click(function()
     		{
-    	bootbox.confirm("Are you sure you want to add this category", function(result) {if (result==true){insertCatCourse(1,function(result){if(result==true){resetCatTable(0),resetModal('#catModal',myBackup)
+    	bootbox.confirm("Are you sure you want to add this category", function(result) {if (result==true){updateCatCourse(1,function(result){if(result==true){resetCatTable(0),resetModal('#catModal',myBackup)
     		;}});};
     	});
     		});
@@ -116,72 +497,18 @@ $(document).ready( function () {
     	
     	
     });
-	$('#category').on( 'click', '#viewc', function () {
-		
-		
-		viewc();
-		var b = $(this).closest('tr').find("td").eq(1).text();
-		var a = $(this).closest('tr').find('td:first').text();
-		alert(a);
-		$("#pagetitle").text(b+' Courses');
-		resetCourseTable(a);
-		//getCourseNamesForCourses(a,function(){drawDataTable1(coursecols,courserows);});
 
-		
-	});
 	
 	
 	
-	$('#category').on( 'click', '#addcourse', function () {
-		myBackup = $('#courseModal').clone();
-		getTutorsForTutorSels();
-		var a = $(this).closest('tr').find('td:first').text();
-		var b = $(this).closest('tr').find("td").eq(1).text();
-		getCourseNamesforSels(a);
-		$('#cccatid').val(a);
-		$("#catnamesel option[id='"+a+"']").attr('selected', 'selected');
-		$('#catName').val(b);
-		$("#courseModal").modal('show');
-		console.log(studentcols,studentrows);
-		
-	});
-
-
-	$('#addc').click(function () 
-	{
-		myBackup = $('#courseModal').clone();
-		getTutorsForTutorSels();
-		getCourseNamesforSels(0);
-		$('#ncatnamedd').hide();
-		$('#ncatnamed').show();
-		$('#ccatnamesel').show();
-		$("#courseModal").modal('show');
 
 
 
 
-	});
 
 
 
-	$('#courses').on( 'click', '#addstudents', function () 
-	{
-	
-	
-		
-		var a = $(this).closest('tr').find('td:first').text();
-		var b = $(this).closest('tr').find("td").eq(6).text();
-	
-		getUserForCourses(0,0,a,3,b,function(){drawStudentTable(studentcols,studentrows);});
-		 students[0]=$(this).closest('tr').find('td:first').text();
-		//$("#scourseID").val($(this).closest('tr').find('td:first').text());
-		$("#coursediv").hide();
-		$("#studentdiv").show();
-	
-	
-	
-	
-	});
+
 
 
 
@@ -191,52 +518,25 @@ $(document).ready( function () {
 	
 	
     
-	$('#category').on( 'click', '#4', function () {
-		alert("hello");
-		
-		var row=null;
-		var rowid=null;
-	
-		var role=this.getAttribute('role');
-		alert(role);
-		var a = $(this).closest('tr').find('td:first').text();
-	
-		alert(a);
-	
-	    row=oTable
-        .row( $(this).parents('tr') );
-	    
-		rowid=this.id;
-
-		
-		
-		
-		CompleteUpDel(a,row,rowid);
-	    //bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(a,row,rowid);};
-  	  
-    	
-	});
 
 
 
 
 
 
-	$('#category').on( 'click', '#6', function () {
+
+	$('#category').on( 'click', '#editCat', function () {
 			
 				
 				var row=null;
 			
 			
-				var role=this.getAttribute('role');
-				alert(role);
+		
 				var a = $(this).closest('tr').find('td:first').text();
 				var b = $(this).closest('tr').find("td").eq(1).text();
 				var c = $(this).closest('tr').find("td").eq(2).text();
-			
-				alert(a);
-				alert(b);
-				alert(c);
+				
+		
 				$('#catID').val(a);
 				$('#categoryName').val(b);
 				$('#catDescript').val(c);
@@ -256,7 +556,7 @@ $(document).ready( function () {
 			    
 			$('#UpdateButtoncat').click(function(){
 				
-				bootbox.confirm("Are you sure you want to update this category?", function(result) {if (result==true){insertCatCourse(6),resetCatTable(0);};
+				bootbox.confirm("Are you sure you want to update this category?", function(result) {if (result==true){updateCatCourse(6,function(result){if(result==true){resetCatTable(0);}});};
 				
 				});
 			});
@@ -268,96 +568,10 @@ $(document).ready( function () {
 			
   /**************************Course Table Buttons**********************************/
 			
-	$('#courses').on( 'click', '#5', function () {
-		
-		
-		var row=null;
-		var rowid=null;
-	
-		var role=this.getAttribute('role');
-		alert(role);
-		var a = $(this).closest('tr').find('td:first').text();
-	
-		alert(a);
-	
-	    row=ocTable
-	    .row( $(this).parents('tr') );
-	  
-	    
-	    	rowid=this.id;
-	    
-		
-		
-		
-		CompleteUpDel(a,row,rowid);
-	    //bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){upDel(a,row,rowid);};
-		  
-		});
 
+	    
+	    
 
-
-	$('#courses').on( 'click', '#7', function () {
-	
-		
-		
-	
-		var role=this.getAttribute('role');
-		alert(role);
-		var a = $(this).closest('tr').find('td:first').text();
-		var b = $(this).closest('tr').find("td").eq(1).text();
-		var c = $(this).closest('tr').find("td").eq(5).text();
-		alert(c);
-		$('#cccatid').val(a);
-		$("#courseName").val(b);
-		$("#capacity").val(c);
-		
-		$("#ccatname").hide();
-		$("#coursenameseld").hide();
-		$("#acrb").hide();
-		$("#tutor").hide();
-		$("#sem").hide();
-		$("#req").hide();
-		$("#level").hide();
-		$("#ccatnamesel").hide();
-		
-		$("#CourseUpdateButton").show();
-		$("#CourseSubmitButton").hide();
-	
-		alert(a);
-	
-	    row=ocTable
-	    .row( $(this).parents('tr') );
-	   
-	    
-	    	rowid=this.id;
-	    	$('#courseModal').modal('show');
-		});
-		
-	    $('#CourseUpdateButton').click(function(){
-	    		
-	    		bootbox.confirm("Are you sure you want to update this course?", function(result) {if (result==true){insertCatCourse(7),resetCourseTable(0);};
-	    		
-	    		
-	    	});
-		
-		
-		  
-		});
-	    
-	    
-	    
-	    $('#courses').on( 'click', '#viewcs', function () {
-	    	
-	    	alert("oala");
-	    	
-	    	
-	    	var a = $(this).closest('tr').find('td:first').text();
-	    	$('#scourseID').val(a);
-	    	//alert($('#scourseID').val());
-	    	getUserForCourses(0,0,a,4,0,function(){drawStudentTable(studentcols,studentrows),$('#coursediv').hide(),$('#studentdiv').show();});
-	    	
-	    	
-	    });
 	    
 	    
 	    
@@ -385,40 +599,44 @@ $(document).ready( function () {
 	    if($(this).is(":checked")) {
 	        
 	        var id=this.id;
-	        alert(id);
+	      
 	       
 	      
 	        students[students.length]=id;
-	        alert(students);
+	      
 	    }
 	    
 	  });
 	
 	
 	
-    $('#students').on( 'click', '#editgrade', function () {
-    	
+    $('#studentrecs').on( 'click', '#editgrade', function () {
+    	alert("hello");
     	var studentid = $(this).closest('tr').find('td:first').text();
     	var grade = $(this).closest('tr').find('#grade').val();
     	var courseid= $('#scourseID').val();
     	
     	
-    	updateStudentData(courseid,studentid,grade,function(result) {if (result==true){alert("ok");};
+    	bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true)updateStudentData(courseid,studentid,grade,function(result) {if (result==true){alert("ok");};
     
+    	});
     	});
     	
     	
     	
     	
     });
-	$('#SubmitButtonstudents').click(function(){
+
+			
+	$('#students').on( 'click', '#SubmitButtonstudents', function (){
 		
 		
-		alert(students);
+
 		
 		 bootbox.confirm("Are you sure you want to complete this action?", function(result) {if (result==true){addStudentstoCourses(students,function(result){if(result==true){$("#students").dataTable().fnDestroy(),$('#studentdiv').hide(),viewc(),
-	 	resetCourseTable(0);}});
-		 students=null;
+		 resetCourseTable(0);}});
+		 $("#students").dataTable().fnDestroy();
+		 students=[];
 		 };
 		 });
 	});
@@ -448,69 +666,7 @@ $(document).ready( function () {
 /**********************************Table and form set up functions**************************************/
 				
 				
-			    
-			    function intializePage(){
-			    	   getCatData(0,function(){drawDataTable(catcols,catrows);});
-
-			    	    
-			    	   getCourseDetailsForCoursesTable(0,function(){drawDataTable1(coursecols,courserows);});
-			    	    $('#coursediv').hide();
-			    	
-			    };
-			    
-			    function resetCourseTable(c)
-			    {
-			    	
-			    	$("#courses").dataTable().fnDestroy();
-			    	
-			    	getCourseDetailsForCoursesTable(c,function(){drawDataTable1(coursecols,courserows);});
-			    };
-			    
-			    
-			    function resetCatTable(ca)
-			    {
-			    	
-			    	$("#category").dataTable().fnDestroy();
-			    	  getCatData(ca,function(){drawDataTable(catcols,catrows);});
-			    };
-			 
-			    
-			    
-			    function drawDataTable(columns, data) {
-			    
-			    	
-			        oTable = $('#category').DataTable({
-			        	 
-			                "aoColumnDefs": columns,
-			                "aaData": data
-			               
-			        });
-			      
-			    };
-			    
-			   function drawDataTable1(columns, data) {
-			    
-			    	
-			        ocTable = $('#courses').DataTable({
-			        	 
-			                "aoColumnDefs": columns,
-			                "aaData": data
-			               
-			        });
-			      
-			    };
-			    
-			   function drawStudentTable(columns, data) {
-			    
-			    	
-			        osTable = $('#students').DataTable({
-			        	 
-			                "aoColumnDefs": columns,
-			                "aaData": data
-			               
-			        });
-			      
-			    };
+		
 			    
 			    
 			    
@@ -522,434 +678,403 @@ $(document).ready( function () {
 			    
 			    
 			    
-			
-			
+		
+function setCatSels(catid,catname)
+{
+	var o2 = new Option("option text", "value");
+o2.id=catid;
 
-			   /*function setCourseSels(courseid,coursename,level)
-			    {
-					var o1 = new Option("option text", "value");
-					o1.id=courseid;
-					/// jquerify the DOM object 'o' so we can use the html method
-					$(o1).html(coursename+" " +level);
-					$("#coursenamesel").append(o1);
-					
-			    }*/
-			   
-			   function setCatSels(catid,catname)
-			    {
-					var o2 = new Option("option text", "value");
-					o2.id=catid;
-					/// jquerify the DOM object 'o' so we can use the html method
-					$(o2).html(catname);
-					$("#catnamesel").append(o2);
-					
-			    }
-			   
+$(o2).html(catname);
+$("#catnamesel").append(o2);
+
+}
+		   
 			   
 			   
 			   
 			   /**************Select Change Fucntions***********************/
 			   
 			   
-				$('#coursenamesel').change(function() {
-					
-					var optionID=$('#coursenamesel option:selected').attr('id');
+$('#coursenamesel').change(function() {
+	
+	var optionID=$('#coursenamesel option:selected').attr('id');
+
+	if(optionID!="1")
+		{
+	 
+		    $('#coursename').hide();
+	    	$('#level').hide();
+	    	$('#acrb').hide();
+	}
+	
+	 
+	});
+	
+	
+	$('#catnamesel').change(function() {
+	
+		
+		//ccatname()
+		var catid=$('#catnamesel option:selected').attr('id');
+		if(catid!=1)
+			{
+			$('#ccatname').hide();
+			getCourseNamesforSels(catid);
+			}
+		else
+			{
+			$('#ccatname').show();
+			getCourseNamesforSels(0);
+			}
 			
-					if(optionID!="1")
-						{
-					 
-						    $('#coursename').hide();
-					    	$('#level').hide();
-					    	$('#acrb').hide();
-					}
-					
-					 
-					});
-					
-					
-					$('#catnamesel').change(function() {
-						alert("hello");
-						
-						//ccatname()
-						var catid=$('#catnamesel option:selected').attr('id');
-						if(catid!=1)
-							{
-							$('#ccatname').hide();
-							getCourseNamesforSels(catid);
-							}
-						else
-							{
-							$('#ccatname').show();
-							getCourseNamesforSels(0);
-							}
-							
-						
-					
-					});
+		
+	
+	});
 				
 /**********************************Data Retrevial Functions**********************************************/	
-				
-				
-				 function getCatData(a,callback){
-						var dataString=null;
-						
-					
-						
-						if(a==0)
-							{
-								dataString="instruct=1&archived=0";
-							}
-						else
-							{
-								dataString="instruct=1&archived=1";
-							}
-						
-						
-						
-						$.ajax
-						({
-						type: "POST",
-						url: "CategoryCourseRetrieve",
-						dataType:"json",
-						data: dataString,
-						cache: false,
-						success: function(data)
-						{
-						if(data.Category.length)
-						{
-							
-						catcols = [{
-						        "sTitle": "ID",
-						            "mData": "categoryid",
-						            "aTargets": [0]
-						    }, {
-						        "sTitle": "Name",
-						            "mData": "catname",
-						            "aTargets": [1]
-						    }, {
-						        "sTitle": "Description",
-						        "bSortable": false,
-						            "mData": "catdescript",
-						            "aTargets": [2]
-						    },
-						    {
-						        "sTitle": "Courses",
-						        "bSortable": false,
-						            "mData": "btn4",
-						            "aTargets": [3]
-						    },
-						    {
-						        "sTitle": "",
-						            "mData": "btn1",
-						            "bSortable": false,
-						            "aTargets": [4]
-						    },
-						    {
-						        "sTitle": "",
-						            "mData": "btn2",
-						            "bSortable": false,
-						            "aTargets": [5]
-						    },
-						    {
-						        "sTitle": "",
-						            "mData": "btn3",
-						            "bSortable": false,
-						            "aTargets": [6]
-						    }		    
-						    ];
-							
-							catrows=data.Category;
-							callback(catcols,catrows);
-							
-							
-						$.each(data.Category, function(i,data)
-						{
-						
-							
-							
 
-						setCatSels(data.categoryid,data.catname);
-						
-					
-						//table.row.add(userdata).draw();
-					
-
-						});
-					
-						}
-						else
-						{
-						$("#content").html("No Results");
-						}
-						}
-						});
-						alert("at end");
-					return;
-					};
-					
+/*The function below is used to populate
+ * the categories table
+ */
 				
-
-			function getCourseNamesforSels(a)
+ function getCatData(a,callback){
+		var dataString=null;
+		
+	
+		
+		if(a==0)
 			{
-				 $("#coursenamesel")
-				 	.find('option')
-				    .remove()
-				    .end();
-					var o1 = new Option("option text", "value");
-					o1.id=1;
-					$(o1).html("- Select One-");	
-					$(o1).prependTo("#coursenamesel");
-				dataString="instruct=2&archived="+a;
-				alert(dataString);
-							$.ajax
-							({
-							type: "POST",
-							url: "CategoryCourseRetrieve",
-							dataType:"json",
-							data: dataString,
-							cache: false,
-							success: function(data)
-							{
-							if(data.Category.length)
-							{
-								$.each(data.Category, function(i,data)
-										{
-											setCourseSels(data.courseid,data.coursename,data.level);
-								
-									 
-										 });
-							
-										}
-									
-										}
-										});
-									
-								};
-								
-							function setCourseSels(courseid,coursename,level)
-								    {
-									
-									var o1 = new Option("option text", "value");
-									o1.id=courseid;
-										/// jquerify the DOM object 'o' so we can use the html method
-									$(o1).html(coursename+" " +level);
-									$("#coursenamesel").append(o1);
-										
-										
-										
-								    }
+				dataString="instruct=1&archived=0";
+			}
+		else
+			{
+				dataString="instruct=1&archived=1";
+			}
+		
+		
+		
+		$.ajax
+		({
+		type: "POST",
+		url: "CategoryCourseRetrieve",
+		dataType:"json",
+		data: dataString,
+		cache: false,
+		success: function(data)
+		{
+		if(data.Category.length)
+		{
 			
-					
-					
-								
-								
-								
-								
-			function getCourseDetailsForCoursesTable(a,callback)
-				{
-					dataString="instruct=2&archived="+a;
-					alert(dataString);
-								$.ajax
-								({
-								type: "POST",
-								url: "CategoryCourseRetrieve",
-								dataType:"json",
-								data: dataString,
-								cache: false,
-								success: function(data)
-								{
-								if(data.Category.length)
-								{
-									//data.Category.append("btn1:btn1");
-									coursecols = [{
-								        "sTitle": "ID",
-								            "mData": "refno",
-								            "aTargets": [0]
-								    }, 
-								    {
-								        "sTitle": "Name",
-								            "mData": "coursename",
-								            "aTargets": [1]
-								    },	
-								    {
+		catcols = [{
+		        "sTitle": "ID",
+		            "mData": "categoryid",
+		            "aTargets": [0]
+		    }, {
+		        "sTitle": "Name",
+		            "mData": "catname",
+		            "aTargets": [1]
+		    }, {
+		        "sTitle": "Description",
+		        "bSortable": false,
+		            "mData": "catdescript",
+		            "aTargets": [2]
+		    },
+		    {
+		        "sTitle": "Courses",
+		        "bSortable": false,
+		            "mData": "btn4",
+		            "aTargets": [3]
+		    },
+		    {
+		        "sTitle": "",
+		            "mData": "btn1",
+		            "bSortable": false,
+		            "aTargets": [4]
+		    },
+		    {
+		        "sTitle": "",
+		            "mData": "btn2",
+		            "bSortable": false,
+		            "aTargets": [5]
+		    },
+		    {
+		        "sTitle": "",
+		            "mData": "btn3",
+		            "bSortable": false,
+		            "aTargets": [6]
+		    }		    
+		    ];
+			
+			catrows=data.Category;
+			callback(catcols,catrows);
+			
+			
+		$.each(data.Category, function(i,data)
+		{
+		
+			
+			
 
-							        "sTitle": "Accreditation",
-							            "mData": "acredbody",
-							            "aTargets": [2]
-							    },
-							    {
-							        "sTitle": "Level",
-							            "mData": "level",
-							            "aTargets": [3]
-							    },
-							    {
-							        "sTitle": "Category",
-							            "mData": "categoryname",
-							            "aTargets": [4]
-							    },
-							    {
-							        "sTitle": "Capacity",
-							            "mData": "capacity",
-							            "bSortable": false,
-							            "aTargets": [5]
-							    },
-							    {
-							        "sTitle": "Semester",
-							            "mData": "semesterid",
-							            "bSortable": false,
-							            "aTargets": [6]
-							    },
-							    {
-							        "sTitle": "Participants",
-							            "mData": "btn4",
-							            "bSortable": false,
-							            "aTargets": [7]
-							    },
-							    {
-							        "sTitle": "",
-							            "mData": "btn3",
-							            "bSortable": false,
-							            "aTargets": [8]
-							    },
-							
-							    {
-								        "sTitle": "",
-								            "mData": "btn1",
-								            "bSortable": false,
-								            "aTargets": [9]
-								    },
-								    {
-								        "sTitle": "",
-								            "mData": "btn2",
-								            "bSortable": false,
-								            "aTargets": [10]
-								    }
-								  
-								  
-								    ];
-									
-									 // drawDataTable(columns, data.Category);
-									courserows=data.Category;
-									callback(coursecols,courserows);
-									
-							
+		setCatSels(data.categoryid,data.catname);
+		
+	
+	
+	
+
+		});
+	
+		}
+		else
+		{
+		$("#content").html("No Results");
+		}
+		}
+		});
+	
+	return;
+	};
+	
+				
+
+function getCourseNamesforSels(a)
+{
+		 $("#coursenamesel")
+		.find('option')
+		.remove()
+		.end();
+		var o1 = new Option("option text", "value");
+		o1.id=1;
+		$(o1).html("- Select One-");	
+		$(o1).prependTo("#coursenamesel");
+		
+		dataString="instruct=2&archived="+a;
+		
+			$.ajax
+			({
+			type: "POST",
+			url: "CategoryCourseRetrieve",
+			dataType:"json",
+			data: dataString,
+			cache: false,
+			success: function(data)
+			{
+			if(data.Category.length)
+			{
+				$.each(data.Category, function(i,data)
+						{
+							setCourseSels(data.courseid,data.coursename,data.level);
+				
+					 
+						 });
+			
+						}
+					
+						}
+						});
+					
+				};
+				
+			function setCourseSels(courseid,coursename,level)
+				    {
+					
+					var o1 = new Option("option text", "value");
+					o1.id=courseid;
+						
+					$(o1).html(coursename+" " +level);
+					$("#coursenamesel").append(o1);
+						
+				
+};
+
+					
+					
 								
-							
-								}
 								
-								}
-								});
+/*The Function below is used
+ * to populate the courses table
+ */						
+								
+function getCourseDetailsForCoursesTable(a,callback)
+	{
+		dataString="instruct=2&archived="+a;
+		
+					$.ajax
+					({
+					type: "POST",
+					url: "CategoryCourseRetrieve",
+					dataType:"json",
+					data: dataString,
+					cache: false,
+					success: function(data)
+					{
+					if(data.Category.length)
+					{
+						
+						coursecols = [{
+					        "sTitle": "ID",
+					            "mData": "refno",
+					            "aTargets": [0]
+					    }, 
+					    {
+					        "sTitle": "Name",
+					            "mData": "coursename",
+					            "aTargets": [1]
+					    },	
+					    {
+
+				        "sTitle": "Accreditation",
+				            "mData": "acredbody",
+				            "aTargets": [2]
+				    },
+				    {
+				        "sTitle": "Level",
+				            "mData": "level",
+				            "aTargets": [3]
+				    },
+				    {
+				        "sTitle": "Category",
+				            "mData": "categoryname",
+				            "aTargets": [4]
+				    },
+				    {
+				        "sTitle": "Tutor",
+				            "mData": "tutorname",
+				            "aTargets": [5]
+				    },
+				    {
+				        "sTitle": "Capacity",
+				            "mData": "capacity",
+				            "bSortable": false,
+				            "aTargets": [6]
+				    },
+				    {
+				        "sTitle": "Semester",
+				            "mData": "semesterid",
+				            "bSortable": false,
+				            "aTargets": [7]
+				    },
+				    {
+				        "sTitle": "Participants",
+				            "mData": "btn4",
+				            "bSortable": false,
+				            "aTargets": [8]
+				    },
+				    {
+				        "sTitle": "",
+				            "mData": "btn3",
+				            "bSortable": false,
+				            "aTargets": [9]
+				    },
+				
+				    {
+					        "sTitle": "",
+					            "mData": "btn1",
+					            "bSortable": false,
+					            "aTargets": [10]
+					    },
+					    {
+					        "sTitle": "",
+					            "mData": "btn2",
+					            "bSortable": false,
+					            "aTargets": [11]
+					    }
+					  
+					  
+					    ];
+						
+						 
+						courserows=data.Category;
+						callback(coursecols,courserows);
+						
+				
+					
+				
+					}
+					
+					}
+					});
+				
+				};
+				
+/*
+ * The function below is used to retrieve
+ * student details from the database and
+ * add them to a table
+ * in order to allow them to be added
+ * to an instance of a course
+ */						
 							
-							};
 							
-							
-							
-							
-							function getUserForCourses(a,b,courseid,instruct,misc,callback)
-							{
-								dataString="archived=0,0&role="+a+","+b+"&courseid="+courseid+"&instruct="+instruct+"&misc="+misc;
-											$.ajax
-											({
-											type: "POST",
-											url: "GetUserData",
-											dataType:"json",
-											data: dataString,
-											cache: false,
-											success: function(data)
-											{
-											if(data.User.length)
-											{
-												
-												
-												studentcols = [{
-											        "sTitle": "ID",
-											            "mData": "userid",
-											            "aTargets": [0]
-											    }, 
-											    {
-											        "sTitle": "Role",
-											            "mData": "role",
-											            "aTargets": [1]
-											    }, 
-											    {
-											        "sTitle": "First Name",
-											            "mData": "fname",
-											            "aTargets": [2]
-											    },
-											    {
-											        "sTitle": "Last Name",
-											            "mData": "lname",
-											            "aTargets": [3]
-											    },
-									
-											    {
-											        "sTitle": "",
-											            "mData": "misc",
-											            "aTargets": [4]
-											    }
-											    
-											    
-											    ];
-											
-												studentrows=data.User;
-												callback(studentcols,studentrows);
-												   
-											}
-										
-											}
-											});
-										
-										};
-										function getTutorsForTutorSels()
-										{
-											 $("#tutorsel")
-											 	.find('option')
-											    .remove()
-											    .end();
-											dataString="archived=0,0&role=1,1&courseid=0&instruct=1&misc=0";
-											$.ajax
-											({
-											type: "POST",
-											url: "GetUserData",
-											dataType:"json",
-											data: dataString,
-											cache: false,
-											success: function(data)
-											{
-											if(data.User.length)
-											{
-												
-													$.each(data.User, function(i,data)
-															{
-														setTutorSels(data.userid,data.fname,data.lname);
-													
-														 
-															 });
-												
-													
-													var o = new Option("option text", "value");
-													$(o).html("- Select One-");	
-													$(o).prependTo("#tutorsel");
-													
-															}
-															
-															}
-															});
-														
-													};
-									
+function getUserForCourses(a,b,courseid,instruct,misc,callback)
+{
+	
+	dataString="archived=0,0&role="+a+","+b+"&courseid="+courseid+"&instruct="+instruct+"&misc="+misc;
+				$.ajax
+				({
+				type: "POST",
+				url: "GetUserData",
+				dataType:"json",
+				data: dataString,
+				cache: false,
+				success: function(data)
+				{
+				if(data.User.length)
+				{
+					
+					
+					studentcols = [{
+				        "sTitle": "ID",
+				            "mData": "userid",
+				            "aTargets": [0]
+				    }, 
+				    {
+				        "sTitle": "Role",
+				            "mData": "role",
+				            "aTargets": [1]
+				    }, 
+				    {
+				        "sTitle": "First Name",
+				            "mData": "fname",
+				            "aTargets": [2]
+				    },
+				    {
+				        "sTitle": "Last Name",
+				            "mData": "lname",
+				            "aTargets": [3]
+				    },
+		
+				    {
+				        "sTitle": "",
+				            "mData": "misc",
+				            "aTargets": [4]
+				    }
+				    
+				    
+				    ];
+				
+					studentrows=data.User;
+					callback(studentcols,studentrows);
+					   
+				}
+			
+				}
+				});
+			
+			};
+			
 										
 										
 										
-										function setTutorSels(userid,fname,lname)
-										{
-											var o = new Option("option text", "value");
-											o.id=userid;
-											/// jquerify the DOM object 'o' so we can use the html method
-											$(o).html(fname +" " +lname);
-											$("#tutorsel").append(o);
-											
-										}
+function setTutorSels(userid,fname,lname)
+{
+	var o = new Option("option text", "value");
+	o.id=userid;
+	o.value=fname +" " +lname;
+	/// jquerify the DOM object 'o' so we can use the html method
+	$(o).html(fname +" " +lname);
+	$("#tutorsel").append(o);
+	
+}
 											
 /**********************************Insert or Update Functions**********************************************/		
 	
@@ -965,7 +1090,7 @@ $(document).ready( function () {
 										
 	function addStudentstoCourses(Data1,callback){
 		
-		alert("data="+Data1);
+	
 		
 		Data ="data="+JSON.stringify(Data1)+"&instructid=9";
 		studentData(Data,function(result){if(result==true){callback(true);}});
@@ -1024,7 +1149,208 @@ $(document).ready( function () {
 	    
 		
 	}
+
+	
+	/*
+	 * This function is used when a course is being
+	 * added or updated to  populate the tutor
+	 * selects in the relevant forms
+	 * In the case of updates it also 
+	 * prepops the select with the current
+	 * tutor
+	 */
+
+function getTutorsForTutorSels(tid)
+{
+	var tutorname=null;
+	var id=null;
+	 $("#tutorsel")
+	 	.find('option')
+	    .remove()
+	    .end();
+	dataString="archived=0,0&role=1,1&courseid=0&instruct=1&misc=0";
+	$.ajax
+	({
+		type: "POST",
+		url: "GetUserData",
+		dataType:"json",
+		data: dataString,
+		cache: false,
+		success: function(data)
+		{
+			if(data.User.length)
+			{
+				$.each(data.User, function(i,data)
+				{
+					setTutorSels(data.userid,data.fname,data.lname);
+					if(data.userid==tid)
+					{
+						tutorname=data.fname +" " +data.lname;
+						id=data.userid;
+					}
+						 
+				});
 				
+					
+					var o = new Option("option text", "value");
+					if(tid>0)
+						{
+						o.id=id;
+						o.
+						$(o).html(tutorname);	
+						}
+						else
+							{
+							$(o).html("- Select One-");
+							}
+								$(o).prependTo("#tutorsel");
+					
+				}
+						
+			}
+		});
+		
+					
+};
+
+	/*
+	 * This function is used to update 
+	 * category information
+	 */
+
+				
+function updateCatCourse(instruct,callback)
+{
+
+	catid=$('#catID').val();
+	
+	
+	var name = $("#categoryName").val();
+	var description = $("#catDescript").val();
+	Data="instructid="+instruct+"&name="+name+"&description="+description+"&catid="+catid;
+		
+	$.ajax({
+				type: "POST",
+				url: "CategoryCourses",
+				data: Data,
+				dataType:"json",
+				cache: false,
+				success: function(data)
+				{
+					 $('#message').empty();
+					 $('#sfmessage').empty();
+					if(data.CatMessage.length)
+					{
+						$.each(data.CatMessage, function(i,data)
+						{
+						
+						
+							messageid=data.messagecode;
+							message=data.insertmessagestring;
+						
+						
+							 $('#sfmessage').prepend(message);
+						
+							 
+						
+					
+						});
+					
+							$('#ModalMessage').modal('show');
+							$('#catModal').find('form')[0].reset();
+							$('#courseModal').find('form')[0].reset();
+								
+								if(messageid=="1")
+									{
+										
+										callback(true);
+									}
+									else
+									{
+										callback(false);
+									}
+							
+						
+						}
+					
+					}
+				});
+	    
+    
+    
+    
+    
+};
+
+/*
+ * function used to update a courses tutor and/ or capacity
+ */
+
+function updateCourse(instruct,callback)
+{
+
+	var courseid=$('#cccatid').val();
+	var tutorid=$('#tutorsel option:selected').attr('id');
+	
+	var capacity=$('#capacity').val();
+	
+	
+
+	Data="instructid="+instruct+"&capacity="+capacity+"&tutorid="+tutorid+"&courseid="+courseid;
+	
+	$.ajax({
+		type: "POST",
+		url: "CategoryCourses",
+		data: Data,
+		dataType:"json",
+		cache: false,
+		success: function(data)
+		{
+			 $('#message').empty();
+			 $('#sfmessage').empty();
+			if(data.CatMessage.length)
+			{
+			$.each(data.CatMessage, function(i,data)
+			{
+			
+		
+			messageid=data.messagecode;
+			message=data.insertmessagestring;
+		
+		
+			 $('#sfmessage').prepend(message);
+		
+			 
+		
+		
+			});
+		
+				$('#ModalMessage').modal('show');
+				$('#catModal').find('form')[0].reset();
+				$('#courseModal').find('form')[0].reset();
+	
+			if(messageid=="1")
+			{
+				
+				callback(true);
+			}
+			else
+			{
+				callback(false);
+			}
+			
+			
+			}
+		
+			}
+		});
+
+
+
+
+
+};
+		
 	
 	
 	
@@ -1034,13 +1360,9 @@ $(document).ready( function () {
 		var courseid=null;
 		var catid=null;
 	
-		if(a==1 || a==6)
+		if(a==1)
 		{
-		catid=$('#catID').val();
-	
-		var name = $("#categoryName").val();
-		var description = $("#catDescript").val();
-		Data="instructid="+a+"&name="+name+"&description="+description+"&catid="+catid;
+			Data="instructid="+instruct+"&name="+name+"&description="+description+"&catid="+catid;	
 		}
 		else if(a==5 || a==7)
 			{
@@ -1048,7 +1370,7 @@ $(document).ready( function () {
 			//var catid2=$("#ncatname").getVal();
 			var catid=$('#cccatid').val();
 		
-			//alert("catid="+catid2);
+			
 			if(a==7)
 				{
 			courseid=$('#cccatid').val();
@@ -1065,7 +1387,7 @@ $(document).ready( function () {
 		
 			var catid=$('#catnamesel option:selected').attr('id');
 			var coursename = $("#courseName").val();
-			alert("coursename="+coursename);
+	
 			var level=$('#level option:selected').attr('id');
 			var accredbodname=$('#accreditbod').val();
 			var tutorid=$('#tutorsel option:selected').attr('id');
@@ -1078,16 +1400,16 @@ $(document).ready( function () {
 				{
 				coursename="na";
 				accredbodname="na";
-				}
+				
 			
 	
 			Data=("instructid="+a+"&catid="+catid+"&courseid="+courseid+"&coursename="+coursename+"&level="+level+"&accredbodname="
 					+accredbodname+"&tutorid="+tutorid+"&capacity="+capacity+"&equipreq="+equipreq);
+				}
 			
 			
 			
-			
-			alert(Data);
+
 			
 		
 
@@ -1122,7 +1444,7 @@ $(document).ready( function () {
 					$('#ModalMessage').modal('show');
 					$('#catModal').find('form')[0].reset();
 					$('#courseModal').find('form')[0].reset();
-					alert(messageid);
+					
 				if(messageid=="6")
 				{
 					
@@ -1151,7 +1473,7 @@ $(document).ready( function () {
 				
 				
 				dataString="catcourseid="+itemid+"&instructid="+instruct;
-				alert(dataString);
+				
 					
 					$.ajax({
 						type: "POST",
@@ -1168,7 +1490,7 @@ $(document).ready( function () {
 							{
 							
 							var messageid=data.messagecode;
-							alert(messageid);
+							
 							var message=data.insertmessagestring;
 							if(messageid==2)
 								{

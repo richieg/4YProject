@@ -29,6 +29,7 @@ import dto.MessageObjects;
 		PreparedStatement ps;
 		PreparedStatement ps1;
 		String message=null;
+		int messageid=0;
 		public ArrayList<MessageObjects> RestoreArchiveCourseCat(Connection connection, HttpServletRequest request,
 				HttpServletResponse response) throws Exception {
 				
@@ -73,7 +74,7 @@ import dto.MessageObjects;
 					//ps.setInt(1, coursecatid);
 					ps1.setInt(1, coursecatid);
 					
-					up = ps.executeUpdate();
+					up = ps1.executeUpdate();
 					  System.out.println(up);
 					
 					if(up>0)
@@ -148,12 +149,15 @@ import dto.MessageObjects;
 				 rse= ps.executeUpdate();
 				 
 					if(rse>0)
-					{
+					{		messageid=1;
 							message= "<div style='color:blue'>Category "+catid+" has been updated successfully</div>";
 					}
-					else message ="<div style='color:red'>An error has occured please contact IT!</div>";
+					else{
+						messageid=2;
+						message ="<div style='color:red'>An error has occured please contact IT!</div>";
+					}
 					MessageObjects messageObjects = new MessageObjects();
-					messageObjects.setMessagecode(2);
+					messageObjects.setMessagecode(messageid);
 					messageObjects.setInsertmessagestring(message);
 					insertMessage.add(messageObjects);
 			} catch (SQLException e) {
@@ -168,36 +172,33 @@ import dto.MessageObjects;
 				HttpServletResponse response) throws Exception {
 			
 			
-			String name=null;
+			int tutorid=0;
 			int capacity=0;
 			int courseid=0;
 			
 			
-			System.out.println("got to dao for update");
+
 			
-			name = request.getParameter("coursename");
+			tutorid = Integer.valueOf(request.getParameter("tutorid"));
 			capacity = Integer.valueOf(request.getParameter("capacity"));
 			courseid = Integer.valueOf(request.getParameter("courseid"));
 			
-				System.out.println("name:::@@@"+name);
-			System.out.println("capacity:::@@@"+capacity);
-			System.out.println("courseid:::@@@"+courseid);
-		    PreparedStatement ps;
+	
 		    PreparedStatement ps1;
 		    int rse = 0;
 			try {
-				ps = connection.prepareStatement("Update TB_Courses set coursename=? where course_id=?");
-				ps1  = connection.prepareStatement("Update TB_Tutor_Courses set capacity=? where courseid=?");
-				ps.setString(1, name);
-				ps1.setInt(1,capacity);
-				ps.setInt(2, courseid);
-				ps1.setInt(2, courseid);
+
+				ps1  = connection.prepareStatement("Update TB_Tutor_Courses set tutorid=?, capacity=? where tutorcourseid=?");
+		
+				ps1.setInt(1,tutorid);
+				ps1.setInt(2, capacity);
+				ps1.setInt(3, courseid);
 				
 				
 			
 				
-				 rse= ps.executeUpdate();
-				 rse=rse+ ps1.executeUpdate();
+		
+				 rse=ps1.executeUpdate();
 				 
 				 
 					if(rse>0)

@@ -131,9 +131,7 @@ public class InsertStudentData {
 		    ngrade=request.getParameter("grade");
 		    studentid=Integer.parseInt(request.getParameter("studentid"));
 		    
-		    System.out.println(instruct);
-		    System.out.println(courseid);
-		 
+
 		   		
 		   		if(instruct==8)
 		   		{

@@ -14,11 +14,11 @@
   <li><a href="#">Library</a></li>
   <li class="active">Data</li>
 </ol>
-
+<h1>Timetable</h1>
 <div id="intialdiv" class="tableboxmed">
 
 <div class="buttonbox">
-<h2>Timetable Action Menu</h2>
+
 <button class="btn btn-danger" id="editttc">
  
 
@@ -159,7 +159,7 @@ Save as Timetable
 <h1 id="ttitle"></h1>
 <div class="tableboxlg">
 <div class="col-sm-2">
-<label for="timetableselect">Select a Different Timetable</label>
+<label for="timetableselect"></label>
  <select id="timetableselect" name="timetableselect" class="form-control">
  
 </select>

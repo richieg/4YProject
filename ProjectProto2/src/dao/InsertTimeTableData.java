@@ -37,14 +37,14 @@ public class InsertTimeTableData {
 		System.out.println("got to tt inset");
 	
 		
-		ps = connection.prepareStatement("INSERT into TB_timetabletemp values(?,?,?,?,?,?,?)");
+		ps = connection.prepareStatement("INSERT into TB_timetabletemp values(?,?,?,?,?,?,curdate()");
 		ps.setInt(1,timetableid);
 		ps.setInt(2,dayid);
 		ps.setInt(3,timeid);
 		ps.setInt(4,courseid);
 		ps.setInt(5,roomid);
 		ps.setInt(6,1);
-		ps.setString(7,"2015-03-10");
+		//ps.setString(7,"2015-03-10");
 		
 		rse= ps.executeUpdate();
 		System.out.println(rse);

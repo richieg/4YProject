@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.TimeTableRetrieveManager;
+import models.TimeTableManager;
 
 import com.google.gson.Gson;
 
@@ -39,7 +39,7 @@ import dto.UserObjectsInitial;
 	int instruct=Integer.valueOf(request.getParameter("instruct"));
 
 	DBManager db= new DBManager();
-	TimeTableRetrieveManager retManager= new TimeTableRetrieveManager();
+	TimeTableManager retManager= new TimeTableManager();
 	ArrayList<MessageObjects> imessage = null;
 	ArrayList<TimeTableObjects> ttData = null;
 	System.out.println("instruct in cintrol for timetable="+instruct);

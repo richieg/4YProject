@@ -137,7 +137,7 @@ timecols = [{
 
 } //
 });
-alert("at end");
+
 return;
 };
 
@@ -181,12 +181,12 @@ if(data.TimeTableData.length)
 
 } //
 });
-alert("at end");
+
 return;
 };
 
 
-//
+
 
 
 
